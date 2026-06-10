@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Materiały PB WE - portal przedmiotów</title>
+  <style>
+    :root {
+      --navy: #07192f;
+      --blue: #005baa;
+      --cyan: #28a9e0;
+      --paper: #ffffff;
+      --muted: #6d7b8b;
+      --line: rgba(255, 255, 255, 0.22);
+      --shadow: 0 28px 70px rgba(3, 16, 34, 0.26);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #122033;
+      background:
+        radial-gradient(circle at 18% 15%, rgba(40, 169, 224, 0.38), transparent 28%),
+        radial-gradient(circle at 86% 12%, rgba(0, 91, 170, 0.48), transparent 34%),
+        linear-gradient(135deg, #07192f 0%, #0c2b4c 48%, #123f6c 100%);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.32) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.32) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: linear-gradient(180deg, #000 0%, transparent 88%);
+    }
+
+    .progress {
+      position: fixed;
+      z-index: 20;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .progress span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), #fff);
+      box-shadow: 0 0 18px rgba(40,169,224,0.9);
+    }
+
+    .shell {
+      position: relative;
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 42px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 0 34px;
+      color: #fff;
+    }
+
+    .brand img {
+      display: block;
+      width: min(270px, 58vw);
+      height: auto;
+    }
+
+    .badge {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #e7f6ff;
+      background: rgba(255, 255, 255, 0.08);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-main,
+    .panel,
+    .exams,
+    .resources,
+    .gallery,
+    .schedule,
+    .subjects {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.93);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: clamp(26px, 4vw, 46px);
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #08172b;
+      font-size: clamp(38px, 6vw, 72px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 22px 0 0;
+      color: #42536a;
+      font-size: 20px;
+      line-height: 1.55;
+    }
+
+    .quick {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .quick a,
+    .download,
+    .subject-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--blue);
+      text-decoration: none;
+      font-weight: 900;
+      box-shadow: 0 12px 26px rgba(0, 91, 170, 0.26);
+    }
+
+    .quick a.secondary {
+      color: var(--blue);
+      background: #eef7ff;
+      box-shadow: none;
+    }
+
+    .quick a.ghost {
+      color: #0d4f88;
+      border: 1px solid #d7e5f4;
+      background: #f4faff;
+      box-shadow: none;
+    }
+
+    .panel {
+      position: relative;
+      padding: 24px;
+      color: #fff;
+      background:
+        linear-gradient(145deg, rgba(0, 91, 170, 0.95), rgba(5, 25, 51, 0.96)),
+        radial-gradient(circle at 25% 15%, rgba(40, 169, 224, 0.42), transparent 44%);
+      overflow: hidden;
+    }
+
+    .panel::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 280px;
+      height: 280px;
+      border: 38px solid rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+    }
+
+    .panel h2 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+    }
+
+    .panel p {
+      position: relative;
+      z-index: 1;
+      color: #d7edff;
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    .circuit {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: auto;
+      margin-top: 18px;
+      filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.22));
+    }
+
+    .circuit .flow {
+      stroke-dasharray: 18 190;
+      animation: currentFlow 2.4s linear infinite;
+    }
+
+    .circuit .flow.delay-a { animation-delay: -0.7s; }
+    .circuit .flow.delay-b { animation-delay: -1.35s; }
+
+    .circuit .chip-light {
+      animation: chipPulse 2.6s ease-in-out infinite;
+    }
+
+    .circuit .chip-light:nth-of-type(2n) {
+      animation-delay: -1.1s;
+    }
+
+    .cards,
+    .exams,
+    .resources,
+    .gallery,
+    .schedule,
+    .subjects {
+      margin-top: 24px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      display: grid;
+      min-height: 260px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 16px;
+      color: #102033;
+      background: rgba(255, 255, 255, 0.94);
+      text-decoration: none;
+      box-shadow: 0 18px 46px rgba(3, 16, 34, 0.18);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 28px 62px rgba(3, 16, 34, 0.3);
+    }
+
+    .card-number {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 900;
+      font-size: 20px;
+    }
+
+    .card h3 {
+      margin: 20px 0 10px;
+      color: #08172b;
+      font-size: 23px;
+      line-height: 1.15;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .card .open {
+      align-self: end;
+      margin-top: 22px;
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .exams,
+    .resources,
+    .gallery,
+    .schedule,
+    .subjects {
+      padding: 28px;
+      color: #102033;
+    }
+
+    .resources {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.96), rgba(240,247,255,0.94)),
+        radial-gradient(circle at 12% 20%, rgba(0,91,170,0.12), transparent 38%);
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .resource-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 176px;
+      padding: 20px;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      color: #102033;
+      background:
+        linear-gradient(145deg, #fff, #f6fbff);
+      text-decoration: none;
+      box-shadow: 0 14px 34px rgba(3, 16, 34, 0.08);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-5px);
+      border-color: #9fc7ef;
+      box-shadow: 0 24px 48px rgba(3, 16, 34, 0.16);
+    }
+
+    .resource-card::after {
+      content: "";
+      position: absolute;
+      right: -42px;
+      bottom: -42px;
+      width: 126px;
+      height: 126px;
+      border: 22px solid rgba(0,91,170,0.08);
+      border-radius: 50%;
+    }
+
+    .resource-icon {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #28a9e0);
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .resource-card h3 {
+      margin: 18px 0 9px;
+      color: #08172b;
+      font-size: 21px;
+      line-height: 1.15;
+    }
+
+    .resource-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .resource-card span:last-child {
+      display: inline-flex;
+      margin-top: 18px;
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .gallery {
+      background:
+        linear-gradient(145deg, rgba(5, 25, 51, 0.96), rgba(0, 91, 170, 0.9)),
+        radial-gradient(circle at 85% 18%, rgba(40,169,224,0.34), transparent 36%);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .gallery .section-head h2 {
+      color: #fff;
+    }
+
+    .gallery .section-head p {
+      color: #d8ecff;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 0.8fr;
+      gap: 14px;
+    }
+
+    .photo-slot {
+      position: relative;
+      min-height: 210px;
+      overflow: hidden;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06)),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 18px);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.18);
+    }
+
+    .photo-slot.large {
+      grid-row: span 2;
+      min-height: 438px;
+    }
+
+    .photo-slot::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border: 1px dashed rgba(255,255,255,0.36);
+      border-radius: 10px;
+    }
+
+    .photo-slot strong,
+    .photo-slot span {
+      position: relative;
+      z-index: 1;
+      display: block;
+    }
+
+    .photo-slot strong {
+      margin-top: auto;
+      font-size: 21px;
+      line-height: 1.18;
+    }
+
+    .photo-slot span {
+      margin-top: 10px;
+      color: #d8ecff;
+      line-height: 1.4;
+    }
+
+    .photo-slot .photo-mark {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      margin-bottom: 82px;
+      border-radius: 15px;
+      color: #07192f;
+      background: #e7f6ff;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .exams {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.96), rgba(242,248,255,0.94)),
+        radial-gradient(circle at 85% 20%, rgba(40,169,224,0.16), transparent 34%);
+    }
+
+    .exam-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .exam-item {
+      position: relative;
+      overflow: hidden;
+      min-height: 98px;
+      padding: 18px;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 14px 34px rgba(3, 16, 34, 0.08);
+    }
+
+    .exam-item::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: var(--blue);
+    }
+
+    .exam-item.important::before { background: #d97706; }
+    .exam-item.session::before { background: #be123c; }
+
+    .exam-item strong {
+      display: block;
+      color: #0b1d34;
+      font-size: 18px;
+      line-height: 1.22;
+    }
+
+    .exam-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .exam-meta span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #0d4f88;
+      background: #eef7ff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .exam-item.important .exam-meta span {
+      color: #8a4b00;
+      background: #fff4dc;
+    }
+
+    .exam-item.session .exam-meta span {
+      color: #9f1239;
+      background: #fff1f2;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: #08172b;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 540px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .day {
+      overflow: hidden;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .day h3 {
+      margin: 0;
+      padding: 16px 18px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #123f6c);
+      font-size: 21px;
+    }
+
+    .lesson {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 12px;
+      padding: 14px 16px;
+      border-top: 1px solid #edf2f7;
+    }
+
+    .time {
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .lesson strong {
+      display: block;
+      color: #122033;
+      line-height: 1.2;
+    }
+
+    .lesson span,
+    .meta {
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .lesson span {
+      display: block;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    .subject-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 20px;
+    }
+
+    .subject-tools a {
+      padding: 9px 12px;
+      border: 1px solid #d7e5f4;
+      border-radius: 999px;
+      color: #0d4f88;
+      background: #f4faff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .subject {
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .subject::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: var(--blue);
+    }
+
+    .subject h3 {
+      margin: 0 0 10px;
+      color: #0b1d34;
+      font-size: 21px;
+      line-height: 1.18;
+    }
+
+    .meta {
+      display: grid;
+      gap: 6px;
+    }
+
+    .subject-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .subject-actions a,
+    .subject-actions span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 8px 11px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .subject-actions span {
+      color: #627386;
+      background: #eef2f6;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 22px;
+      color: #d8ecff;
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .float-in {
+      animation: floatIn 900ms ease both;
+    }
+
+    .pulse {
+      animation: pulseGlow 3.4s ease-in-out infinite;
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 12px 26px rgba(0, 91, 170, 0.24); }
+      50% { box-shadow: 0 16px 36px rgba(40, 169, 224, 0.42); }
+    }
+
+    @keyframes currentFlow {
+      from { stroke-dashoffset: 220; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes chipPulse {
+      0%, 100% { opacity: 0.45; filter: drop-shadow(0 0 0 rgba(40,169,224,0)); }
+      50% { opacity: 1; filter: drop-shadow(0 0 10px rgba(40,169,224,0.8)); }
+    }
+
+    @media (max-width: 900px) {
+      .topbar,
+      .footer,
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero,
+      .cards,
+      .exam-grid,
+      .resource-grid,
+      .photo-grid,
+      .schedule-grid,
+      .subjects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-slot.large {
+        min-height: 260px;
+      }
+
+      .badge { white-space: normal; }
+
+      .lesson { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <main class="shell">
+    <nav class="topbar" aria-label="Nagłówek">
+      <div class="brand">
+        <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny Politechniki Białostockiej">
+      </div>
+      <div class="badge">Portal materiałów PB WE</div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-main float-in">
+        <p class="eyebrow">Wydział Elektryczny PB · opracowanie</p>
+        <h1>Materiały do zajęć</h1>
+        <p class="lead">Wiedza w pigułce dla studentów zaocznych Elektroniki i Telekomunikacji. W jednym miejscu: plan zajęć, terminy zaliczeń, prowadzący oraz uporządkowane materiały do każdego przedmiotu.</p>
+        <div class="quick">
+          <a class="pulse" href="#przedmioty">Wybierz przedmiot</a>
+          <a class="secondary" href="subject-niezawodnosc.html">Niezawodność</a>
+          <a class="ghost" href="#zaliczenia">Zaliczenia</a>
+          <a class="ghost" href="#plan">Plan zajęć</a>
+          <a class="ghost" href="assets/tz2_2.pdf">PDF planu</a>
+        </div>
+      </div>
+
+      <aside class="panel float-in">
+        <h2>Elektronika, światłowody i sieci w jednym panelu</h2>
+        <p>Materiały są ułożone tak, żeby szybko wejść w temat przed zjazdem, laboratorium albo zaliczeniem.</p>
+        <svg class="circuit" viewBox="0 0 560 310" role="img" aria-label="Animowany schemat układu elektronicznego">
+          <defs>
+            <style>
+              .board { fill: rgba(255,255,255,0.08); stroke: rgba(231,246,255,0.34); stroke-width: 2; }
+              .wire { fill: none; stroke: rgba(231,246,255,0.84); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+              .flow { fill: none; stroke: #65e8ff; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+              .node { fill: #07192f; stroke: #e7f6ff; stroke-width: 5; }
+              .chip { fill: rgba(255,255,255,0.96); stroke: #bde8ff; stroke-width: 3; }
+              .pin { stroke: rgba(231,246,255,0.8); stroke-width: 4; stroke-linecap: round; }
+              .chip-light { fill: #65e8ff; }
+              .label { font: 800 18px Arial, sans-serif; fill: #e7f6ff; letter-spacing: 0.02em; }
+              .chipText { font: 900 24px Arial, sans-serif; fill: #005baa; }
+            </style>
+          </defs>
+          <rect class="board" x="34" y="38" width="492" height="234" rx="22"/>
+          <path class="wire" d="M62 154H116M116 154V84H214M116 154V224H214"/>
+          <path class="wire" d="M346 84H442V154H506M346 224H442V154"/>
+          <path class="wire" d="M280 92V136M280 174V218"/>
+          <path class="wire" d="M214 84H244M316 84H346M214 224H244M316 224H346"/>
+          <path class="flow" d="M62 154H116V84H214H244" />
+          <path class="flow delay-a" d="M316 84H346H442V154H506" />
+          <path class="flow delay-b" d="M116 154V224H214H244" />
+          <rect class="chip" x="244" y="64" width="72" height="40" rx="8"/>
+          <rect class="chip" x="244" y="204" width="72" height="40" rx="8"/>
+          <rect class="chip" x="248" y="136" width="64" height="38" rx="7"/>
+          <text class="chipText" x="263" y="91">WE</text>
+          <text class="chipText" x="263" y="231">PB</text>
+          <text class="chipText" x="263" y="163">ET</text>
+          <circle class="node" cx="62" cy="154" r="11"/>
+          <circle class="node" cx="506" cy="154" r="11"/>
+          <circle class="node" cx="280" cy="84" r="8"/>
+          <circle class="node" cx="280" cy="224" r="8"/>
+          <line class="pin" x1="214" y1="64" x2="214" y2="104"/>
+          <line class="pin" x1="346" y1="64" x2="346" y2="104"/>
+          <line class="pin" x1="214" y1="204" x2="214" y2="244"/>
+          <line class="pin" x1="346" y1="204" x2="346" y2="244"/>
+          <circle class="chip-light" cx="402" cy="122" r="5"/>
+          <circle class="chip-light" cx="432" cy="184" r="5"/>
+          <circle class="chip-light" cx="160" cy="118" r="5"/>
+          <circle class="chip-light" cx="160" cy="190" r="5"/>
+          <text class="label" x="62" y="292">PLAN · MATERIAŁY · ZALICZENIA</text>
+        </svg>
+      </aside>
+    </section>
+
+    <section id="zaliczenia" class="exams reveal">
+      <div class="section-head">
+        <div>
+          <h2>Terminy zaliczeń</h2>
+          <p>Zestawienie terminów dla 2 semestru EiT mgr, przepisane z notatki z zaliczeniami.</p>
+        </div>
+      </div>
+      <div class="exam-grid">
+        <article class="exam-item"><strong>Niezawodność i diagnostyka</strong><div class="exam-meta"><span>12 czerwca</span></div></article>
+        <article class="exam-item"><strong>Technika światłowodowa i fotonika</strong><div class="exam-meta"><span>12 czerwca</span></div></article>
+        <article class="exam-item session"><strong>Kompatybilność elektromagnetyczna</strong><div class="exam-meta"><span>sesja</span><span>zerówka: 13 czerwca</span></div></article>
+        <article class="exam-item"><strong>Budownictwo telekomunikacyjne</strong><div class="exam-meta"><span>12 czerwca</span></div></article>
+        <article class="exam-item important"><strong>Narzędzia komputerowego wspomagania projektowania sieci telekomunikacyjnych</strong><div class="exam-meta"><span>13 czerwca</span></div></article>
+        <article class="exam-item important"><strong>Zarządzanie sieciami</strong><div class="exam-meta"><span>13 czerwca</span></div></article>
+        <article class="exam-item session"><strong>Bezpieczeństwo systemów informacyjnych</strong><div class="exam-meta"><span>sesja</span></div></article>
+        <article class="exam-item important"><strong>Budownictwo telekomunikacyjne - projekt</strong><div class="exam-meta"><span>13 czerwca</span><span>projekt</span></div></article>
+      </div>
+    </section>
+
+    <section id="linki-we" class="resources reveal">
+      <div class="section-head">
+        <div>
+          <h2>Szybkie linki WE PB</h2>
+          <p>Najważniejsze miejsca z oficjalnego serwisu Wydziału Elektrycznego, pod ręką podczas zjazdu i przed zaliczeniami.</p>
+        </div>
+      </div>
+      <div class="resource-grid">
+        <a class="resource-card" href="https://we.pb.edu.pl/kalendarz-wydarzen/" target="_blank" rel="noopener">
+          <span class="resource-icon">K</span>
+          <h3>Kalendarz wydarzeń</h3>
+          <p>Kolokwia, seminaria, konkursy i terminy publikowane przez wydział.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+        <a class="resource-card" href="https://we.pb.edu.pl/aktualnosci/" target="_blank" rel="noopener">
+          <span class="resource-icon">A</span>
+          <h3>Aktualności</h3>
+          <p>Bieżące komunikaty, wydarzenia wydziałowe i informacje organizacyjne.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+        <a class="resource-card" href="https://we.pb.edu.pl/osiagniecia/" target="_blank" rel="noopener">
+          <span class="resource-icon">O</span>
+          <h3>Osiągnięcia</h3>
+          <p>Sukcesy studentów, kół naukowych i pracowników Wydziału Elektrycznego.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+        <a class="resource-card" href="https://we.pb.edu.pl/konkursy/" target="_blank" rel="noopener">
+          <span class="resource-icon">C</span>
+          <h3>Konkursy</h3>
+          <p>Terminy zgłoszeń, nagrody, konkursy studenckie i naukowe.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+        <a class="resource-card" href="https://we.pb.edu.pl/studenci/dziekanat/" target="_blank" rel="noopener">
+          <span class="resource-icon">D</span>
+          <h3>Dziekanat</h3>
+          <p>Kontakt, sprawy studenckie, dokumenty oraz podstawowe informacje organizacyjne.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+        <a class="resource-card" href="https://we.pb.edu.pl/studenci/organizacja-toku-studiow/" target="_blank" rel="noopener">
+          <span class="resource-icon">S</span>
+          <h3>Organizacja studiów</h3>
+          <p>Informacje o toku studiów, zasadach i sprawach formalnych.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+      </div>
+    </section>
+
+    <section id="galeria" class="gallery reveal">
+      <div class="section-head">
+        <div>
+          <h2>Zdjęcia i wrzutki</h2>
+          <p>Miejsce na fotografie z zajęć, zrzuty z laboratoriów, notatki z tablicy i pliki, które chcesz później dopiąć do strony.</p>
+        </div>
+      </div>
+      <div class="photo-grid">
+        <article class="photo-slot large">
+          <span class="photo-mark">+</span>
+          <strong>Galeria ze zjazdów</strong>
+          <span>Tu można wrzucić zdjęcia tablicy, sali, stanowisk laboratoryjnych albo wspólne materiały z grupy.</span>
+        </article>
+        <article class="photo-slot">
+          <span class="photo-mark">PDF</span>
+          <strong>Notatki i skany</strong>
+          <span>Slot na skany, zdjęcia notatek i krótkie opracowania przed zaliczeniem.</span>
+        </article>
+        <article class="photo-slot">
+          <span class="photo-mark">LAB</span>
+          <strong>Laboratoria</strong>
+          <span>Miejsce na zdjęcia stanowisk, wyniki pomiarów i instrukcje laboratoryjne.</span>
+        </article>
+        <article class="photo-slot">
+          <span class="photo-mark">ZIP</span>
+          <strong>Paczki projektowe</strong>
+          <span>Tu później można dopiąć archiwa, projekty i dodatkowe pliki do pobrania.</span>
+        </article>
+        <article class="photo-slot">
+          <span class="photo-mark">IMG</span>
+          <strong>Materiały wizualne</strong>
+          <span>Zdjęcia schematów, wykresów, układów i najważniejszych fragmentów wykładów.</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="plan" class="schedule reveal">
+      <div class="section-head">
+        <div>
+          <h2>Plan zajęć</h2>
+          <p>Elektronika i telekomunikacja II stopnia, rok I, semestr II - letni. Studia niestacjonarne, rok akademicki 2025/2026.</p>
+        </div>
+        <a class="download" href="assets/tz2_2.pdf">Pobierz PDF planu</a>
+      </div>
+      <div class="schedule-grid">
+        <article class="day">
+          <h3>Piątek</h3>
+          <div class="lesson"><div class="time">16.00-17.35</div><div><strong>Niezawodność i diagnostyka</strong><span>M. Garbaruk - wykład zdalny, zaliczenie WE-306, zjazdy 1,3,5,7,9</span></div></div>
+          <div class="lesson"><div class="time">16.00-17.35</div><div><strong>Technika światłowodowa i fotonika 2</strong><span>T. Ragiń - wykład zdalny, zaliczenie WE-306, zjazdy 2,4,6,8,10</span></div></div>
+          <div class="lesson"><div class="time">17.40-19.15</div><div><strong>Kompatybilność elektromagnetyczna</strong><span>R. Markowska - wykład zdalny, zaliczenie WE-306</span></div></div>
+          <div class="lesson"><div class="time">19.20-20.55</div><div><strong>Budownictwo telekomunikacyjne</strong><span>R. Markowska - wykład zdalny, zaliczenie WE-306</span></div></div>
+        </article>
+        <article class="day">
+          <h3>Sobota</h3>
+          <div class="lesson"><div class="time">8.00-9.35</div><div><strong>Budownictwo telekomunikacyjne</strong><span>R. Markowska - projekt, WE-101, zjazdy 1,3,5,6,8</span></div></div>
+          <div class="lesson"><div class="time">8.00-9.35</div><div><strong>Projektowanie światłowodowych sieci telekomunikacyjnych</strong><span>U. Błaszczak - projekt, WE-217, zjazdy 2,4,7,9,10</span></div></div>
+          <div class="lesson"><div class="time">9.50-13.15</div><div><strong>Technika światłowodowa i fotonika 2</strong><span>T. Ragiń - laboratorium, WE-216, CBD-13</span></div></div>
+          <div class="lesson"><div class="time">9.50-13.15</div><div><strong>Kompatybilność elektromagnetyczna</strong><span>R. Markowska - laboratorium, IET-1/30, WE-346</span></div></div>
+          <div class="lesson"><div class="time">14.20-16.45</div><div><strong>Narzędzia komputerowego wspomagania projektowania sieci telekomunikacyjnych</strong><span>M. Sadowski - wykład + pracownia, WE-101</span></div></div>
+          <div class="lesson"><div class="time">16.50-18.25</div><div><strong>Bezpieczeństwo systemów informacyjnych</strong><span>A. Zankiewicz - wykład, WE-306</span></div></div>
+          <div class="lesson"><div class="time">18.30-20.05</div><div><strong>Zarządzanie sieciami i usługami w systemach komunikacji elektronicznej</strong><span>A. Zankiewicz - wykład, WE-306</span></div></div>
+        </article>
+        <article class="day">
+          <h3>Niedziela</h3>
+          <div class="lesson"><div class="time">8.00-9.35</div><div><strong>Projektowanie sieci teleinformacyjnych</strong><span>G. Gilewska - projekt, WE-105</span></div></div>
+          <div class="lesson"><div class="time">9.50-13.15</div><div><strong>Programowalne układy cyfrowe 2</strong><span>W. Wojtkowski - laboratorium, WE-244</span></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="przedmioty" class="subjects reveal">
+      <div class="section-head">
+        <div>
+          <h2>Przedmioty i materiały</h2>
+          <p>Każdy przedmiot prowadzi do osobnej strony z informacjami z planu i miejscem na materiały.</p>
+        </div>
+      </div>
+      <div class="subject-tools">
+        <a href="#niezawodnosc">Niezawodność</a>
+        <a href="#technik-swiatlowodowa">Technika światłowodowa</a>
+        <a href="#kompatybilnosc">Kompatybilność</a>
+        <a href="#budownictwo">Budownictwo</a>
+        <a href="#sieci-telekom">Sieci światłowodowe</a>
+        <a href="#narzedzia">Narzędzia</a>
+        <a href="#bezpieczenstwo">Bezpieczeństwo</a>
+        <a href="#zarzadzanie">Zarządzanie</a>
+        <a href="#teleinformacyjne">Teleinformacyjne</a>
+        <a href="#uklady-cyfrowe">Układy cyfrowe</a>
+      </div>
+      <div class="subjects-grid">
+        <article id="niezawodnosc" class="subject"><h3>Niezawodność i diagnostyka</h3><div class="meta"><span>Prowadzący: M. Garbaruk</span><span>Forma: wykład zdalny, zaliczenie WE-306</span></div><div class="subject-actions"><a href="subject-niezawodnosc.html">Otwórz stronę przedmiotu</a></div></article>
+        <article id="technik-swiatlowodowa" class="subject"><h3>Technika światłowodowa i fotonika 2</h3><div class="meta"><span>Prowadzący: T. Ragiń</span><span>Forma: wykład zdalny oraz laboratorium, WE-216, CBD-13</span></div><div class="subject-actions"><a href="subject-technika-swiatlowodowa.html">Otwórz stronę przedmiotu</a></div></article>
+        <article id="kompatybilnosc" class="subject"><h3>Kompatybilność elektromagnetyczna</h3><div class="meta"><span>Prowadzący: R. Markowska</span><span>Forma: wykład zdalny oraz laboratorium, IET-1/30, WE-346</span></div><div class="subject-actions"><a href="subject-kompatybilnosc.html">Otwórz stronę przedmiotu</a></div></article>
+        <article id="budownictwo" class="subject"><h3>Budownictwo telekomunikacyjne</h3><div class="meta"><span>Prowadzący: R. Markowska</span><span>Forma: wykład zdalny oraz projekt, WE-101</span></div><div class="subject-actions"><a href="subject-budownictwo.html">Otwórz stronę przedmiotu</a></div></article>
+        <article id="sieci-telekom" class="subject"><h3>Projektowanie światłowodowych sieci telekomunikacyjnych</h3><div class="meta"><span>Prowadzący: U. Błaszczak</span><span>Forma: projekt, WE-217</span></div><div class="subject-actions"><a href="subject-sieci-swiatlowodowe.html">Otwórz stronę przedmiotu</a></div></article>
+        <article id="narzedzia" class="subject"><h3>Narzędzia komputerowego wspomagania projektowania sieci telekomunikacyjnych</h3><div class="meta"><span>Prowadzący: M. Sadowski</span><span>Forma: wykład + pracownia, WE-101</span></div><div class="subject-actions"><a href="subject-narzedzia.html">Otwórz stronę przedmiotu</a></div></article>
+        <article id="bezpieczenstwo" class="subject"><h3>Bezpieczeństwo systemów informacyjnych</h3><div class="meta"><span>Prowadzący: A. Zankiewicz</span><span>Forma: wykład, WE-306</span></div><div class="subject-actions"><a href="subject-bezpieczenstwo.html">Otwórz stronę przedmiotu</a></div></article>
+        <article id="zarzadzanie" class="subject"><h3>Zarządzanie sieciami i usługami w systemach komunikacji elektronicznej</h3><div class="meta"><span>Prowadzący: A. Zankiewicz</span><span>Forma: wykład, WE-306</span></div><div class="subject-actions"><a href="subject-zarzadzanie.html">Otwórz stronę przedmiotu</a></div></article>
+        <article id="teleinformacyjne" class="subject"><h3>Projektowanie sieci teleinformacyjnych</h3><div class="meta"><span>Prowadzący: G. Gilewska</span><span>Forma: projekt, WE-105</span></div><div class="subject-actions"><a href="subject-teleinformacyjne.html">Otwórz stronę przedmiotu</a></div></article>
+        <article id="uklady-cyfrowe" class="subject"><h3>Programowalne układy cyfrowe 2</h3><div class="meta"><span>Prowadzący: W. Wojtkowski</span><span>Forma: laboratorium, WE-244</span></div><div class="subject-actions"><a href="subject-uklady-cyfrowe.html">Otwórz stronę przedmiotu</a></div></article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Strona startowa do materiałów HTML.</span>
+      <span>Logo: <a href="https://we.pb.edu.pl/">Wydział Elektryczny PB</a></span>
+    </footer>
+  </main>
+  <script>
+    const progressBar = document.getElementById('progressBar');
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .card, .exam-item, .resource-card, .photo-slot, .day, .subject').forEach((element, index) => {
+      element.classList.add('reveal');
+      element.style.transitionDelay = `${Math.min(index * 35, 260)}ms`;
+      observer.observe(element);
+    });
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  </script>
+</body>
+</html>

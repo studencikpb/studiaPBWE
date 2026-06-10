@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1536" viewBox="0 0 1536 1536">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .title { font: 700 30px Arial, Helvetica, sans-serif; fill: #111; }
+      .head { font: 700 20px Arial, Helvetica, sans-serif; }
+      .text { font: 18px Arial, Helvetica, sans-serif; fill: #111; }
+      .math { font: 20px "Times New Roman", serif; fill: #111; }
+      .small { font: 16px Arial, Helvetica, sans-serif; fill: #111; }
+      .note { font: 18px Arial, Helvetica, sans-serif; fill: #0f4076; }
+      .red { fill: #9b1c1c; stroke: #c62828; }
+      .blue { fill: #0d3c79; stroke: #2468a7; }
+      .green { fill: #12582b; stroke: #1d7f42; }
+      .gold { fill: #7a5b08; stroke: #b08716; }
+      .purple { fill: #6e2c91; stroke: #8e44ad; }
+      .box { fill: #fff; stroke-width: 1.5; rx: 5; }
+      .dash { fill: none; stroke-width: 1.7; stroke-dasharray: 7 7; rx: 12; }
+      .wire { fill: none; stroke: #111; stroke-width: 2; }
+      .node { fill: #111; }
+      .open { fill: #fff; stroke: #111; stroke-width: 2; }
+      .panel { fill: #fff; stroke: #8aa0b8; stroke-width: 1.4; }
+      .data { fill: #f7fbff; stroke: #244c7c; stroke-width: 1.5; rx: 8; }
+      .result { fill: #f7fbff; stroke: #1d4f86; stroke-width: 1.7; rx: 8; }
+      .tag { fill: #fff; stroke-width: 1.5; rx: 3; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1536" height="980"/>
+  <text x="16" y="38" class="title">ZADANIE - STRUKTURA Z RYSUNKU, LICZONA PRZEZ Q</text>
+
+  <rect x="15" y="62" width="435" height="160" class="data"/>
+  <text x="30" y="96" class="head" fill="#17365d">DANE:</text>
+  <text x="30" y="132" class="math">R = 0,8  =>  Q<tspan baseline-shift="sub" font-size="14">R</tspan> = 1 - R = 0,2</text>
+  <text x="30" y="168" class="math">Q = 0,15  =>  R<tspan baseline-shift="sub" font-size="14">Q</tspan> = 1 - Q = 0,85</text>
+  <text x="30" y="203" class="note">Liczymy bloki równoległe na Q, potem: R<tspan baseline-shift="sub" font-size="12">blok</tspan> = 1 - Q<tspan baseline-shift="sub" font-size="12">blok</tspan></text>
+
+  <!-- Main reliability structure -->
+  <circle cx="485" cy="142" r="7" class="open"/>
+  <path d="M492 142 H550" class="wire"/>
+  <circle cx="565" cy="142" r="6" class="node"/>
+
+  <rect x="548" y="16" width="252" height="232" class="dash" stroke="#c62828"/>
+  <text x="768" y="41" class="head" fill="#c62828">A</text>
+  <path d="M565 142 V46 M565 142 V221 M565 46 H594 M565 94 H594 M565 142 H594 M565 190 H594" class="wire"/>
+  <path d="M755 46 H755 V142 M755 94 V142 M755 142 V142 M755 190 V142 M678 46 H755 M678 94 H755 M678 142 H755 M678 190 H755" class="wire"/>
+  <rect x="594" y="29" width="84" height="34" class="box" stroke="#111"/>
+  <rect x="594" y="77" width="84" height="34" class="box" stroke="#111"/>
+  <rect x="594" y="125" width="84" height="34" class="box" stroke="#111"/>
+  <rect x="594" y="173" width="84" height="34" class="box" stroke="#111"/>
+  <text x="626" y="53" class="math">R<tspan baseline-shift="sub" font-size="14">1</tspan></text>
+  <text x="626" y="101" class="math">R<tspan baseline-shift="sub" font-size="14">2</tspan></text>
+  <text x="626" y="149" class="math">Q<tspan baseline-shift="sub" font-size="14">3</tspan></text>
+  <text x="626" y="197" class="math">Q<tspan baseline-shift="sub" font-size="14">4</tspan></text>
+  <circle cx="755" cy="142" r="6" class="node"/>
+
+  <path d="M755 142 H845" class="wire"/>
+  <circle cx="865" cy="142" r="6" class="node"/>
+  <rect x="845" y="58" width="195" height="162" class="dash" stroke="#2468a7"/>
+  <text x="1024" y="41" class="head" fill="#2468a7">B</text>
+  <path d="M865 142 V103 M865 142 V181 M865 103 H902 M865 181 H902" class="wire"/>
+  <path d="M976 103 H1016 V142 M976 181 H1016 V142" class="wire"/>
+  <rect x="902" y="85" width="74" height="36" class="box" stroke="#111"/>
+  <rect x="902" y="163" width="74" height="36" class="box" stroke="#111"/>
+  <text x="930" y="110" class="math">R<tspan baseline-shift="sub" font-size="14">5</tspan></text>
+  <text x="930" y="188" class="math">Q<tspan baseline-shift="sub" font-size="14">6</tspan></text>
+  <circle cx="1016" cy="142" r="6" class="node"/>
+
+  <path d="M1016 142 H1088" class="wire"/>
+  <circle cx="1095" cy="142" r="6" class="node"/>
+  <rect x="1076" y="58" width="222" height="184" class="dash" stroke="#1d7f42"/>
+  <text x="1246" y="41" class="head" fill="#1d7f42">C</text>
+  <path d="M1095 142 V81 M1095 142 V142 M1095 142 V203 M1095 81 H1142 M1095 142 H1142 M1095 203 H1142" class="wire"/>
+  <path d="M1220 81 H1276 V142 M1220 142 H1276 M1220 203 H1276 V142" class="wire"/>
+  <rect x="1142" y="63" width="78" height="36" class="box" stroke="#111"/>
+  <rect x="1142" y="124" width="78" height="36" class="box" stroke="#111"/>
+  <rect x="1142" y="185" width="78" height="36" class="box" stroke="#111"/>
+  <text x="1172" y="88" class="math">R<tspan baseline-shift="sub" font-size="14">7</tspan></text>
+  <text x="1172" y="149" class="math">R<tspan baseline-shift="sub" font-size="14">8</tspan></text>
+  <text x="1172" y="210" class="math">R<tspan baseline-shift="sub" font-size="14">9</tspan></text>
+  <circle cx="1276" cy="142" r="6" class="node"/>
+  <path d="M1276 142 H1348" class="wire"/>
+  <circle cx="1366" cy="142" r="7" class="open"/>
+
+  <path d="M504 142 V271 H865" class="wire"/>
+  <rect x="865" y="253" width="104" height="36" class="box" stroke="#111"/>
+  <text x="904" y="278" class="math">Q<tspan baseline-shift="sub" font-size="14">10</tspan></text>
+  <path d="M969 271 H1350 V142" class="wire"/>
+
+  <!-- Panels -->
+  <rect x="14" y="310" width="560" height="238" class="panel"/>
+  <rect x="20" y="321" width="38" height="36" class="tag" stroke="#c62828"/>
+  <text x="32" y="347" class="head" fill="#c62828">1.</text>
+  <text x="70" y="348" class="head" fill="#9b1c1c">Blok A: najpierw zawodność Q<tspan baseline-shift="sub" font-size="13">A</tspan></text>
+  <text x="60" y="396" class="math">Q<tspan baseline-shift="sub" font-size="14">A</tspan> = Q<tspan baseline-shift="sub" font-size="14">R1</tspan> · Q<tspan baseline-shift="sub" font-size="14">R2</tspan> · Q<tspan baseline-shift="sub" font-size="14">3</tspan> · Q<tspan baseline-shift="sub" font-size="14">4</tspan></text>
+  <text x="60" y="444" class="math">Q<tspan baseline-shift="sub" font-size="14">A</tspan> = 0,2 · 0,2 · 0,15 · 0,15</text>
+  <text x="60" y="492" class="math">Q<tspan baseline-shift="sub" font-size="14">A</tspan> = 0,0009</text>
+  <text x="305" y="492" class="math">R<tspan baseline-shift="sub" font-size="14">A</tspan> = 1 - Q<tspan baseline-shift="sub" font-size="14">A</tspan> = <tspan fill="#c62828" font-weight="700">0,9991</tspan></text>
+
+  <rect x="574" y="310" width="470" height="238" class="panel"/>
+  <rect x="585" y="321" width="38" height="36" class="tag" stroke="#2468a7"/>
+  <text x="597" y="347" class="head" fill="#2468a7">2.</text>
+  <text x="635" y="348" class="head" fill="#0d3c79">Blok B: najpierw zawodność Q<tspan baseline-shift="sub" font-size="13">B</tspan></text>
+  <text x="596" y="396" class="math">Q<tspan baseline-shift="sub" font-size="14">B</tspan> = Q<tspan baseline-shift="sub" font-size="14">R5</tspan> · Q<tspan baseline-shift="sub" font-size="14">6</tspan></text>
+  <text x="596" y="444" class="math">Q<tspan baseline-shift="sub" font-size="14">B</tspan> = 0,2 · 0,15</text>
+  <text x="596" y="492" class="math">Q<tspan baseline-shift="sub" font-size="14">B</tspan> = 0,03</text>
+  <text x="770" y="492" class="math">R<tspan baseline-shift="sub" font-size="14">B</tspan> = 1 - Q<tspan baseline-shift="sub" font-size="14">B</tspan> = <tspan fill="#2468a7" font-weight="700">0,97</tspan></text>
+
+  <rect x="1044" y="310" width="478" height="238" class="panel"/>
+  <rect x="1055" y="321" width="38" height="36" class="tag" stroke="#1d7f42"/>
+  <text x="1067" y="347" class="head" fill="#1d7f42">3.</text>
+  <text x="1105" y="348" class="head" fill="#12582b">Blok C: najpierw zawodność Q<tspan baseline-shift="sub" font-size="13">C</tspan></text>
+  <text x="1070" y="396" class="math">Q<tspan baseline-shift="sub" font-size="14">C</tspan> = Q<tspan baseline-shift="sub" font-size="14">R7</tspan> · Q<tspan baseline-shift="sub" font-size="14">R8</tspan> · Q<tspan baseline-shift="sub" font-size="14">R9</tspan></text>
+  <text x="1070" y="444" class="math">Q<tspan baseline-shift="sub" font-size="14">C</tspan> = 0,2 · 0,2 · 0,2</text>
+  <text x="1070" y="492" class="math">Q<tspan baseline-shift="sub" font-size="14">C</tspan> = 0,008</text>
+  <text x="1260" y="492" class="math">R<tspan baseline-shift="sub" font-size="14">C</tspan> = 1 - Q<tspan baseline-shift="sub" font-size="14">C</tspan> = <tspan fill="#1d7f42" font-weight="700">0,992</tspan></text>
+
+  <rect x="14" y="548" width="1508" height="164" class="panel"/>
+  <rect x="20" y="559" width="38" height="36" class="tag" stroke="#8e44ad"/>
+  <text x="32" y="585" class="head" fill="#8e44ad">4.</text>
+  <text x="70" y="586" class="head" fill="#6e2c91">Górna gałąź A - B - C: bloki są szeregowo, więc mnożymy ich niezawodności</text>
+  <text x="70" y="635" class="math">R<tspan baseline-shift="sub" font-size="14">GÓRA</tspan> = (1 - Q<tspan baseline-shift="sub" font-size="14">A</tspan>) · (1 - Q<tspan baseline-shift="sub" font-size="14">B</tspan>) · (1 - Q<tspan baseline-shift="sub" font-size="14">C</tspan>)</text>
+  <text x="70" y="680" class="math">R<tspan baseline-shift="sub" font-size="14">GÓRA</tspan> = (1 - 0,0009) · (1 - 0,03) · (1 - 0,008) = 0,9991 · 0,97 · 0,992 = <tspan fill="#6e2c91" font-weight="700">0,96137</tspan></text>
+  <circle cx="870" cy="631" r="7" class="open"/>
+  <path d="M877 631 H960" class="wire"/>
+  <rect x="960" y="597" width="92" height="68" class="box red"/>
+  <text x="988" y="625" class="math" fill="#c62828">R<tspan baseline-shift="sub" font-size="14">A</tspan></text>
+  <text x="980" y="651" class="small" fill="#c62828">0,9991</text>
+  <path d="M1052 631 H1132" class="wire"/>
+  <rect x="1132" y="597" width="92" height="68" class="box blue"/>
+  <text x="1160" y="625" class="math" fill="#2468a7">R<tspan baseline-shift="sub" font-size="14">B</tspan></text>
+  <text x="1154" y="651" class="small" fill="#2468a7">0,97</text>
+  <path d="M1224 631 H1304" class="wire"/>
+  <rect x="1304" y="597" width="92" height="68" class="box green"/>
+  <text x="1332" y="625" class="math" fill="#1d7f42">R<tspan baseline-shift="sub" font-size="14">C</tspan></text>
+  <text x="1328" y="651" class="small" fill="#1d7f42">0,992</text>
+  <path d="M1396 631 H1465" class="wire"/>
+  <circle cx="1472" cy="631" r="7" class="open"/>
+
+  <rect x="14" y="712" width="1508" height="104" class="panel"/>
+  <rect x="20" y="724" width="38" height="36" class="tag" stroke="#b08716"/>
+  <text x="32" y="750" class="head" fill="#b08716">5.</text>
+  <text x="70" y="751" class="head" fill="#7a5b08">Dolna gałąź: tylko element Q<tspan baseline-shift="sub" font-size="13">10</tspan></text>
+  <text x="70" y="794" class="math">Q<tspan baseline-shift="sub" font-size="14">10</tspan> = 0,15  =>  R<tspan baseline-shift="sub" font-size="14">10</tspan> = 1 - Q<tspan baseline-shift="sub" font-size="14">10</tspan> = <tspan fill="#b08716" font-weight="700">0,85</tspan></text>
+  <circle cx="620" cy="764" r="7" class="open"/>
+  <path d="M627 764 H910" class="wire"/>
+  <rect x="910" y="731" width="96" height="66" class="box gold"/>
+  <text x="936" y="758" class="math" fill="#b08716">R<tspan baseline-shift="sub" font-size="14">10</tspan></text>
+  <text x="936" y="784" class="small" fill="#b08716">0,85</text>
+  <path d="M1006 764 H1340" class="wire"/>
+  <circle cx="1347" cy="764" r="7" class="open"/>
+
+  <rect x="14" y="816" width="1508" height="150" class="panel"/>
+  <rect x="20" y="828" width="38" height="36" class="tag" stroke="#2468a7"/>
+  <text x="32" y="854" class="head" fill="#2468a7">6.</text>
+  <text x="70" y="855" class="head" fill="#0d3c79">Obie gałęzie są równolegle: liczymy zawodność obu gałęzi i odejmujemy od 1</text>
+  <text x="70" y="899" class="math">R = 1 - (1 - R<tspan baseline-shift="sub" font-size="14">GÓRA</tspan>) · (1 - R<tspan baseline-shift="sub" font-size="14">10</tspan>)</text>
+  <text x="70" y="939" class="math">R = 1 - (1 - 0,96137) · (1 - 0,85) = 1 - 0,03863 · 0,15 = <tspan fill="#0d3c79" font-weight="700">0,9942055</tspan></text>
+
+  <rect x="702" y="862" width="330" height="86" class="result"/>
+  <text x="812" y="893" class="head" fill="#0d3c79">WYNIK KOŃCOWY:</text>
+  <text x="720" y="929" class="math" font-size="28">R ≈ <tspan fill="#0d3c79" font-weight="700">0,9942</tspan>  =>  <tspan fill="#0d3c79" font-weight="700">99,42%</tspan></text>
+
+  <rect x="1118" y="860" width="342" height="88" class="dash" stroke="#1d4f86"/>
+  <text x="1218" y="893" class="head" fill="#0d3c79">PODSUMOWANIE:</text>
+  <text x="1144" y="925" class="text">Każdy blok A/B/C: Q<tspan baseline-shift="sub" font-size="12">blok</tspan>, potem 1 - Q<tspan baseline-shift="sub" font-size="12">blok</tspan>;</text>
+  <text x="1144" y="948" class="text">bloki w szeregu mnożymy.</text>
+</svg>

@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Struktura niezawodności liczona przez Q</title>
+  <style>
+    :root {
+      --ink: #152033;
+      --muted: #667085;
+      --line: #c7d2df;
+      --paper: #ffffff;
+      --page: #eef3f8;
+      --blue: #1f67a8;
+      --blue-soft: #eaf4ff;
+      --red: #c43b3b;
+      --red-soft: #fff0f0;
+      --green: #26845a;
+      --green-soft: #eefaf4;
+      --gold: #a87a12;
+      --gold-soft: #fff7df;
+      --violet: #7a4bb3;
+      --violet-soft: #f6f0ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f6f9fc 0%, var(--page) 100%);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 24px auto;
+      background: var(--paper);
+      border: 1px solid #d8e1ec;
+      box-shadow: 0 18px 50px rgba(28, 45, 70, 0.12);
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 24px;
+      align-items: start;
+      padding: 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      grid-column: 1 / -1;
+      margin: 0;
+      color: #101828;
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .data {
+      border: 2px solid #2d5b8e;
+      background: #f8fbff;
+      padding: 18px;
+      border-radius: 8px;
+    }
+
+    .data h2,
+    .section-title {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .data h2 {
+      color: #173f6f;
+      margin-bottom: 14px;
+    }
+
+    .formula {
+      margin: 9px 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 21px;
+      line-height: 1.35;
+      white-space: nowrap;
+    }
+
+    .formula strong {
+      color: var(--blue);
+    }
+
+    .hint {
+      margin: 14px 0 0;
+      color: #174a82;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .diagram-wrap {
+      min-width: 0;
+    }
+
+    .diagram {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 820 / 260;
+      border: 1px solid #dce5ee;
+      background: #fff;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .step {
+      min-height: 238px;
+      padding: 22px;
+      border-right: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .step:nth-child(3n) {
+      border-right: 0;
+    }
+
+    .wide {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: center;
+      padding: 22px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .wide.compact {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+
+    .step-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .num {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 38px;
+      width: 38px;
+      height: 38px;
+      border: 2px solid currentColor;
+      border-radius: 4px;
+      background: #fff;
+      font-weight: 800;
+    }
+
+    .red-text { color: #a82424; }
+    .blue-text { color: #164e86; }
+    .green-text { color: #17633d; }
+    .gold-text { color: #775608; }
+    .violet-text { color: #65339b; }
+
+    .math-lines {
+      display: grid;
+      gap: 12px;
+    }
+
+    .math-line {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 21px;
+      line-height: 1.35;
+      color: #101828;
+    }
+
+    .value-red { color: var(--red); font-weight: 700; }
+    .value-blue { color: var(--blue); font-weight: 700; }
+    .value-green { color: var(--green); font-weight: 700; }
+    .value-gold { color: var(--gold); font-weight: 700; }
+    .value-violet { color: var(--violet); font-weight: 700; }
+
+    .mini-flow {
+      width: 100%;
+      min-height: 120px;
+    }
+
+    .final {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      padding: 22px;
+      background: linear-gradient(90deg, #f8fbff, #ffffff);
+    }
+
+    .result {
+      align-self: center;
+      padding: 22px;
+      border: 2px solid #1f67a8;
+      border-radius: 8px;
+      background: #f7fbff;
+      text-align: center;
+    }
+
+    .result-label {
+      margin-bottom: 14px;
+      color: #164e86;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .result .formula {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    sub {
+      font-size: 65%;
+      line-height: 0;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        width: min(100% - 18px, 760px);
+        margin: 9px auto;
+      }
+
+      header,
+      .calc-grid,
+      .wide,
+      .wide.compact,
+      .final {
+        grid-template-columns: 1fr;
+      }
+
+      .step {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .formula,
+      .math-line {
+        white-space: normal;
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Zadanie - struktura z rysunku liczona przez Q</h1>
+
+      <section class="data" aria-label="Dane">
+        <h2>DANE</h2>
+        <p class="formula">R = 0,8 &rArr; Q<sub>R</sub> = 1 - R = <strong>0,2</strong></p>
+        <p class="formula">Q = 0,15 &rArr; R<sub>Q</sub> = 1 - Q = <strong>0,85</strong></p>
+        <p class="hint">Zasada: połączenia równoległe liczymy przez Q, a połączenia szeregowe przez R.</p>
+      </section>
+
+      <section class="diagram-wrap" aria-label="Schemat układu">
+        <svg class="diagram" viewBox="0 0 820 260" role="img" aria-label="Schemat blokowy A B C oraz dolna gałąź Q10">
+          <defs>
+            <style>
+              .w { fill: none; stroke: #111827; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+              .n { fill: #111827; }
+              .o { fill: #fff; stroke: #111827; stroke-width: 3; }
+              .el { fill: #fff; stroke: #111827; stroke-width: 2.4; rx: 5; }
+              .dash-red { fill: none; stroke: #c43b3b; stroke-width: 2.4; stroke-dasharray: 8 8; rx: 12; }
+              .dash-blue { fill: none; stroke: #1f67a8; stroke-width: 2.4; stroke-dasharray: 8 8; rx: 12; }
+              .dash-green { fill: none; stroke: #26845a; stroke-width: 2.4; stroke-dasharray: 8 8; rx: 12; }
+              .lab { font: 700 19px Arial, Helvetica, sans-serif; }
+              .sym { font: 22px Georgia, "Times New Roman", serif; }
+            </style>
+          </defs>
+
+          <circle class="o" cx="20" cy="106" r="8"/>
+          <path class="w" d="M28 106H72"/>
+          <circle class="n" cx="72" cy="106" r="7"/>
+
+          <rect class="dash-red" x="58" y="18" width="210" height="178"/>
+          <text class="lab" x="238" y="43" fill="#c43b3b">A</text>
+          <path class="w" d="M72 106V45M72 106V167M72 45H104M72 86H104M72 126H104M72 167H104"/>
+          <path class="w" d="M176 45H222V106M176 86H222M176 126H222M176 167H222V106"/>
+          <rect class="el" x="104" y="29" width="72" height="32"/>
+          <rect class="el" x="104" y="70" width="72" height="32"/>
+          <rect class="el" x="104" y="110" width="72" height="32"/>
+          <rect class="el" x="104" y="151" width="72" height="32"/>
+          <text class="sym" x="132" y="52">R<tspan baseline-shift="sub" font-size="13">1</tspan></text>
+          <text class="sym" x="132" y="93">R<tspan baseline-shift="sub" font-size="13">2</tspan></text>
+          <text class="sym" x="132" y="133">Q<tspan baseline-shift="sub" font-size="13">3</tspan></text>
+          <text class="sym" x="132" y="174">Q<tspan baseline-shift="sub" font-size="13">4</tspan></text>
+          <circle class="n" cx="222" cy="106" r="7"/>
+
+          <path class="w" d="M222 106H312"/>
+          <circle class="n" cx="312" cy="106" r="7"/>
+          <rect class="dash-blue" x="294" y="50" width="170" height="112"/>
+          <text class="lab" x="444" y="40" fill="#1f67a8">B</text>
+          <path class="w" d="M312 106V80M312 106V132M312 80H346M312 132H346"/>
+          <path class="w" d="M416 80H442V106M416 132H442V106"/>
+          <rect class="el" x="346" y="64" width="70" height="32"/>
+          <rect class="el" x="346" y="116" width="70" height="32"/>
+          <text class="sym" x="373" y="87">R<tspan baseline-shift="sub" font-size="13">5</tspan></text>
+          <text class="sym" x="373" y="139">Q<tspan baseline-shift="sub" font-size="13">6</tspan></text>
+          <circle class="n" cx="442" cy="106" r="7"/>
+
+          <path class="w" d="M442 106H522"/>
+          <circle class="n" cx="522" cy="106" r="7"/>
+          <rect class="dash-green" x="505" y="42" width="202" height="136"/>
+          <text class="lab" x="666" y="40" fill="#26845a">C</text>
+          <path class="w" d="M522 106V65M522 106H558M522 106V147M522 65H558M522 147H558"/>
+          <path class="w" d="M628 65H682V106M628 106H682M628 147H682V106"/>
+          <rect class="el" x="558" y="49" width="70" height="32"/>
+          <rect class="el" x="558" y="90" width="70" height="32"/>
+          <rect class="el" x="558" y="131" width="70" height="32"/>
+          <text class="sym" x="585" y="72">R<tspan baseline-shift="sub" font-size="13">7</tspan></text>
+          <text class="sym" x="585" y="113">R<tspan baseline-shift="sub" font-size="13">8</tspan></text>
+          <text class="sym" x="585" y="154">R<tspan baseline-shift="sub" font-size="13">9</tspan></text>
+          <circle class="n" cx="682" cy="106" r="7"/>
+          <path class="w" d="M682 106H768"/>
+          <circle class="o" cx="780" cy="106" r="8"/>
+
+          <path class="w" d="M38 106V218H348"/>
+          <rect class="el" x="348" y="202" width="86" height="32"/>
+          <text class="sym" x="378" y="225">Q<tspan baseline-shift="sub" font-size="13">10</tspan></text>
+          <path class="w" d="M434 218H740V106"/>
+        </svg>
+      </section>
+    </header>
+
+    <section class="calc-grid">
+      <article class="step">
+        <div class="step-head red-text"><span class="num">1.</span> Blok A: równolegle po Q<sub>A</sub></div>
+        <div class="math-lines">
+          <div class="math-line">Q<sub>A</sub> = Q<sub>R1</sub> · Q<sub>R2</sub> · Q<sub>3</sub> · Q<sub>4</sub></div>
+          <div class="math-line">Q<sub>A</sub> = 0,2 · 0,2 · 0,15 · 0,15</div>
+          <div class="math-line">Q<sub>A</sub> = 0,0009</div>
+          <div class="math-line">R<sub>A</sub> = 1 - Q<sub>A</sub> = <span class="value-red">0,9991</span></div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-head blue-text"><span class="num">2.</span> Blok B: równolegle po Q<sub>B</sub></div>
+        <div class="math-lines">
+          <div class="math-line">Q<sub>B</sub> = Q<sub>R5</sub> · Q<sub>6</sub></div>
+          <div class="math-line">Q<sub>B</sub> = 0,2 · 0,15</div>
+          <div class="math-line">Q<sub>B</sub> = 0,03</div>
+          <div class="math-line">R<sub>B</sub> = 1 - Q<sub>B</sub> = <span class="value-blue">0,97</span></div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-head green-text"><span class="num">3.</span> Blok C: równolegle po Q<sub>C</sub></div>
+        <div class="math-lines">
+          <div class="math-line">Q<sub>C</sub> = Q<sub>R7</sub> · Q<sub>R8</sub> · Q<sub>R9</sub></div>
+          <div class="math-line">Q<sub>C</sub> = 0,2 · 0,2 · 0,2</div>
+          <div class="math-line">Q<sub>C</sub> = 0,008</div>
+          <div class="math-line">R<sub>C</sub> = 1 - Q<sub>C</sub> = <span class="value-green">0,992</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="wide">
+      <div>
+        <div class="step-head violet-text"><span class="num">4.</span> Górna gałąź: szeregowo po R</div>
+        <div class="math-lines">
+          <div class="math-line">R<sub>GÓRA</sub> = R<sub>A</sub> · R<sub>B</sub> · R<sub>C</sub></div>
+          <div class="math-line">R<sub>GÓRA</sub> = 0,9991 · 0,97 · 0,992</div>
+          <div class="math-line">R<sub>GÓRA</sub> = <span class="value-violet">0,96137</span></div>
+          <div class="math-line">Q<sub>GÓRA</sub> = 1 - R<sub>GÓRA</sub> = <span class="value-violet">0,03863</span></div>
+        </div>
+      </div>
+      <svg class="mini-flow" viewBox="0 0 430 130" aria-label="Bloki A B C połączone szeregowo">
+        <path d="M18 65H92M162 65H232M302 65H330M400 65H410" fill="none" stroke="#111827" stroke-width="3"/>
+        <circle cx="18" cy="65" r="8" fill="#fff" stroke="#111827" stroke-width="3"/>
+        <circle cx="410" cy="65" r="8" fill="#fff" stroke="#111827" stroke-width="3"/>
+        <rect x="92" y="34" width="70" height="62" fill="#fff7f7" stroke="#c43b3b" stroke-width="2" rx="5"/>
+        <rect x="232" y="34" width="70" height="62" fill="#f2f8ff" stroke="#1f67a8" stroke-width="2" rx="5"/>
+        <rect x="330" y="34" width="70" height="62" fill="#f0fbf5" stroke="#26845a" stroke-width="2" rx="5"/>
+        <text x="116" y="60" font-family="Georgia, serif" font-size="22">R<tspan baseline-shift="sub" font-size="13">A</tspan></text>
+        <text x="102" y="82" font-family="Arial, sans-serif" font-size="15">0,9991</text>
+        <text x="256" y="60" font-family="Georgia, serif" font-size="22">R<tspan baseline-shift="sub" font-size="13">B</tspan></text>
+        <text x="249" y="82" font-family="Arial, sans-serif" font-size="15">0,97</text>
+        <text x="354" y="60" font-family="Georgia, serif" font-size="22">R<tspan baseline-shift="sub" font-size="13">C</tspan></text>
+        <text x="344" y="82" font-family="Arial, sans-serif" font-size="15">0,992</text>
+      </svg>
+    </section>
+
+    <section class="wide compact">
+      <div>
+        <div class="step-head gold-text"><span class="num">5.</span> Dolna gałąź Q<sub>10</sub></div>
+        <div class="math-line">Q<sub>10</sub> = 0,15 &rArr; R<sub>10</sub> = 1 - Q<sub>10</sub> = <span class="value-gold">0,85</span></div>
+      </div>
+      <svg class="mini-flow" viewBox="0 0 520 110" aria-label="Dolna gałąź z elementem Q10">
+        <path d="M20 55H225M295 55H500" fill="none" stroke="#111827" stroke-width="3"/>
+        <circle cx="20" cy="55" r="8" fill="#fff" stroke="#111827" stroke-width="3"/>
+        <circle cx="500" cy="55" r="8" fill="#fff" stroke="#111827" stroke-width="3"/>
+        <rect x="225" y="24" width="70" height="62" fill="#fff9e8" stroke="#a87a12" stroke-width="2" rx="5"/>
+        <text x="247" y="50" font-family="Georgia, serif" font-size="22">R<tspan baseline-shift="sub" font-size="13">10</tspan></text>
+        <text x="247" y="73" font-family="Arial, sans-serif" font-size="15">0,85</text>
+      </svg>
+    </section>
+
+    <section class="final">
+      <div>
+        <div class="step-head blue-text"><span class="num">6.</span> Gałęzie równolegle: po Q</div>
+        <div class="math-lines">
+          <div class="math-line">Q<sub>UKŁADU</sub> = Q<sub>GÓRA</sub> · Q<sub>10</sub></div>
+          <div class="math-line">Q<sub>UKŁADU</sub> = 0,03863 · 0,15 = <span class="value-blue">0,0057945</span></div>
+          <div class="math-line">R<sub>UKŁADU</sub> = 1 - Q<sub>UKŁADU</sub> = 1 - 0,0057945 = <span class="value-blue">0,9942055</span></div>
+        </div>
+      </div>
+
+      <aside class="result">
+        <div class="result-label">WYNIK KOŃCOWY</div>
+        <p class="formula">R ≈ <strong>0,9942</strong> &rArr; <strong>99,42%</strong></p>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>
