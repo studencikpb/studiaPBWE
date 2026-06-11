@@ -357,6 +357,7 @@
     .exams,
     .investment-teaser,
     .data-center-teaser,
+    .smart-home-teaser,
     .resources,
     .gallery,
     .schedule,
@@ -447,7 +448,8 @@
     }
 
     .feature-grid .investment-teaser,
-    .feature-grid .data-center-teaser {
+    .feature-grid .data-center-teaser,
+    .feature-grid .smart-home-teaser {
       margin-top: 0;
     }
 
@@ -489,7 +491,8 @@
     }
 
     .investment-chart-logo,
-    .data-center-logo {
+    .data-center-logo,
+    .smart-home-logo {
       width: min(220px, 100%);
       height: auto;
       filter: drop-shadow(0 22px 34px rgba(0,0,0,0.28));
@@ -503,7 +506,16 @@
       color: #fff;
     }
 
-    .data-center-card {
+    .smart-home-teaser {
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(16, 24, 39, 0.97), rgba(14, 116, 144, 0.88)),
+        radial-gradient(circle at 82% 12%, rgba(250,204,21,0.28), transparent 34%);
+      color: #fff;
+    }
+
+    .data-center-card,
+    .smart-home-card {
       display: grid;
       grid-template-columns: 1fr 220px;
       gap: 24px;
@@ -513,7 +525,8 @@
       text-decoration: none;
     }
 
-    .data-center-card h2 {
+    .data-center-card h2,
+    .smart-home-card h2 {
       margin: 0;
       color: #fff;
       font-size: clamp(30px, 4.6vw, 52px);
@@ -521,7 +534,8 @@
       letter-spacing: 0;
     }
 
-    .data-center-card p {
+    .data-center-card p,
+    .smart-home-card p {
       max-width: 690px;
       margin: 16px 0 0;
       color: #d8ecff;
@@ -529,7 +543,8 @@
       line-height: 1.5;
     }
 
-    .data-center-card .open {
+    .data-center-card .open,
+    .smart-home-card .open {
       display: inline-flex;
       width: fit-content;
       margin-top: 24px;
@@ -538,6 +553,11 @@
       color: #07192f;
       background: #e7f6ff;
       font-weight: 900;
+    }
+
+    .home-pulse {
+      stroke-dasharray: 16 150;
+      animation: rackPulse 2.2s linear infinite;
     }
 
     .server-light {
@@ -1017,6 +1037,7 @@
       .exam-grid,
       .investment-card,
       .data-center-card,
+      .smart-home-card,
       .feature-grid,
       .resource-grid,
       .photo-grid,
@@ -1132,10 +1153,28 @@
             </svg>
           </article>
 
+          <article class="hero-slide">
+            <h2>Inteligentny dom z Marcinem</h2>
+            <p>Projektowanie automatyki domu: oświetlenie, rolety, audio, kino, alarm, HVAC, sceny i wygodne sterowanie z aplikacji.</p>
+            <a class="slide-link" href="smart-home-marcin.html">Otwórz smart home</a>
+            <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowany inteligentny dom">
+              <rect x="56" y="50" width="508" height="244" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(231,246,255,0.26)" stroke-width="2"/>
+              <path d="M132 178L310 74L488 178" fill="none" stroke="#e7f6ff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M170 176V268H450V176" fill="rgba(231,246,255,0.18)" stroke="#9df6ff" stroke-width="8" stroke-linejoin="round"/>
+              <rect x="208" y="206" width="58" height="62" rx="6" fill="#07192f" opacity="0.82"/>
+              <rect x="330" y="204" width="74" height="42" rx="8" fill="#e7f6ff"/>
+              <circle class="server-light" cx="232" cy="146" r="12" fill="#facc15"/>
+              <circle class="server-light delay-a" cx="384" cy="146" r="10" fill="#6ff3ff"/>
+              <path class="home-pulse" d="M114 290C186 246 242 286 310 238C376 192 430 246 508 198" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+              <text class="fiber-label" x="94" y="318">LIGHT · AUDIO · HVAC · SECURITY</text>
+            </svg>
+          </article>
+
           <div class="slider-dots" aria-label="Wybór slajdu">
             <button class="slider-dot active" type="button" aria-label="Światłowodowy przepływ wiedzy"></button>
             <button class="slider-dot" type="button" aria-label="Inwestuj z Szymonem"></button>
             <button class="slider-dot" type="button" aria-label="Dwa Huberty o Data center"></button>
+            <button class="slider-dot" type="button" aria-label="Inteligentny dom z Marcinem"></button>
           </div>
         </div>
       </aside>
@@ -1308,6 +1347,28 @@
             <circle class="server-light" cx="158" cy="144" r="5" fill="#22c55e"/>
             <path class="data-pulse" d="M36 181C78 184 92 178 116 171C144 163 164 171 224 180" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
             <text x="54" y="34" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="13" font-weight="900">AI CLOUD CORE</text>
+          </svg>
+        </a>
+      </section>
+
+      <section id="smart-home" class="smart-home-teaser reveal">
+        <a class="smart-home-card" href="smart-home-marcin.html">
+          <div>
+            <p class="eyebrow">Savant · Control4 · Lutron</p>
+            <h2>Buduj inteligentny dom z Marcinem!</h2>
+            <p>Od projektu instalacji po sceny światła, rolety, multiroom audio, kino domowe, klimat, alarm i sterowanie z jednej aplikacji.</p>
+            <span class="open">Otwórz smart home</span>
+          </div>
+          <svg class="smart-home-logo" viewBox="0 0 260 210" role="img" aria-label="Ikona inteligentnego domu">
+            <rect x="18" y="18" width="224" height="174" rx="22" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+            <path d="M54 108L130 58L206 108" fill="none" stroke="#e7f6ff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M74 108V166H186V108" fill="rgba(231,246,255,0.16)" stroke="#6ff3ff" stroke-width="6" stroke-linejoin="round"/>
+            <rect x="92" y="126" width="30" height="40" rx="5" fill="#07192f" opacity="0.82"/>
+            <rect x="140" y="124" width="32" height="26" rx="6" fill="#e7f6ff"/>
+            <circle class="server-light" cx="104" cy="92" r="8" fill="#facc15"/>
+            <circle class="server-light delay-a" cx="156" cy="92" r="8" fill="#22c55e"/>
+            <path class="home-pulse" d="M48 180C88 154 120 176 154 148C184 122 202 142 224 118" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+            <text x="48" y="38" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="13" font-weight="900">SMART HOME CORE</text>
           </svg>
         </a>
       </section>
