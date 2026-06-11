@@ -12,7 +12,7 @@ const SUBJECTS = {
     materials: [
       ['Układ z blokami A-B-C', 'Przykład liczenia struktury z gałęzią górną i dolną.', 'reliability_q_logic.html'],
       ['Dekompozycja mostka', 'Metoda R oraz Q, zwarcie i rozwarcie elementów.', 'bridge_decomposition_guide.html'],
-      ['Dekompozycja tylko przez R', 'Pełne liczenie krok po kroku bez symbolu Q.', 'bridge_decomposition_R_only.html']
+      ['Dekompozycja tylko przez R', 'Pełne liczenie krok po kroku bez symbolu Q.', 'bridge_decomposition_R_only.html'],
       ['Test — niezawodność i diagnostyka', 'Interaktywny test 150 pytań z losową kolejnością, sprawdzaniem odpowiedzi i wynikiem.', 'materials/niezawodnoscd/test_niezawodnosc_diagnostyka_150.html']
     ]
   },
