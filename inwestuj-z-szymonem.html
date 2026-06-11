@@ -583,6 +583,70 @@
       line-height: 1.35;
     }
 
+    .sector-terminal {
+      margin-top: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.2);
+    }
+
+    .sector-terminal .terminal-top {
+      background: linear-gradient(135deg, #fff, #eef7ff);
+    }
+
+    .sector-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid #edf2f7;
+      background: #fbfdff;
+    }
+
+    .sector-tab {
+      min-height: 54px;
+      padding: 10px 8px;
+      border: 1px solid #d8e2ee;
+      border-radius: 12px;
+      color: #0b1d34;
+      background: #fff;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .sector-tab:hover,
+    .sector-tab.active {
+      transform: translateY(-2px);
+      border-color: #6ff3ff;
+      box-shadow: 0 12px 24px rgba(111,243,255,0.2);
+    }
+
+    .sector-tab span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .sector-chart-frame {
+      height: min(58vh, 560px);
+      min-height: 440px;
+      background: #f8fafc;
+    }
+
+    .sector-chart-frame iframe {
+      display: block !important;
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 440px !important;
+      border: 0 !important;
+    }
+
     .footer {
       display: flex;
       justify-content: space-between;
@@ -647,6 +711,10 @@
       }
 
       .asset-tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .sector-tabs {
         grid-template-columns: repeat(2, 1fr);
       }
 
@@ -809,6 +877,24 @@
           </ul>
         </div>
       </div>
+      <div class="sector-terminal">
+        <div class="terminal-top">
+          <div class="terminal-title">
+            <strong id="activeSectorName">Rocket Lab</strong>
+            <span id="activeSectorSymbol">NASDAQ:RKLB</span>
+          </div>
+          <span class="terminal-badge">Porównanie sektora · to nie jest SpaceX</span>
+        </div>
+        <div class="sector-tabs" aria-label="Porównawcze instrumenty sektora kosmicznego">
+          <button class="sector-tab active" type="button" data-symbol="NASDAQ:RKLB" data-name="Rocket Lab">RKLB<span>rakiety</span></button>
+          <button class="sector-tab" type="button" data-symbol="NYSE:LMT" data-name="Lockheed Martin">LMT<span>obronność</span></button>
+          <button class="sector-tab" type="button" data-symbol="NYSE:BA" data-name="Boeing">BA<span>aerospace</span></button>
+          <button class="sector-tab" type="button" data-symbol="BATS:ARKX" data-name="ARK Space ETF">ARKX<span>ETF space</span></button>
+          <button class="sector-tab" type="button" data-symbol="NASDAQ:IRDM" data-name="Iridium">IRDM<span>satelity</span></button>
+        </div>
+        <div id="sectorChart" class="sector-chart-frame tradingview-widget-container"></div>
+        <div class="chart-note">Te wykresy pokazują tylko klimat sektora kosmicznego i aerospace. SpaceX pozostaje prywatną spółką, więc do czasu IPO nie ma normalnego publicznego wykresu akcji.</div>
+      </div>
     </section>
 
     <section class="section reveal">
@@ -895,6 +981,46 @@
       renderTradingViewWidget(active.dataset.symbol, active.dataset.name);
     }
 
+    function renderSectorWidget(symbol, name) {
+      const container = document.getElementById('sectorChart');
+      document.getElementById('activeSectorName').textContent = name;
+      document.getElementById('activeSectorSymbol').textContent = symbol;
+      container.innerHTML = '';
+      const script = document.createElement('script');
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+      script.async = true;
+      script.text = JSON.stringify({
+        autosize: true,
+        symbol,
+        interval: 'D',
+        timezone: 'Europe/Warsaw',
+        theme: 'light',
+        style: '1',
+        locale: 'pl',
+        allow_symbol_change: true,
+        calendar: false,
+        withdateranges: true,
+        hide_side_toolbar: true,
+        details: true,
+        hotlist: false,
+        support_host: 'https://www.tradingview.com'
+      });
+      container.appendChild(script);
+    }
+
+    function setupSectorTabs() {
+      const tabs = document.querySelectorAll('.sector-tab');
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((item) => item.classList.remove('active'));
+          tab.classList.add('active');
+          renderSectorWidget(tab.dataset.symbol, tab.dataset.name);
+        });
+      });
+      const active = document.querySelector('.sector-tab.active');
+      renderSectorWidget(active.dataset.symbol, active.dataset.name);
+    }
+
     async function loadCoinGecko() {
       const tickers = document.querySelectorAll('#cryptoTickers .ticker');
       try {
@@ -927,6 +1053,7 @@
     window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
     setupChartTabs();
+    setupSectorTabs();
     loadCoinGecko();
   </script>
 </body>
