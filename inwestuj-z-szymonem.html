@@ -1,0 +1,1244 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#005baa">
+  <title>Inwestuj z Szymonem - panel rynkowy</title>
+  <style>
+    :root {
+      --accent: #facc15;
+      --accent-2: #6ff3ff;
+      --bg-a: #07192f;
+      --bg-b: #0f3d61;
+      --ink: #111827;
+      --muted: #68788a;
+      --paper: rgba(255,255,255,0.94);
+      --line: rgba(255,255,255,0.22);
+      --shadow: 0 28px 70px rgba(3, 16, 34, 0.26);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 12%, rgba(250,204,21,0.24), transparent 30%),
+        radial-gradient(circle at 88% 8%, rgba(111,243,255,0.28), transparent 34%),
+        linear-gradient(135deg, var(--bg-a), var(--bg-b));
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.15;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.35) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.35) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(180deg, #000 0%, transparent 86%);
+    }
+
+    .progress {
+      position: fixed;
+      z-index: 30;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 20px rgba(111,243,255,0.72);
+    }
+
+    .shell {
+      position: relative;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 26px 0 44px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 0 34px;
+      color: #fff;
+    }
+
+    .topbar img {
+      display: block;
+      width: min(270px, 58vw);
+      height: auto;
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .market-card,
+    .section {
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-card {
+      padding: clamp(26px, 4vw, 46px);
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: #a16207;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #08172b;
+      font-size: clamp(38px, 5.8vw, 72px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: #42536a;
+      font-size: 19px;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #07192f;
+      background: var(--accent);
+      text-decoration: none;
+      font-weight: 900;
+      box-shadow: 0 12px 26px rgba(250,204,21,0.28);
+    }
+
+    .button.secondary {
+      color: #0d4f88;
+      background: #f4faff;
+      box-shadow: none;
+    }
+
+    .market-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      color: #fff;
+      background:
+        linear-gradient(145deg, rgba(7,25,47,0.95), rgba(9,60,90,0.92)),
+        radial-gradient(circle at 30% 18%, rgba(250,204,21,0.22), transparent 40%);
+    }
+
+    .market-card h2,
+    .market-card p,
+    .market-svg {
+      position: relative;
+      z-index: 1;
+    }
+
+    .market-card h2 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+    }
+
+    .market-card p {
+      color: #d8ecff;
+      line-height: 1.5;
+    }
+
+    .market-svg {
+      width: 100%;
+      height: auto;
+      margin-top: 14px;
+      filter: drop-shadow(0 18px 28px rgba(0,0,0,0.26));
+    }
+
+    .market-line {
+      fill: none;
+      stroke: url(#marketGradient);
+      stroke-width: 9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 720;
+      animation: drawLine 3.2s ease-in-out infinite;
+    }
+
+    .disclaimer {
+      margin-top: 24px;
+      padding: 18px;
+      border: 1px solid rgba(250,204,21,0.34);
+      border-radius: 14px;
+      color: #513c06;
+      background: #fff7db;
+      line-height: 1.5;
+      font-weight: 800;
+    }
+
+    .section {
+      margin-top: 24px;
+      padding: 28px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: #08172b;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 620px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .ticker-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .ticker {
+      min-height: 112px;
+      padding: 18px;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 14px 34px rgba(3,16,34,0.08);
+    }
+
+    .ticker strong {
+      display: block;
+      color: #0b1d34;
+      font-size: 18px;
+    }
+
+    .ticker .price {
+      display: block;
+      margin-top: 12px;
+      color: #005baa;
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .ticker .change {
+      display: block;
+      margin-top: 4px;
+      color: #68788a;
+      font-weight: 800;
+    }
+
+    .ticker.up .change { color: #15803d; }
+    .ticker.down .change { color: #b91c1c; }
+
+    .market-terminal {
+      overflow: hidden;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 14px 34px rgba(3,16,34,0.08);
+    }
+
+    .terminal-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      border-bottom: 1px solid #edf2f7;
+      background: linear-gradient(135deg, #fff, #f7fbff);
+    }
+
+    .terminal-title strong {
+      display: block;
+      color: #07192f;
+      font-size: 24px;
+    }
+
+    .terminal-title span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .terminal-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #725100;
+      background: #fff7db;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .asset-tabs {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid #edf2f7;
+      background: #fbfdff;
+    }
+
+    .asset-tab {
+      min-height: 54px;
+      padding: 10px 8px;
+      border: 1px solid #d8e2ee;
+      border-radius: 12px;
+      color: #0b1d34;
+      background: #fff;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .asset-tab:hover,
+    .asset-tab.active {
+      transform: translateY(-2px);
+      border-color: #facc15;
+      box-shadow: 0 12px 24px rgba(250,204,21,0.22);
+    }
+
+    .asset-tab span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .main-chart-frame {
+      height: min(68vh, 720px);
+      min-height: 560px;
+      background: #f8fafc;
+    }
+
+    .main-chart-frame iframe {
+      display: block !important;
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 560px !important;
+      border: 0 !important;
+    }
+
+    .chart-note {
+      padding: 12px 18px 16px;
+      color: var(--muted);
+      background: #fff;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .watchlist-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .watch-card {
+      padding: 16px;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 14px 34px rgba(3,16,34,0.08);
+    }
+
+    .watch-card strong {
+      display: block;
+      color: #0b1d34;
+      font-size: 19px;
+    }
+
+    .watch-card span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .spacex-section {
+      overflow: hidden;
+      color: #fff;
+      background:
+        radial-gradient(circle at 82% 10%, rgba(111,243,255,0.26), transparent 30%),
+        radial-gradient(circle at 18% 18%, rgba(250,204,21,0.18), transparent 32%),
+        linear-gradient(145deg, rgba(5, 12, 27, 0.98), rgba(8, 37, 69, 0.96));
+    }
+
+    .spacex-section .section-head h2,
+    .spacex-section .section-head p {
+      color: #fff;
+    }
+
+    .spacex-section .section-head p {
+      color: #d8ecff;
+    }
+
+    .spacex-layout {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .orbit-card,
+    .ipo-card {
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.2);
+      backdrop-filter: blur(12px);
+    }
+
+    .orbit-card {
+      position: relative;
+      min-height: 430px;
+      overflow: hidden;
+      padding: 22px;
+    }
+
+    .orbit-card::before {
+      content: "";
+      position: absolute;
+      inset: 28px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50%;
+      transform: rotate(-12deg) scaleX(1.28);
+    }
+
+    .orbit-card::after {
+      content: "";
+      position: absolute;
+      right: -100px;
+      bottom: -130px;
+      width: 310px;
+      height: 310px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 28%, rgba(255,255,255,0.44), transparent 12%),
+        linear-gradient(135deg, rgba(111,243,255,0.34), rgba(0,91,170,0.24));
+      opacity: 0.75;
+    }
+
+    .orbit-card h3,
+    .orbit-card p,
+    .orbit-svg {
+      position: relative;
+      z-index: 1;
+    }
+
+    .orbit-card h3 {
+      margin: 0;
+      color: #fff;
+      font-size: 28px;
+      line-height: 1.12;
+    }
+
+    .orbit-card p {
+      color: #d8ecff;
+      line-height: 1.45;
+    }
+
+    .orbit-svg {
+      width: 100%;
+      height: auto;
+      margin-top: 18px;
+      filter: drop-shadow(0 18px 28px rgba(0,0,0,0.32));
+    }
+
+    .rocket-path {
+      fill: none;
+      stroke: rgba(255,255,255,0.34);
+      stroke-width: 3;
+      stroke-dasharray: 12 16;
+    }
+
+    .rocket-flame,
+    .rocket-glow {
+      animation: flamePulse 700ms ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .signal-ring {
+      fill: none;
+      stroke: #6ff3ff;
+      stroke-width: 3;
+      opacity: 0.82;
+      stroke-dasharray: 28 220;
+      animation: orbitSignal 3.2s linear infinite;
+    }
+
+    .ipo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .ipo-card {
+      min-height: 150px;
+      padding: 18px;
+    }
+
+    .ipo-card strong {
+      display: block;
+      color: #fff;
+      font-size: 20px;
+      line-height: 1.18;
+    }
+
+    .ipo-card span {
+      display: block;
+      margin-top: 10px;
+      color: #d8ecff;
+      line-height: 1.42;
+    }
+
+    .ipo-card.highlight {
+      border-color: rgba(250,204,21,0.44);
+      background: rgba(250,204,21,0.13);
+    }
+
+    .ipo-checklist {
+      display: grid;
+      gap: 10px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .ipo-checklist li {
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 12px;
+      color: #e7f6ff;
+      background: rgba(255,255,255,0.08);
+      line-height: 1.35;
+    }
+
+    .sector-terminal {
+      margin-top: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.2);
+    }
+
+    .sector-terminal .terminal-top {
+      background: linear-gradient(135deg, #fff, #eef7ff);
+    }
+
+    .sector-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid #edf2f7;
+      background: #fbfdff;
+    }
+
+    .sector-tab {
+      min-height: 54px;
+      padding: 10px 8px;
+      border: 1px solid #d8e2ee;
+      border-radius: 12px;
+      color: #0b1d34;
+      background: #fff;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .sector-tab:hover,
+    .sector-tab.active {
+      transform: translateY(-2px);
+      border-color: #6ff3ff;
+      box-shadow: 0 12px 24px rgba(111,243,255,0.2);
+    }
+
+    .sector-tab span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .sector-chart-frame {
+      height: min(58vh, 560px);
+      min-height: 440px;
+      background: #f8fafc;
+    }
+
+    .sector-chart-frame iframe {
+      display: block !important;
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 440px !important;
+      border: 0 !important;
+    }
+
+    .news-radar {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .news-live,
+    .alert-box {
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.09);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.2);
+      backdrop-filter: blur(12px);
+    }
+
+    .news-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .news-top strong {
+      color: #fff;
+      font-size: 24px;
+      line-height: 1.1;
+    }
+
+    .news-top span {
+      color: #d8ecff;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .news-links {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .news-link {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      align-items: center;
+      min-height: 76px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 14px;
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+      text-decoration: none;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .news-link:hover {
+      transform: translateY(-3px);
+      border-color: rgba(111,243,255,0.52);
+      background: rgba(111,243,255,0.12);
+    }
+
+    .news-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      color: #07192f;
+      background: linear-gradient(135deg, #6ff3ff, #facc15);
+      font-weight: 900;
+    }
+
+    .news-link strong {
+      display: block;
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .news-link span:last-child {
+      display: block;
+      margin-top: 5px;
+      color: #d8ecff;
+      line-height: 1.35;
+    }
+
+    .alert-box {
+      padding: 18px;
+    }
+
+    .alert-box h3 {
+      margin: 0;
+      color: #fff;
+      font-size: 24px;
+      line-height: 1.15;
+    }
+
+    .alert-box p {
+      color: #d8ecff;
+      line-height: 1.45;
+    }
+
+    .alert-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .alert-tags a {
+      display: inline-flex;
+      min-height: 34px;
+      align-items: center;
+      padding: 7px 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      color: #e7f6ff;
+      background: rgba(255,255,255,0.08);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 22px;
+      color: #d8ecff;
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes drawLine {
+      0% { stroke-dashoffset: 720; }
+      55%, 100% { stroke-dashoffset: 0; }
+    }
+
+    @keyframes orbitSignal {
+      to { stroke-dashoffset: -248; }
+    }
+
+    @keyframes flamePulse {
+      from { transform: scale(0.9); opacity: 0.72; }
+      to { transform: scale(1.12); opacity: 1; }
+    }
+
+    @media (max-width: 900px) {
+      .topbar,
+      .footer,
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero,
+      .ticker-grid,
+      .spacex-layout,
+      .news-radar,
+      .watchlist-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ipo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .terminal-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .asset-tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .sector-tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .main-chart-frame {
+        height: 560px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <main class="shell">
+    <nav class="topbar">
+      <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny Politechniki Białostockiej">
+      <a class="home-link" href="index.html">Strona główna</a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-card reveal">
+        <p class="eyebrow">Panel rynkowy · edukacyjnie</p>
+        <h1>Inwestuj z Szymonem</h1>
+        <p class="lead">Szybki pulpit do obserwowania złota, BTC, indeksu S&P 500 oraz kilku największych spółek technologicznych. Zero magii, dużo wykresów i zdrowy dystans do rynku.</p>
+        <div class="actions">
+          <a class="button" href="#wykresy">Wykresy live</a>
+          <a class="button secondary" href="#ceny">CoinGecko API</a>
+          <a class="button secondary" href="#spacex-ipo">IPO SpaceX</a>
+        </div>
+        <div class="disclaimer">To nie jest porada inwestycyjna ani rekomendacja kupna lub sprzedaży. Materiały mają charakter edukacyjny i informacyjny. Inwestowanie wiąże się z ryzykiem utraty kapitału.</div>
+      </div>
+
+      <aside class="market-card reveal">
+        <h2>Nie zgaduj. Obserwuj trend.</h2>
+        <p>Rynki potrafią być brutalne, dlatego najpierw patrzymy na dane, wykres i ryzyko.</p>
+        <svg class="market-svg" viewBox="0 0 520 310" aria-hidden="true">
+          <defs>
+            <linearGradient id="marketGradient" x1="0" x2="1">
+              <stop offset="0" stop-color="#6ff3ff"/>
+              <stop offset="0.55" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#facc15"/>
+            </linearGradient>
+          </defs>
+          <rect x="24" y="28" width="472" height="238" rx="24" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+          <path d="M58 220H462M58 168H462M58 116H462M58 64H462" stroke="rgba(255,255,255,0.13)" stroke-width="2"/>
+          <path class="market-line" d="M60 218L112 184L164 198L216 120L268 146L320 92L372 108L460 54"/>
+          <circle cx="460" cy="54" r="12" fill="#facc15"/>
+          <text x="58" y="252" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="18" font-weight="900">GOLD · BTC · SP500 · TSLA · NVDA</text>
+        </svg>
+      </aside>
+    </section>
+
+    <section id="ceny" class="section reveal">
+      <div class="section-head">
+        <div>
+          <h2>Ceny z CoinGecko API</h2>
+          <p>Aktualne wartości pobierane w przeglądarce z publicznego API CoinGecko. Jeśli API chwilowo limituje zapytania, kafle pokażą status błędu.</p>
+        </div>
+      </div>
+      <div class="ticker-grid" id="cryptoTickers">
+        <article class="ticker"><strong>Bitcoin</strong><span class="price">Ładowanie...</span><span class="change">BTC / USD</span></article>
+        <article class="ticker"><strong>Ethereum</strong><span class="price">Ładowanie...</span><span class="change">ETH / USD</span></article>
+        <article class="ticker"><strong>Tether</strong><span class="price">Ładowanie...</span><span class="change">USDT / USD</span></article>
+      </div>
+    </section>
+
+    <section id="wykresy" class="section reveal">
+      <div class="section-head">
+        <div>
+          <h2>Terminal wykresów live</h2>
+          <p>Jeden duży, czytelny wykres zamiast sześciu małych okien. Przełącz instrument przyciskami pod nagłówkiem.</p>
+        </div>
+      </div>
+      <div class="market-terminal">
+        <div class="terminal-top">
+          <div class="terminal-title">
+            <strong id="activeChartName">Złoto / USD</strong>
+            <span id="activeChartSymbol">OANDA:XAUUSD</span>
+          </div>
+          <span class="terminal-badge">Live widget · dane mogą być opóźnione</span>
+        </div>
+        <div class="asset-tabs" aria-label="Wybór instrumentu">
+          <button class="asset-tab active" type="button" data-symbol="OANDA:XAUUSD" data-name="Złoto / USD">GOLD<span>XAUUSD</span></button>
+          <button class="asset-tab" type="button" data-symbol="BINANCE:BTCUSDT" data-name="BTC / USDT">BTC<span>BTCUSDT</span></button>
+          <button class="asset-tab" type="button" data-symbol="AMEX:SPY" data-name="S&P 500 ETF">S&P 500<span>SPY</span></button>
+          <button class="asset-tab" type="button" data-symbol="NASDAQ:TSLA" data-name="Tesla">TESLA<span>TSLA</span></button>
+          <button class="asset-tab" type="button" data-symbol="NASDAQ:NVDA" data-name="NVIDIA">NVIDIA<span>NVDA</span></button>
+          <button class="asset-tab" type="button" data-symbol="NASDAQ:AAPL" data-name="Apple">APPLE<span>AAPL</span></button>
+          <button class="asset-tab" type="button" data-symbol="NASDAQ:MSFT" data-name="Microsoft">MSFT<span>MSFT</span></button>
+        </div>
+        <div id="mainChart" class="main-chart-frame tradingview-widget-container"></div>
+        <div class="chart-note">S&P 500 jest pokazany przez ETF SPY, bo ten symbol działa stabilnie w osadzonym widżecie i nie wywołuje komunikatu o niedostępności platformy.</div>
+      </div>
+    </section>
+
+    <section id="spacex-ipo" class="section spacex-section reveal">
+      <div class="section-head">
+        <div>
+          <h2>IPO SpaceX</h2>
+          <p>Zakładka Szymona do obserwowania najgorętszego tematu z rynku prywatnego. SpaceX nie jest publicznie notowany, więc nie ma jeszcze prawdziwego wykresu akcji SpaceX.</p>
+        </div>
+      </div>
+      <div class="spacex-layout">
+        <article class="orbit-card">
+          <h3>Rakieta, hype i bardzo duża wycena</h3>
+          <p>SpaceX łączy rakiety, Starlinka i wielką narrację technologiczną. Przy IPO najważniejsze nie jest samo logo, tylko cena wejścia, liczba dostępnych akcji i ryzyko po debiucie.</p>
+          <svg class="orbit-svg" viewBox="0 0 520 330" role="img" aria-label="Animacja rakiety SpaceX">
+            <defs>
+              <linearGradient id="rocketBody" x1="0" x2="1">
+                <stop offset="0" stop-color="#ffffff"/>
+                <stop offset="0.62" stop-color="#dff7ff"/>
+                <stop offset="1" stop-color="#7dd3fc"/>
+              </linearGradient>
+              <linearGradient id="flame" x1="0" x2="1">
+                <stop offset="0" stop-color="#facc15"/>
+                <stop offset="1" stop-color="#fb7185"/>
+              </linearGradient>
+              <filter id="rocketShadow" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000000" flood-opacity="0.38"/>
+              </filter>
+            </defs>
+            <path class="rocket-path" d="M54 226C138 98 316 70 466 154C360 250 182 276 54 226Z"/>
+            <path class="signal-ring" d="M54 226C138 98 316 70 466 154C360 250 182 276 54 226Z"/>
+            <circle cx="108" cy="236" r="34" fill="rgba(111,243,255,0.18)" stroke="rgba(111,243,255,0.5)" stroke-width="3"/>
+            <circle cx="407" cy="88" r="42" fill="rgba(250,204,21,0.14)" stroke="rgba(250,204,21,0.42)" stroke-width="3"/>
+            <g opacity="0.65">
+              <circle cx="122" cy="94" r="3" fill="#e7f6ff"/>
+              <circle cx="184" cy="62" r="2.5" fill="#e7f6ff"/>
+              <circle cx="280" cy="84" r="2.5" fill="#e7f6ff"/>
+              <circle cx="356" cy="216" r="3" fill="#e7f6ff"/>
+              <circle cx="438" cy="218" r="2" fill="#e7f6ff"/>
+            </g>
+            <g transform="translate(270 84) rotate(34)" filter="url(#rocketShadow)">
+              <path d="M70 6C96 28 112 76 104 132C78 142 44 142 18 132C10 76 26 28 52 6C58 2 64 2 70 6Z" fill="url(#rocketBody)"/>
+              <path d="M54 11C42 46 41 94 50 137C37 136 26 134 18 132C10 76 26 28 52 6C53 8 53 9 54 11Z" fill="rgba(255,255,255,0.58)"/>
+              <path d="M18 104L-14 140L25 132Z" fill="#38bdf8"/>
+              <path d="M104 104L136 140L97 132Z" fill="#38bdf8"/>
+              <path d="M46 132H76L86 160H36Z" fill="#9bdcff"/>
+              <circle cx="61" cy="58" r="16" fill="#07192f" stroke="#6ff3ff" stroke-width="6"/>
+              <path d="M38 85H84" stroke="rgba(7,25,47,0.35)" stroke-width="4" stroke-linecap="round"/>
+              <path class="rocket-glow" d="M36 160C22 181 17 202 16 226C34 207 49 188 56 160Z" fill="rgba(250,204,21,0.32)"/>
+              <path class="rocket-glow" d="M86 160C100 181 105 202 106 226C88 207 73 188 66 160Z" fill="rgba(250,204,21,0.32)"/>
+              <path class="rocket-flame" d="M42 160C44 190 52 216 61 248C70 216 78 190 80 160Z" fill="url(#flame)"/>
+              <path d="M52 160C54 181 58 198 61 218C64 198 68 181 70 160Z" fill="#fff7db" opacity="0.9"/>
+            </g>
+            <text x="54" y="292" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="18" font-weight="900">SPACEX IPO WATCHLIST</text>
+          </svg>
+        </article>
+        <div>
+          <div class="ipo-grid">
+            <article class="ipo-card highlight"><strong>Co obserwować?</strong><span>Cenę emisyjną, kapitalizację, wielkość oferty, lock-up insiderów i to, czy akcje trafiają szeroko do inwestorów detalicznych.</span></article>
+            <article class="ipo-card"><strong>Czy dodać wykres?</strong><span>Prawdziwego wykresu SpaceX nie da się dodać przed debiutem. Można dodać tylko porównawcze tickery sektora: RKLB, LMT, BA albo ETF ARKX.</span></article>
+            <article class="ipo-card"><strong>Dlaczego jest hype?</strong><span>Starlink, dominacja w wynoszeniu ładunków, kontrakty rządowe, Starship i narracja o infrastrukturze kosmicznej.</span></article>
+            <article class="ipo-card"><strong>Główne ryzyko</strong><span>Bardzo wysoka wycena może oznaczać, że dużo przyszłego sukcesu jest już w cenie. Po debiucie może być mocna zmienność.</span></article>
+            <article class="ipo-card"><strong>Jak to grać rozsądnie?</strong><span>Nie FOMO. Najpierw prospekt, liczby, cash flow, zadłużenie, marże Starlinka i porównanie wyceny do realnych przychodów.</span></article>
+          </div>
+          <ul class="ipo-checklist">
+            <li><strong>Check 1:</strong> czy znana jest finalna cena IPO i ticker.</li>
+            <li><strong>Check 2:</strong> czy po debiucie wolumen i spread są normalne, a nie czysta panika.</li>
+            <li><strong>Check 3:</strong> jaki procent akcji jest w wolnym obrocie i kiedy kończy się lock-up.</li>
+            <li><strong>Check 4:</strong> porównaj scenariusz optymistyczny z ryzykiem, że kupujesz lokalny szczyt po medialnej gorączce.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sector-terminal">
+        <div class="terminal-top">
+          <div class="terminal-title">
+            <strong id="activeSectorName">Rocket Lab</strong>
+            <span id="activeSectorSymbol">NASDAQ:RKLB</span>
+          </div>
+          <span class="terminal-badge">Porównanie sektora · to nie jest SpaceX</span>
+        </div>
+        <div class="sector-tabs" aria-label="Porównawcze instrumenty sektora kosmicznego">
+          <button class="sector-tab active" type="button" data-symbol="NASDAQ:RKLB" data-name="Rocket Lab">RKLB<span>rakiety</span></button>
+          <button class="sector-tab" type="button" data-symbol="NYSE:LMT" data-name="Lockheed Martin">LMT<span>obronność</span></button>
+          <button class="sector-tab" type="button" data-symbol="NYSE:BA" data-name="Boeing">BA<span>aerospace</span></button>
+          <button class="sector-tab" type="button" data-symbol="BATS:ARKX" data-name="ARK Space ETF">ARKX<span>ETF space</span></button>
+          <button class="sector-tab" type="button" data-symbol="NASDAQ:IRDM" data-name="Iridium">IRDM<span>satelity</span></button>
+        </div>
+        <div id="sectorChart" class="sector-chart-frame tradingview-widget-container"></div>
+        <div class="chart-note">Te wykresy pokazują tylko klimat sektora kosmicznego i aerospace. SpaceX pozostaje prywatną spółką, więc do czasu IPO nie ma normalnego publicznego wykresu akcji.</div>
+      </div>
+      <div class="news-radar">
+        <article class="news-live">
+          <div class="news-top">
+            <strong>SpaceX news watch</strong>
+            <span id="newsUpdated">Aktualizacja: teraz</span>
+          </div>
+          <div class="news-links">
+            <a class="news-link" href="https://news.google.com/search?q=SpaceX%20IPO%20OR%20Starlink%20IPO%20when%3A7d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">
+              <span class="news-icon">G</span>
+              <span><strong>Google News: SpaceX IPO</strong><span>Świeże newsy z ostatnich dni o IPO, wycenie, Starlinku i debiucie giełdowym.</span></span>
+            </a>
+            <a class="news-link" href="https://www.reuters.com/search/news?blob=SpaceX%20IPO%20Starlink" target="_blank" rel="noopener">
+              <span class="news-icon">R</span>
+              <span><strong>Reuters: SpaceX / Starlink</strong><span>Najbardziej konkretne komunikaty rynkowe, finansowanie, wyceny i przecieki transakcyjne.</span></span>
+            </a>
+            <a class="news-link" href="https://www.spacex.com/updates/" target="_blank" rel="noopener">
+              <span class="news-icon">S</span>
+              <span><strong>Oficjalne aktualizacje SpaceX</strong><span>Starty, Starship, Starlink, misje i komunikaty bezpośrednio od SpaceX.</span></span>
+            </a>
+            <a class="news-link" href="https://www.nasa.gov/news-release/?search=SpaceX" target="_blank" rel="noopener">
+              <span class="news-icon">N</span>
+              <span><strong>NASA: kontrakty i misje</strong><span>Informacje o współpracy SpaceX z NASA, misjach załogowych i kontraktach kosmicznych.</span></span>
+            </a>
+          </div>
+        </article>
+        <aside class="alert-box">
+          <h3>Alerty, które warto klikać</h3>
+          <p>Tu są gotowe wyszukiwania, które same pokazują najnowsze wyniki. Najważniejsze dla IPO: wycena, sprzedaż prywatnych akcji, Starlink, Starship i kontrakty rządowe.</p>
+          <div class="alert-tags">
+            <a href="https://news.google.com/search?q=SpaceX%20valuation%20tender%20offer%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">valuation</a>
+            <a href="https://news.google.com/search?q=SpaceX%20tender%20offer%20shares%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">tender offer</a>
+            <a href="https://news.google.com/search?q=Starlink%20IPO%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">Starlink IPO</a>
+            <a href="https://news.google.com/search?q=SpaceX%20Starship%20test%20flight%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">Starship</a>
+            <a href="https://news.google.com/search?q=SpaceX%20NASA%20contract%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">NASA contracts</a>
+            <a href="https://news.google.com/search?q=SpaceX%20FCC%20Starlink%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">FCC / Starlink</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-head">
+        <div>
+          <h2>Największe spółki do obserwacji</h2>
+          <p>Lista startowa do codziennego przeglądu. Dołożymy kolejne spółki, jeśli chcesz mieć szerszą watchlistę.</p>
+        </div>
+      </div>
+      <div class="watchlist-grid">
+        <article class="watch-card"><strong>NVDA</strong><span>NVIDIA - AI, GPU, centra danych.</span></article>
+        <article class="watch-card"><strong>MSFT</strong><span>Microsoft - chmura, AI, software.</span></article>
+        <article class="watch-card"><strong>AAPL</strong><span>Apple - hardware, usługi, ekosystem.</span></article>
+        <article class="watch-card"><strong>AMZN</strong><span>Amazon - AWS, e-commerce, logistyka.</span></article>
+        <article class="watch-card"><strong>GOOGL</strong><span>Alphabet - reklama, AI, cloud.</span></article>
+        <article class="watch-card"><strong>META</strong><span>Meta - reklama, social, AI.</span></article>
+        <article class="watch-card"><strong>TSLA</strong><span>Tesla - EV, energia, wysoka zmienność.</span></article>
+        <article class="watch-card"><strong>BRK.B</strong><span>Berkshire Hathaway - konglomerat Buffetta.</span></article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Panel edukacyjny. To nie jest porada inwestycyjna.</span>
+      <span>Źródła: CoinGecko API, widgety rynkowe, BullionVault/TradingView jako podgląd rynku.</span>
+    </footer>
+  </main>
+
+  <script>
+    const progressBar = document.getElementById('progressBar');
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .ticker, .market-terminal, .watch-card').forEach((element, index) => {
+      element.classList.add('reveal');
+      element.style.transitionDelay = `${Math.min(index * 35, 260)}ms`;
+      observer.observe(element);
+    });
+
+    function renderTradingViewWidget(symbol, name) {
+      const container = document.getElementById('mainChart');
+      document.getElementById('activeChartName').textContent = name;
+      document.getElementById('activeChartSymbol').textContent = symbol;
+      container.innerHTML = '';
+      const script = document.createElement('script');
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+      script.async = true;
+      script.text = JSON.stringify({
+        autosize: true,
+        symbol,
+        interval: '60',
+        timezone: 'Europe/Warsaw',
+        theme: 'light',
+        style: '1',
+        locale: 'pl',
+        allow_symbol_change: true,
+        calendar: false,
+        withdateranges: true,
+        hide_side_toolbar: false,
+        details: true,
+        hotlist: false,
+        support_host: 'https://www.tradingview.com'
+      });
+      container.appendChild(script);
+    }
+
+    function setupChartTabs() {
+      const tabs = document.querySelectorAll('.asset-tab');
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((item) => item.classList.remove('active'));
+          tab.classList.add('active');
+          renderTradingViewWidget(tab.dataset.symbol, tab.dataset.name);
+        });
+      });
+      const active = document.querySelector('.asset-tab.active');
+      renderTradingViewWidget(active.dataset.symbol, active.dataset.name);
+    }
+
+    function renderSectorWidget(symbol, name) {
+      const container = document.getElementById('sectorChart');
+      document.getElementById('activeSectorName').textContent = name;
+      document.getElementById('activeSectorSymbol').textContent = symbol;
+      container.innerHTML = '';
+      const script = document.createElement('script');
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+      script.async = true;
+      script.text = JSON.stringify({
+        autosize: true,
+        symbol,
+        interval: 'D',
+        timezone: 'Europe/Warsaw',
+        theme: 'light',
+        style: '1',
+        locale: 'pl',
+        allow_symbol_change: true,
+        calendar: false,
+        withdateranges: true,
+        hide_side_toolbar: true,
+        details: true,
+        hotlist: false,
+        support_host: 'https://www.tradingview.com'
+      });
+      container.appendChild(script);
+    }
+
+    function setupSectorTabs() {
+      const tabs = document.querySelectorAll('.sector-tab');
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((item) => item.classList.remove('active'));
+          tab.classList.add('active');
+          renderSectorWidget(tab.dataset.symbol, tab.dataset.name);
+        });
+      });
+      const active = document.querySelector('.sector-tab.active');
+      renderSectorWidget(active.dataset.symbol, active.dataset.name);
+    }
+
+    function updateNewsTimestamp() {
+      const target = document.getElementById('newsUpdated');
+      if (!target) return;
+      const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: '2-digit',
+        month: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      target.textContent = `Aktualizacja: ${formatter.format(new Date())}`;
+    }
+
+    async function loadCoinGecko() {
+      const tickers = document.querySelectorAll('#cryptoTickers .ticker');
+      try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd&include_24hr_change=true');
+        if (!response.ok) throw new Error('CoinGecko API error');
+        const data = await response.json();
+        const rows = [
+          ['bitcoin', 'Bitcoin'],
+          ['ethereum', 'Ethereum'],
+          ['tether', 'Tether']
+        ];
+        rows.forEach(([id], index) => {
+          const item = data[id];
+          const card = tickers[index];
+          const price = item.usd.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: id === 'tether' ? 4 : 2 });
+          const change = item.usd_24h_change || 0;
+          card.classList.toggle('up', change >= 0);
+          card.classList.toggle('down', change < 0);
+          card.querySelector('.price').textContent = price;
+          card.querySelector('.change').textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}% / 24h`;
+        });
+      } catch (error) {
+        tickers.forEach((card) => {
+          card.querySelector('.price').textContent = 'Brak danych';
+          card.querySelector('.change').textContent = 'CoinGecko chwilowo niedostępne';
+        });
+      }
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+    setupChartTabs();
+    setupSectorTabs();
+    updateNewsTimestamp();
+    loadCoinGecko();
+  </script>
+</body>
+</html>

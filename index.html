@@ -3,6 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#005baa">
   <title>Materiały PB WE - portal przedmiotów</title>
   <style>
     :root {
@@ -103,6 +108,7 @@
     .hero-main,
     .panel,
     .exams,
+    .data-center-teaser,
     .resources,
     .gallery,
     .schedule,
@@ -145,8 +151,8 @@
     }
 
     .quick {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(116px, 1fr));
       gap: 12px;
       margin-top: 28px;
     }
@@ -165,6 +171,77 @@
       text-decoration: none;
       font-weight: 900;
       box-shadow: 0 12px 26px rgba(0, 91, 170, 0.26);
+    }
+
+    .quick-card {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      min-height: 132px;
+      padding: 15px;
+      border: 1px solid rgba(0, 91, 170, 0.16);
+      color: #0b1a2f;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(240, 248, 255, 0.94));
+      box-shadow: 0 16px 34px rgba(7, 25, 47, 0.12);
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+    }
+
+    .quick-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 91, 170, 0.34);
+      box-shadow: 0 22px 42px rgba(7, 25, 47, 0.18);
+    }
+
+    .quick-card.primary {
+      color: #fff;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(111, 243, 255, 0.28), transparent 34%),
+        linear-gradient(145deg, #005baa, #123b72);
+    }
+
+    .quick-card .icon {
+      display: inline-grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 12px;
+      color: #005baa;
+      background: #e8f5ff;
+    }
+
+    .quick-card.primary .icon {
+      color: #061827;
+      background: #9df6ff;
+    }
+
+    .quick-card svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .quick-card strong {
+      display: block;
+      margin-top: 16px;
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .quick-card span:not(.icon) {
+      display: block;
+      margin-top: 5px;
+      color: #526579;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .quick-card.primary span:not(.icon) {
+      color: rgba(255, 255, 255, 0.78);
     }
 
     .quick a.secondary {
@@ -216,12 +293,86 @@
       margin-bottom: 0;
     }
 
+    .hero-slider {
+      position: relative;
+      z-index: 1;
+      min-height: 486px;
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(18px);
+      transition: opacity 520ms ease, transform 520ms ease;
+    }
+
+    .hero-slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .hero-slide h2 {
+      margin: 0;
+    }
+
+    .hero-slide p {
+      margin: 14px 0 0;
+    }
+
+    .slide-link {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 40px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+      padding: 10px 13px;
+      border-radius: 10px;
+      color: #07192f;
+      background: #e7f6ff;
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .slider-dots {
+      position: absolute;
+      z-index: 3;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .slider-dot {
+      width: 10px;
+      height: 10px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(231,246,255,0.42);
+      cursor: pointer;
+      transition: width 220ms ease, background 220ms ease;
+    }
+
+    .slider-dot.active {
+      width: 34px;
+      background: #fff;
+    }
+
     .circuit {
       position: relative;
       z-index: 1;
       width: 100%;
       height: auto;
       margin-top: 18px;
+      max-height: 320px;
       filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.22));
     }
 
@@ -241,8 +392,43 @@
       animation-delay: -1.1s;
     }
 
+    .circuit .fiber-strand {
+      fill: none;
+      stroke-width: 6;
+      stroke-linecap: round;
+      opacity: 0.78;
+    }
+
+    .circuit .fiber-pulse {
+      fill: none;
+      stroke: #fff;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 16 260;
+      animation: fiberDash 1.8s linear infinite;
+      filter: drop-shadow(0 0 12px #6ff3ff);
+    }
+
+    .circuit .fiber-pulse.two { animation-delay: -0.55s; }
+    .circuit .fiber-pulse.three { animation-delay: -1.05s; }
+
+    .circuit .fiber-orb {
+      fill: #6ff3ff;
+      animation: fiberOrbFloat 3.2s ease-in-out infinite;
+      filter: drop-shadow(0 0 16px #6ff3ff);
+    }
+
+    .circuit .fiber-label {
+      font: 900 18px Arial, sans-serif;
+      fill: #e7f6ff;
+      letter-spacing: 0.02em;
+    }
+
     .cards,
     .exams,
+    .investment-teaser,
+    .data-center-teaser,
+    .smart-home-teaser,
     .resources,
     .gallery,
     .schedule,
@@ -307,12 +493,154 @@
     }
 
     .exams,
+    .investment-teaser,
+    .data-center-teaser,
     .resources,
     .gallery,
     .schedule,
     .subjects {
       padding: 28px;
       color: #102033;
+    }
+
+    .investment-teaser {
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(7, 25, 47, 0.97), rgba(0, 91, 170, 0.92)),
+        radial-gradient(circle at 85% 12%, rgba(40,169,224,0.34), transparent 34%);
+      color: #fff;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .feature-grid .investment-teaser,
+    .feature-grid .data-center-teaser,
+    .feature-grid .smart-home-teaser {
+      margin-top: 0;
+    }
+
+    .investment-card {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 24px;
+      align-items: center;
+      min-height: 230px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .investment-card h2 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(30px, 4.8vw, 56px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .investment-card p {
+      max-width: 690px;
+      margin: 16px 0 0;
+      color: #d8ecff;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .investment-card .open {
+      display: inline-flex;
+      width: fit-content;
+      margin-top: 24px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: #07192f;
+      background: #e7f6ff;
+      font-weight: 900;
+    }
+
+    .investment-chart-logo,
+    .data-center-logo,
+    .smart-home-logo {
+      width: min(220px, 100%);
+      height: auto;
+      filter: drop-shadow(0 22px 34px rgba(0,0,0,0.28));
+    }
+
+    .data-center-teaser {
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(4, 37, 48, 0.97), rgba(0, 91, 170, 0.9)),
+        radial-gradient(circle at 80% 16%, rgba(111,243,255,0.32), transparent 34%);
+      color: #fff;
+    }
+
+    .smart-home-teaser {
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(16, 24, 39, 0.97), rgba(14, 116, 144, 0.88)),
+        radial-gradient(circle at 82% 12%, rgba(250,204,21,0.28), transparent 34%);
+      color: #fff;
+    }
+
+    .data-center-card,
+    .smart-home-card {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 24px;
+      align-items: center;
+      min-height: 230px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .data-center-card h2,
+    .smart-home-card h2 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(30px, 4.6vw, 52px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .data-center-card p,
+    .smart-home-card p {
+      max-width: 690px;
+      margin: 16px 0 0;
+      color: #d8ecff;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .data-center-card .open,
+    .smart-home-card .open {
+      display: inline-flex;
+      width: fit-content;
+      margin-top: 24px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: #07192f;
+      background: #e7f6ff;
+      font-weight: 900;
+    }
+
+    .home-pulse {
+      stroke-dasharray: 16 150;
+      animation: rackPulse 2.2s linear infinite;
+    }
+
+    .server-light {
+      animation: serverBlink 1.8s ease-in-out infinite;
+    }
+
+    .server-light.delay-a { animation-delay: -0.45s; }
+    .server-light.delay-b { animation-delay: -0.95s; }
+
+    .data-pulse {
+      stroke-dasharray: 18 170;
+      animation: rackPulse 2.4s linear infinite;
     }
 
     .resources {
@@ -409,68 +737,67 @@
 
     .photo-grid {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr 0.8fr;
+      grid-template-columns: 1.15fr 0.85fr;
       gap: 14px;
     }
 
     .photo-slot {
       position: relative;
-      min-height: 210px;
+      display: block;
+      min-height: 250px;
       overflow: hidden;
-      padding: 18px;
       border: 1px solid rgba(255,255,255,0.22);
       border-radius: 14px;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06)),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 18px);
+      background: rgba(255,255,255,0.08);
       box-shadow: 0 18px 44px rgba(0,0,0,0.18);
     }
 
     .photo-slot.large {
       grid-row: span 2;
-      min-height: 438px;
+      min-height: 516px;
     }
 
     .photo-slot::before {
       content: "";
       position: absolute;
-      inset: 16px;
-      border: 1px dashed rgba(255,255,255,0.36);
-      border-radius: 10px;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(180deg, transparent 40%, rgba(2, 6, 23, 0.74));
     }
 
-    .photo-slot strong,
-    .photo-slot span {
-      position: relative;
-      z-index: 1;
+    .photo-slot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      transition: transform 420ms ease;
+    }
+
+    .photo-slot:hover img {
+      transform: scale(1.045);
+    }
+
+    .photo-caption {
+      position: absolute;
+      z-index: 2;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
       display: block;
     }
 
-    .photo-slot strong {
-      margin-top: auto;
+    .photo-caption strong {
+      display: block;
       font-size: 21px;
       line-height: 1.18;
     }
 
-    .photo-slot span {
+    .photo-caption span {
+      display: block;
       margin-top: 10px;
       color: #d8ecff;
       line-height: 1.4;
-    }
-
-    .photo-slot .photo-mark {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      place-items: center;
-      width: 52px;
-      height: 52px;
-      margin-bottom: 82px;
-      border-radius: 15px;
-      color: #07192f;
-      background: #e7f6ff;
-      font-size: 24px;
-      font-weight: 900;
     }
 
     .exams {
@@ -698,6 +1025,7 @@
 
     .footer {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       gap: 16px;
       margin-top: 22px;
@@ -708,6 +1036,29 @@
     .footer a {
       color: #fff;
       font-weight: 800;
+    }
+
+    .visit-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .visit-counter svg {
+      width: 18px;
+      height: 18px;
+      stroke: #9df6ff;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .reveal {
@@ -749,6 +1100,25 @@
       50% { opacity: 1; filter: drop-shadow(0 0 10px rgba(40,169,224,0.8)); }
     }
 
+    @keyframes fiberDash {
+      from { stroke-dashoffset: 280; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes fiberOrbFloat {
+      0%, 100% { transform: translateY(0); opacity: 0.55; }
+      50% { transform: translateY(-14px); opacity: 1; }
+    }
+
+    @keyframes serverBlink {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes rackPulse {
+      to { stroke-dashoffset: -188; }
+    }
+
     @media (max-width: 900px) {
       .topbar,
       .footer,
@@ -760,11 +1130,19 @@
       .hero,
       .cards,
       .exam-grid,
+      .investment-card,
+      .data-center-card,
+      .smart-home-card,
+      .feature-grid,
       .resource-grid,
       .photo-grid,
       .schedule-grid,
       .subjects-grid {
         grid-template-columns: 1fr;
+      }
+
+      .quick {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .photo-slot.large {
@@ -774,6 +1152,12 @@
       .badge { white-space: normal; }
 
       .lesson { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .quick {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -793,59 +1177,131 @@
         <h1>Materiały do zajęć</h1>
         <p class="lead">Wiedza w pigułce dla studentów zaocznych Elektroniki i Telekomunikacji. W jednym miejscu: plan zajęć, terminy zaliczeń, prowadzący oraz uporządkowane materiały do każdego przedmiotu.</p>
         <div class="quick">
-          <a class="pulse" href="#przedmioty">Wybierz przedmiot</a>
-          <a class="secondary" href="subject-niezawodnosc.html">Niezawodność</a>
-          <a class="ghost" href="#zaliczenia">Zaliczenia</a>
-          <a class="ghost" href="#plan">Plan zajęć</a>
-          <a class="ghost" href="assets/tz2_2.pdf">PDF planu</a>
+          <a class="quick-card primary" href="#przedmioty">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h7.5A2.5 2.5 0 0 1 14 9v10H6.5A2.5 2.5 0 0 1 4 16.5z"/><path d="M14 9a2.5 2.5 0 0 1 2.5-2.5H20v10A2.5 2.5 0 0 1 17.5 19H14z"/></svg></span>
+            <strong>Przedmioty</strong>
+            <span>Lista zajęć i prowadzących</span>
+          </a>
+          <a class="quick-card" href="#przedmioty">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h5l2 2h9v8.5A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M8 13h8M8 16h5"/></svg></span>
+            <strong>Materiały</strong>
+            <span>HTML, PDF i notatki w jednym miejscu</span>
+          </a>
+          <a class="quick-card" href="#zaliczenia">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v4M16 3v4M4 8h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2z"/><path d="m8 15 2 2 5-6"/></svg></span>
+            <strong>Zaliczenia</strong>
+            <span>Terminy, sesja i projekty</span>
+          </a>
+          <a class="quick-card" href="#plan">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+            <strong>Plan zajęć</strong>
+            <span>Szybki podgląd zjazdu</span>
+          </a>
+          <a class="quick-card" href="assets/tz2_2.pdf">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/><path d="M9 16h6M9 12h3"/></svg></span>
+            <strong>PDF planu</strong>
+            <span>Otwórz oryginalny dokument</span>
+          </a>
         </div>
       </div>
 
-      <aside class="panel float-in">
-        <h2>Elektronika, światłowody i sieci w jednym panelu</h2>
-        <p>Materiały są ułożone tak, żeby szybko wejść w temat przed zjazdem, laboratorium albo zaliczeniem.</p>
-        <svg class="circuit" viewBox="0 0 560 310" role="img" aria-label="Animowany schemat układu elektronicznego">
-          <defs>
-            <style>
-              .board { fill: rgba(255,255,255,0.08); stroke: rgba(231,246,255,0.34); stroke-width: 2; }
-              .wire { fill: none; stroke: rgba(231,246,255,0.84); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
-              .flow { fill: none; stroke: #65e8ff; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
-              .node { fill: #07192f; stroke: #e7f6ff; stroke-width: 5; }
-              .chip { fill: rgba(255,255,255,0.96); stroke: #bde8ff; stroke-width: 3; }
-              .pin { stroke: rgba(231,246,255,0.8); stroke-width: 4; stroke-linecap: round; }
-              .chip-light { fill: #65e8ff; }
-              .label { font: 800 18px Arial, sans-serif; fill: #e7f6ff; letter-spacing: 0.02em; }
-              .chipText { font: 900 24px Arial, sans-serif; fill: #005baa; }
-            </style>
-          </defs>
-          <rect class="board" x="34" y="38" width="492" height="234" rx="22"/>
-          <path class="wire" d="M62 154H116M116 154V84H214M116 154V224H214"/>
-          <path class="wire" d="M346 84H442V154H506M346 224H442V154"/>
-          <path class="wire" d="M280 92V136M280 174V218"/>
-          <path class="wire" d="M214 84H244M316 84H346M214 224H244M316 224H346"/>
-          <path class="flow" d="M62 154H116V84H214H244" />
-          <path class="flow delay-a" d="M316 84H346H442V154H506" />
-          <path class="flow delay-b" d="M116 154V224H214H244" />
-          <rect class="chip" x="244" y="64" width="72" height="40" rx="8"/>
-          <rect class="chip" x="244" y="204" width="72" height="40" rx="8"/>
-          <rect class="chip" x="248" y="136" width="64" height="38" rx="7"/>
-          <text class="chipText" x="263" y="91">WE</text>
-          <text class="chipText" x="263" y="231">PB</text>
-          <text class="chipText" x="263" y="163">ET</text>
-          <circle class="node" cx="62" cy="154" r="11"/>
-          <circle class="node" cx="506" cy="154" r="11"/>
-          <circle class="node" cx="280" cy="84" r="8"/>
-          <circle class="node" cx="280" cy="224" r="8"/>
-          <line class="pin" x1="214" y1="64" x2="214" y2="104"/>
-          <line class="pin" x1="346" y1="64" x2="346" y2="104"/>
-          <line class="pin" x1="214" y1="204" x2="214" y2="244"/>
-          <line class="pin" x1="346" y1="204" x2="346" y2="244"/>
-          <circle class="chip-light" cx="402" cy="122" r="5"/>
-          <circle class="chip-light" cx="432" cy="184" r="5"/>
-          <circle class="chip-light" cx="160" cy="118" r="5"/>
-          <circle class="chip-light" cx="160" cy="190" r="5"/>
-          <text class="label" x="62" y="292">PLAN · MATERIAŁY · ZALICZENIA</text>
-        </svg>
+      <aside class="panel float-in" aria-label="Polecane sekcje">
+        <div class="hero-slider" id="heroSlider">
+          <article class="hero-slide active">
+            <h2>Światłowodowy przepływ wiedzy</h2>
+            <p>Plan, zaliczenia i materiały płyną jednym torem, żeby szybko wejść w temat przed zjazdem, laboratorium albo egzaminem.</p>
+            <a class="slide-link" href="#przedmioty">Przejdź do materiałów</a>
+            <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowany przepływ światłowodowy">
+              <defs>
+                <style>
+                  .fiber-bg { fill: rgba(255,255,255,0.07); stroke: rgba(231,246,255,0.26); stroke-width: 2; }
+                </style>
+                <clipPath id="fiberClip">
+                  <rect x="48" y="34" width="524" height="268" rx="28"/>
+                </clipPath>
+              </defs>
+              <rect class="fiber-bg" x="48" y="34" width="524" height="268" rx="28"/>
+              <g clip-path="url(#fiberClip)">
+                <path class="fiber-strand" stroke="#38d9ff" d="M58 228C145 92 238 96 318 188S474 276 562 90"/>
+                <path class="fiber-strand" stroke="#9df6ff" d="M58 148C150 70 226 264 322 162S470 76 562 206"/>
+                <path class="fiber-strand" stroke="#ffffff" d="M58 198C148 282 232 86 318 188S462 286 562 146"/>
+                <path class="fiber-pulse" d="M58 228C145 92 238 96 318 188S474 276 562 90"/>
+                <path class="fiber-pulse two" d="M58 148C150 70 226 264 322 162S470 76 562 206"/>
+                <path class="fiber-pulse three" d="M58 198C148 282 232 86 318 188S462 286 562 146"/>
+              </g>
+              <circle class="fiber-orb" cx="146" cy="114" r="9"/>
+              <circle class="fiber-orb" cx="318" cy="188" r="13"/>
+              <circle class="fiber-orb" cx="482" cy="254" r="9"/>
+              <text class="fiber-label" x="76" y="282">PLAN · MATERIAŁY · ZALICZENIA</text>
+            </svg>
+          </article>
+
+          <article class="hero-slide">
+            <h2>Inwestuj z Szymonem</h2>
+            <p>Złoto, BTC, S&P 500, największe spółki i watchlisty sektorowe w jednym panelu do szybkiego podglądu rynku.</p>
+            <a class="slide-link" href="inwestuj-z-szymonem.html">Otwórz inwestycje</a>
+            <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowany wykres inwestycyjny">
+              <defs>
+                <linearGradient id="heroMoneyLine" x1="0" x2="1">
+                  <stop offset="0" stop-color="#6ff3ff"/>
+                  <stop offset="1" stop-color="#facc15"/>
+                </linearGradient>
+              </defs>
+              <rect x="54" y="42" width="512" height="250" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(231,246,255,0.26)" stroke-width="2"/>
+              <path d="M92 238H526M92 184H526M92 130H526M92 76H526" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+              <path d="M104 236L172 198L236 212L306 128L376 152L486 82" fill="none" stroke="url(#heroMoneyLine)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="fiber-pulse" d="M104 236L172 198L236 212L306 128L376 152L486 82"/>
+              <circle class="server-light" cx="486" cy="82" r="14" fill="#facc15"/>
+              <text class="fiber-label" x="92" y="292">GOLD · BTC · SP500 · AI</text>
+            </svg>
+          </article>
+
+          <article class="hero-slide">
+            <h2>Dwa Huberty o Data center</h2>
+            <p>Serwerownie pod cloud i AI: zasilanie, GPU, chłodzenie, światłowody, bezpieczeństwo i infrastruktura usług online.</p>
+            <a class="slide-link" href="data-center-huberty.html">Otwórz data center</a>
+            <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowane data center">
+              <rect x="54" y="42" width="512" height="250" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(231,246,255,0.26)" stroke-width="2"/>
+              <path d="M98 256H520M126 210H492M154 164H464" stroke="rgba(255,255,255,0.13)" stroke-width="2"/>
+              <rect x="132" y="88" width="74" height="142" rx="10" fill="#e7f6ff"/>
+              <rect x="254" y="76" width="86" height="166" rx="10" fill="#9bdcff"/>
+              <rect x="388" y="88" width="74" height="142" rx="10" fill="#e7f6ff"/>
+              <path d="M146 118H192M146 150H192M146 182H192M270 116H324M270 150H324M270 184H324M402 118H448M402 150H448M402 182H448" stroke="#07192f" stroke-width="8" stroke-linecap="round" opacity="0.78"/>
+              <circle class="server-light" cx="154" cy="214" r="6" fill="#22c55e"/>
+              <circle class="server-light delay-a" cx="178" cy="214" r="6" fill="#facc15"/>
+              <circle class="server-light delay-b" cx="282" cy="226" r="6" fill="#22c55e"/>
+              <circle class="server-light" cx="310" cy="226" r="6" fill="#facc15"/>
+              <circle class="server-light delay-a" cx="412" cy="214" r="6" fill="#22c55e"/>
+              <circle class="server-light delay-b" cx="436" cy="214" r="6" fill="#facc15"/>
+              <path class="data-pulse" d="M96 282C176 268 224 286 304 270C384 254 426 276 526 252" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+              <text class="fiber-label" x="92" y="304">POWER · COOLING · NETWORK · GPU</text>
+            </svg>
+          </article>
+
+          <article class="hero-slide">
+            <h2>Inteligentny dom z Marcinem</h2>
+            <p>Projektowanie automatyki domu: oświetlenie, rolety, audio, kino, alarm, HVAC, sceny i wygodne sterowanie z aplikacji.</p>
+            <a class="slide-link" href="smart-home-marcin.html">Otwórz smart home</a>
+            <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowany inteligentny dom">
+              <rect x="56" y="50" width="508" height="244" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(231,246,255,0.26)" stroke-width="2"/>
+              <path d="M132 178L310 74L488 178" fill="none" stroke="#e7f6ff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M170 176V268H450V176" fill="rgba(231,246,255,0.18)" stroke="#9df6ff" stroke-width="8" stroke-linejoin="round"/>
+              <rect x="208" y="206" width="58" height="62" rx="6" fill="#07192f" opacity="0.82"/>
+              <rect x="330" y="204" width="74" height="42" rx="8" fill="#e7f6ff"/>
+              <circle class="server-light" cx="232" cy="146" r="12" fill="#facc15"/>
+              <circle class="server-light delay-a" cx="384" cy="146" r="10" fill="#6ff3ff"/>
+              <path class="home-pulse" d="M114 290C186 246 242 286 310 238C376 192 430 246 508 198" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+              <text class="fiber-label" x="94" y="318">LIGHT · AUDIO · HVAC · SECURITY</text>
+            </svg>
+          </article>
+
+          <div class="slider-dots" aria-label="Wybór slajdu">
+            <button class="slider-dot active" type="button" aria-label="Światłowodowy przepływ wiedzy"></button>
+            <button class="slider-dot" type="button" aria-label="Inwestuj z Szymonem"></button>
+            <button class="slider-dot" type="button" aria-label="Dwa Huberty o Data center"></button>
+            <button class="slider-dot" type="button" aria-label="Inteligentny dom z Marcinem"></button>
+          </div>
+        </div>
       </aside>
     </section>
 
@@ -865,89 +1321,6 @@
         <article class="exam-item important"><strong>Zarządzanie sieciami</strong><div class="exam-meta"><span>13 czerwca</span></div></article>
         <article class="exam-item session"><strong>Bezpieczeństwo systemów informacyjnych</strong><div class="exam-meta"><span>sesja</span></div></article>
         <article class="exam-item important"><strong>Budownictwo telekomunikacyjne - projekt</strong><div class="exam-meta"><span>13 czerwca</span><span>projekt</span></div></article>
-      </div>
-    </section>
-
-    <section id="linki-we" class="resources reveal">
-      <div class="section-head">
-        <div>
-          <h2>Szybkie linki WE PB</h2>
-          <p>Najważniejsze miejsca z oficjalnego serwisu Wydziału Elektrycznego, pod ręką podczas zjazdu i przed zaliczeniami.</p>
-        </div>
-      </div>
-      <div class="resource-grid">
-        <a class="resource-card" href="https://we.pb.edu.pl/kalendarz-wydarzen/" target="_blank" rel="noopener">
-          <span class="resource-icon">K</span>
-          <h3>Kalendarz wydarzeń</h3>
-          <p>Kolokwia, seminaria, konkursy i terminy publikowane przez wydział.</p>
-          <span>Otwórz WE PB</span>
-        </a>
-        <a class="resource-card" href="https://we.pb.edu.pl/aktualnosci/" target="_blank" rel="noopener">
-          <span class="resource-icon">A</span>
-          <h3>Aktualności</h3>
-          <p>Bieżące komunikaty, wydarzenia wydziałowe i informacje organizacyjne.</p>
-          <span>Otwórz WE PB</span>
-        </a>
-        <a class="resource-card" href="https://we.pb.edu.pl/osiagniecia/" target="_blank" rel="noopener">
-          <span class="resource-icon">O</span>
-          <h3>Osiągnięcia</h3>
-          <p>Sukcesy studentów, kół naukowych i pracowników Wydziału Elektrycznego.</p>
-          <span>Otwórz WE PB</span>
-        </a>
-        <a class="resource-card" href="https://we.pb.edu.pl/konkursy/" target="_blank" rel="noopener">
-          <span class="resource-icon">C</span>
-          <h3>Konkursy</h3>
-          <p>Terminy zgłoszeń, nagrody, konkursy studenckie i naukowe.</p>
-          <span>Otwórz WE PB</span>
-        </a>
-        <a class="resource-card" href="https://we.pb.edu.pl/studenci/dziekanat/" target="_blank" rel="noopener">
-          <span class="resource-icon">D</span>
-          <h3>Dziekanat</h3>
-          <p>Kontakt, sprawy studenckie, dokumenty oraz podstawowe informacje organizacyjne.</p>
-          <span>Otwórz WE PB</span>
-        </a>
-        <a class="resource-card" href="https://we.pb.edu.pl/studenci/organizacja-toku-studiow/" target="_blank" rel="noopener">
-          <span class="resource-icon">S</span>
-          <h3>Organizacja studiów</h3>
-          <p>Informacje o toku studiów, zasadach i sprawach formalnych.</p>
-          <span>Otwórz WE PB</span>
-        </a>
-      </div>
-    </section>
-
-    <section id="galeria" class="gallery reveal">
-      <div class="section-head">
-        <div>
-          <h2>Zdjęcia i wrzutki</h2>
-          <p>Miejsce na fotografie z zajęć, zrzuty z laboratoriów, notatki z tablicy i pliki, które chcesz później dopiąć do strony.</p>
-        </div>
-      </div>
-      <div class="photo-grid">
-        <article class="photo-slot large">
-          <span class="photo-mark">+</span>
-          <strong>Galeria ze zjazdów</strong>
-          <span>Tu można wrzucić zdjęcia tablicy, sali, stanowisk laboratoryjnych albo wspólne materiały z grupy.</span>
-        </article>
-        <article class="photo-slot">
-          <span class="photo-mark">PDF</span>
-          <strong>Notatki i skany</strong>
-          <span>Slot na skany, zdjęcia notatek i krótkie opracowania przed zaliczeniem.</span>
-        </article>
-        <article class="photo-slot">
-          <span class="photo-mark">LAB</span>
-          <strong>Laboratoria</strong>
-          <span>Miejsce na zdjęcia stanowisk, wyniki pomiarów i instrukcje laboratoryjne.</span>
-        </article>
-        <article class="photo-slot">
-          <span class="photo-mark">ZIP</span>
-          <strong>Paczki projektowe</strong>
-          <span>Tu później można dopiąć archiwa, projekty i dodatkowe pliki do pobrania.</span>
-        </article>
-        <article class="photo-slot">
-          <span class="photo-mark">IMG</span>
-          <strong>Materiały wizualne</strong>
-          <span>Zdjęcia schematów, wykresów, układów i najważniejszych fragmentów wykładów.</span>
-        </article>
       </div>
     </section>
 
@@ -1018,8 +1391,167 @@
       </div>
     </section>
 
+    <section id="galeria" class="gallery reveal">
+      <div class="section-head">
+        <div>
+          <h2>Zdjęcia i wrzutki</h2>
+          <p>Miejsce na fotografie z zajęć, zrzuty z laboratoriów, notatki z tablicy i pliki, które chcesz później dopiąć do strony.</p>
+        </div>
+      </div>
+      <div class="photo-grid">
+        <article class="photo-slot large">
+          <img src="assets/gallery/zjazd-01.jpeg" alt="Spotkanie grupy studentów przy stole">
+          <span class="photo-caption"><strong>Galeria ze zjazdów</strong><span>Najlepszy dowód, że zaoczne to nie tylko PDF-y i zaliczenia.</span></span>
+        </article>
+        <article class="photo-slot">
+          <img src="assets/gallery/zjazd-02.jpeg" alt="Studenci podczas wspólnego spotkania">
+          <span class="photo-caption"><strong>Ekipa po zjeździe</strong><span>Materiały, terminy i integracja w jednym miejscu.</span></span>
+        </article>
+        <article class="photo-slot">
+          <img src="assets/gallery/zjazd-03.jpeg" alt="Grupowe zdjęcie studentów">
+          <span class="photo-caption"><strong>Zdjęcia i wspomnienia</strong><span>Tu będziemy dopinać kolejne fotki z zajęć i spotkań.</span></span>
+        </article>
+      </div>
+    </section>
+
+    <div class="feature-grid">
+      <section id="inwestuj" class="investment-teaser reveal">
+        <a class="investment-card" href="inwestuj-z-szymonem.html">
+          <div>
+            <p class="eyebrow">Rynek · wykresy · obserwacje</p>
+            <h2>Inwestuj z Szymonem</h2>
+            <p>Nie bądź głupi, pomnażaj ciężko zarobioną kasę. Złoto, BTC, S&P 500 i największe spółki w jednym miejscu do szybkiego podglądu.</p>
+            <span class="open">Otwórz panel inwestycyjny</span>
+          </div>
+          <svg class="investment-chart-logo" viewBox="0 0 260 210" role="img" aria-label="Wykres inwestycyjny">
+            <defs>
+              <linearGradient id="moneyLine" x1="0" x2="1">
+                <stop offset="0" stop-color="#6ff3ff"/>
+                <stop offset="1" stop-color="#facc15"/>
+              </linearGradient>
+            </defs>
+            <rect x="18" y="18" width="224" height="174" rx="22" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+            <path d="M42 154H222M42 116H222M42 78H222" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <path d="M48 152L80 134L112 142L144 96L176 108L214 54" fill="none" stroke="url(#moneyLine)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="214" cy="54" r="11" fill="#facc15"/>
+            <path d="M54 160L84 126L114 138L144 90L176 102L218 48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+            <text x="48" y="50" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="18" font-weight="900">+23.7%</text>
+            <text x="48" y="181" fill="#d8ecff" font-family="Arial, sans-serif" font-size="13" font-weight="900">GOLD · BTC · SP500</text>
+          </svg>
+        </a>
+      </section>
+
+      <section id="data-center" class="data-center-teaser reveal">
+        <a class="data-center-card" href="data-center-huberty.html">
+          <div>
+            <p class="eyebrow">Cloud · AI · infrastruktura</p>
+            <h2>Dwa Huberty powiedzą ci wszystko o Data center</h2>
+            <p>Jak buduje się serwerownie pod chmurę, AI, GPU, sieci, chłodzenie, zasilanie i bezpieczeństwo usług online.</p>
+            <span class="open">Otwórz data center</span>
+          </div>
+          <svg class="data-center-logo" viewBox="0 0 260 210" role="img" aria-label="Ikona data center">
+            <defs>
+              <linearGradient id="rackFill" x1="0" x2="1">
+                <stop offset="0" stop-color="#e7f6ff"/>
+                <stop offset="1" stop-color="#6ff3ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="18" y="18" width="224" height="174" rx="22" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+            <path d="M58 55H202M58 105H202M58 155H202" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <rect x="58" y="46" width="54" height="118" rx="8" fill="url(#rackFill)" opacity="0.95"/>
+            <rect x="124" y="46" width="54" height="118" rx="8" fill="rgba(231,246,255,0.92)"/>
+            <rect x="64" y="62" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <rect x="64" y="86" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <rect x="64" y="110" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <rect x="130" y="62" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <rect x="130" y="86" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <rect x="130" y="110" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <circle class="server-light" cx="72" cy="144" r="5" fill="#facc15"/>
+            <circle class="server-light delay-a" cx="92" cy="144" r="5" fill="#22c55e"/>
+            <circle class="server-light delay-b" cx="138" cy="144" r="5" fill="#facc15"/>
+            <circle class="server-light" cx="158" cy="144" r="5" fill="#22c55e"/>
+            <path class="data-pulse" d="M36 181C78 184 92 178 116 171C144 163 164 171 224 180" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+            <text x="54" y="34" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="13" font-weight="900">AI CLOUD CORE</text>
+          </svg>
+        </a>
+      </section>
+
+      <section id="smart-home" class="smart-home-teaser reveal">
+        <a class="smart-home-card" href="smart-home-marcin.html">
+          <div>
+            <p class="eyebrow">Savant · Control4 · Lutron</p>
+            <h2>Buduj inteligentny dom z Marcinem!</h2>
+            <p>Od projektu instalacji po sceny światła, rolety, multiroom audio, kino domowe, klimat, alarm i sterowanie z jednej aplikacji.</p>
+            <span class="open">Otwórz smart home</span>
+          </div>
+          <svg class="smart-home-logo" viewBox="0 0 260 210" role="img" aria-label="Ikona inteligentnego domu">
+            <rect x="18" y="18" width="224" height="174" rx="22" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+            <path d="M54 108L130 58L206 108" fill="none" stroke="#e7f6ff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M74 108V166H186V108" fill="rgba(231,246,255,0.16)" stroke="#6ff3ff" stroke-width="6" stroke-linejoin="round"/>
+            <rect x="92" y="126" width="30" height="40" rx="5" fill="#07192f" opacity="0.82"/>
+            <rect x="140" y="124" width="32" height="26" rx="6" fill="#e7f6ff"/>
+            <circle class="server-light" cx="104" cy="92" r="8" fill="#facc15"/>
+            <circle class="server-light delay-a" cx="156" cy="92" r="8" fill="#22c55e"/>
+            <path class="home-pulse" d="M48 180C88 154 120 176 154 148C184 122 202 142 224 118" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+            <text x="48" y="38" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="13" font-weight="900">SMART HOME CORE</text>
+          </svg>
+        </a>
+      </section>
+    </div>
+
+    <section id="linki-we" class="resources reveal">
+      <div class="section-head">
+        <div>
+          <h2>Szybkie linki WE PB</h2>
+          <p>Najważniejsze miejsca z oficjalnego serwisu Wydziału Elektrycznego, pod ręką podczas zjazdu i przed zaliczeniami.</p>
+        </div>
+      </div>
+      <div class="resource-grid">
+        <a class="resource-card" href="https://we.pb.edu.pl/kalendarz-wydarzen/" target="_blank" rel="noopener">
+          <span class="resource-icon">K</span>
+          <h3>Kalendarz wydarzeń</h3>
+          <p>Kolokwia, seminaria, konkursy i terminy publikowane przez wydział.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+        <a class="resource-card" href="https://we.pb.edu.pl/aktualnosci/" target="_blank" rel="noopener">
+          <span class="resource-icon">A</span>
+          <h3>Aktualności</h3>
+          <p>Bieżące komunikaty, wydarzenia wydziałowe i informacje organizacyjne.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+        <a class="resource-card" href="https://we.pb.edu.pl/osiagniecia/" target="_blank" rel="noopener">
+          <span class="resource-icon">O</span>
+          <h3>Osiągnięcia</h3>
+          <p>Sukcesy studentów, kół naukowych i pracowników Wydziału Elektrycznego.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+        <a class="resource-card" href="https://we.pb.edu.pl/konkursy/" target="_blank" rel="noopener">
+          <span class="resource-icon">C</span>
+          <h3>Konkursy</h3>
+          <p>Terminy zgłoszeń, nagrody, konkursy studenckie i naukowe.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+        <a class="resource-card" href="https://we.pb.edu.pl/studenci/dziekanat/" target="_blank" rel="noopener">
+          <span class="resource-icon">D</span>
+          <h3>Dziekanat</h3>
+          <p>Kontakt, sprawy studenckie, dokumenty oraz podstawowe informacje organizacyjne.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+        <a class="resource-card" href="https://we.pb.edu.pl/studenci/organizacja-toku-studiow/" target="_blank" rel="noopener">
+          <span class="resource-icon">S</span>
+          <h3>Organizacja studiów</h3>
+          <p>Informacje o toku studiów, zasadach i sprawach formalnych.</p>
+          <span>Otwórz WE PB</span>
+        </a>
+      </div>
+    </section>
+
     <footer class="footer">
       <span>Strona startowa do materiałów HTML.</span>
+      <span class="visit-counter" title="Licznik otworzeń strony">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.5"/></svg>
+        <span><span id="visitCounterValue">...</span> otworzeń</span>
+      </span>
       <span>Logo: <a href="https://we.pb.edu.pl/">Wydział Elektryczny PB</a></span>
     </footer>
   </main>
@@ -1029,18 +1561,66 @@
       const max = document.documentElement.scrollHeight - window.innerHeight;
       progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
     };
+    const setupHeroSlider = () => {
+      const slides = Array.from(document.querySelectorAll('.hero-slide'));
+      const dots = Array.from(document.querySelectorAll('.slider-dot'));
+      if (!slides.length || !dots.length) return;
+      let index = 0;
+      let timer;
+      const showSlide = (nextIndex) => {
+        index = (nextIndex + slides.length) % slides.length;
+        slides.forEach((slide, slideIndex) => slide.classList.toggle('active', slideIndex === index));
+        dots.forEach((dot, dotIndex) => dot.classList.toggle('active', dotIndex === index));
+      };
+      const start = () => {
+        clearInterval(timer);
+        timer = setInterval(() => showSlide(index + 1), 3000);
+      };
+      dots.forEach((dot, dotIndex) => {
+        dot.addEventListener('click', () => {
+          showSlide(dotIndex);
+          start();
+        });
+      });
+      showSlide(0);
+      start();
+    };
+    const setupVisitCounter = () => {
+      const counter = document.getElementById('visitCounterValue');
+      if (!counter) return;
+      const storageKey = 'studiawepb-home-open-count';
+      let localCount = 1;
+      try {
+        localCount = Number(localStorage.getItem(storageKey) || '0') + 1;
+        localStorage.setItem(storageKey, String(localCount));
+      } catch (error) {
+        localCount = 1;
+      }
+      counter.textContent = localCount.toLocaleString('pl-PL');
+
+      fetch('https://api.countapi.xyz/hit/studiawepb.pl/homepage')
+        .then((response) => response.ok ? response.json() : Promise.reject())
+        .then((data) => {
+          if (typeof data.value === 'number') counter.textContent = data.value.toLocaleString('pl-PL');
+        })
+        .catch(() => {
+          counter.title = 'Lokalny licznik na tym urządzeniu';
+        });
+    };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal, .card, .exam-item, .resource-card, .photo-slot, .day, .subject').forEach((element, index) => {
+    document.querySelectorAll('.reveal, .card, .exam-item, .resource-card, .photo-slot, .day, .subject, .investment-teaser, .data-center-teaser').forEach((element, index) => {
       element.classList.add('reveal');
       element.style.transitionDelay = `${Math.min(index * 35, 260)}ms`;
       observer.observe(element);
     });
     window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
+    setupHeroSlider();
+    setupVisitCounter();
   </script>
 </body>
 </html>

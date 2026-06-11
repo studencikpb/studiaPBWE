@@ -1,0 +1,23 @@
+{
+  "name": "Materiały PB WE",
+  "short_name": "PBWE",
+  "description": "Portal materiałów PB WE: plan zajęć, przedmioty, data center, inwestycje i opracowania.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#07192f",
+  "theme_color": "#005baa",
+  "icons": [
+    {
+      "src": "assets/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

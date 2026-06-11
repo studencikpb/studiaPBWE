@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#005baa">
+  <title>Buduj inteligentny dom z Marcinem</title>
+  <style>
+    :root {
+      --accent: #6ff3ff;
+      --gold: #facc15;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --paper: rgba(255,255,255,0.94);
+      --shadow: 0 28px 70px rgba(2, 10, 22, 0.3);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(111,243,255,0.24), transparent 30%),
+        radial-gradient(circle at 84% 10%, rgba(250,204,21,0.20), transparent 32%),
+        linear-gradient(135deg, #07192f, #0b3c5d 52%, #0f766e);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.13;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.34) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.34) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(180deg, #000 0%, transparent 86%);
+    }
+
+    .progress {
+      position: fixed;
+      z-index: 30;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      box-shadow: 0 0 20px rgba(111,243,255,0.72);
+    }
+
+    .shell {
+      position: relative;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 26px 0 44px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 0 34px;
+      color: #fff;
+    }
+
+    .topbar img {
+      display: block;
+      width: min(270px, 58vw);
+      height: auto;
+    }
+
+    .home-link,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .home-link {
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .button {
+      color: #061827;
+      background: var(--accent);
+      box-shadow: 0 12px 26px rgba(111,243,255,0.24);
+    }
+
+    .button.secondary {
+      color: #0d4f88;
+      background: #f4faff;
+      box-shadow: none;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .visual-card,
+    .section {
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-card {
+      padding: clamp(26px, 4vw, 46px);
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: #04708b;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #08172b;
+      font-size: clamp(40px, 6vw, 76px);
+      line-height: 0.96;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: #42536a;
+      font-size: 19px;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .visual-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      color: #fff;
+      background:
+        linear-gradient(145deg, rgba(7,25,47,0.96), rgba(14,116,144,0.88)),
+        radial-gradient(circle at 78% 12%, rgba(250,204,21,0.22), transparent 38%);
+    }
+
+    .visual-card h2 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: #fff;
+      font-size: 30px;
+      line-height: 1.12;
+    }
+
+    .visual-card p {
+      position: relative;
+      z-index: 1;
+      color: #d8ecff;
+      line-height: 1.5;
+    }
+
+    .home-visual {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: auto;
+      margin-top: 18px;
+      filter: drop-shadow(0 18px 28px rgba(0,0,0,0.32));
+    }
+
+    .signal {
+      stroke-dasharray: 18 170;
+      animation: signalFlow 2.4s linear infinite;
+    }
+
+    .glow {
+      animation: glowPulse 1.7s ease-in-out infinite;
+    }
+
+    .glow.delay-a { animation-delay: -0.5s; }
+    .glow.delay-b { animation-delay: -1s; }
+
+    .section {
+      margin-top: 24px;
+      padding: 28px;
+    }
+
+    .section.dark {
+      color: #fff;
+      background:
+        linear-gradient(145deg, rgba(7,25,47,0.96), rgba(15,76,94,0.94)),
+        radial-gradient(circle at 18% 20%, rgba(111,243,255,0.2), transparent 34%);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: #08172b;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .section.dark .section-head h2,
+    .section.dark .section-head p { color: #fff; }
+
+    .section-head p {
+      max-width: 720px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .grid-3,
+    .system-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .card,
+    .system-card,
+    .step {
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 14px 34px rgba(3,16,34,0.08);
+    }
+
+    .card {
+      min-height: 210px;
+      padding: 20px;
+    }
+
+    .icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      color: #061827;
+      background: linear-gradient(135deg, var(--accent), #e7f6ff);
+      font-weight: 900;
+      font-size: 20px;
+    }
+
+    .card h3,
+    .system-card h3,
+    .step h3 {
+      margin: 18px 0 10px;
+      color: #08172b;
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .card p,
+    .system-card p,
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .system-card {
+      overflow: hidden;
+      color: #102033;
+      text-decoration: none;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .system-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 24px 48px rgba(3,16,34,0.16);
+    }
+
+    .system-art {
+      height: 210px;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background: #fff;
+    }
+
+    .brand-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      border: 1px solid #d8e2ee;
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .brand-strip img {
+      display: block;
+      width: min(260px, 86%);
+      height: 110px;
+      object-fit: contain;
+    }
+
+    .system-copy {
+      padding: 18px;
+    }
+
+    .open {
+      display: inline-flex;
+      margin-top: 16px;
+      color: #005baa;
+      font-weight: 900;
+    }
+
+    .step {
+      position: relative;
+      min-height: 210px;
+      padding: 20px;
+    }
+
+    .step::before {
+      content: attr(data-step);
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      color: #061827;
+      background: var(--accent);
+      font-weight: 900;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 22px;
+      color: #d8ecff;
+      font-size: 14px;
+    }
+
+    .footer a { color: #fff; font-weight: 800; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes signalFlow { to { stroke-dashoffset: -188; } }
+    @keyframes glowPulse { 0%, 100% { opacity: .36; } 50% { opacity: 1; } }
+
+    @media (max-width: 900px) {
+      .topbar,
+      .footer,
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero,
+      .grid-3,
+      .grid-4,
+      .system-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <main class="shell">
+    <nav class="topbar">
+      <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny Politechniki Białostockiej">
+      <a class="home-link" href="index.html">Strona główna</a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-card reveal">
+        <p class="eyebrow">Marcin · smart home · integracja premium</p>
+        <h1>Buduj inteligentny dom z Marcinem!</h1>
+        <p class="lead">Inteligentny dom to nie kilka żarówek w aplikacji. To spójny system: projekt instalacji, stabilna sieć, sterowanie światłem, rolety, audio, kino, alarm, kamery, ogrzewanie, klimatyzacja i sceny, które działają codziennie bez kombinowania.</p>
+        <div class="actions">
+          <a class="button" href="#systemy">Systemy</a>
+          <a class="button secondary" href="#projekt">Jak budować</a>
+          <a class="button secondary" href="#sceny">Sceny domu</a>
+        </div>
+      </div>
+
+      <aside class="visual-card reveal">
+        <h2>Dom ma działać jak jeden organizm</h2>
+        <p>Przycisk „wieczór” może przyciemnić światło, opuścić rolety, uruchomić muzykę, ustawić temperaturę i uzbroić strefę zewnętrzną.</p>
+        <svg class="home-visual" viewBox="0 0 560 340" role="img" aria-label="Animowany inteligentny dom">
+          <rect x="28" y="34" width="504" height="246" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.24)" stroke-width="2"/>
+          <path d="M98 172L280 62L462 172" fill="none" stroke="#e7f6ff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M140 170V256H420V170" fill="rgba(231,246,255,0.16)" stroke="#6ff3ff" stroke-width="8" stroke-linejoin="round"/>
+          <rect x="178" y="206" width="58" height="50" rx="7" fill="#07192f" opacity=".82"/>
+          <rect x="294" y="196" width="78" height="44" rx="8" fill="#e7f6ff"/>
+          <circle class="glow" cx="210" cy="140" r="13" fill="#facc15"/>
+          <circle class="glow delay-a" cx="280" cy="118" r="13" fill="#6ff3ff"/>
+          <circle class="glow delay-b" cx="360" cy="140" r="13" fill="#22c55e"/>
+          <path class="signal" d="M70 288C150 244 214 284 282 232C350 180 414 232 496 184" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <text x="72" y="312" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="18" font-weight="900">LIGHT · SHADES · AUDIO · HVAC · SECURITY</text>
+        </svg>
+      </aside>
+    </section>
+
+    <section id="projekt" class="section reveal">
+      <div class="section-head">
+        <div>
+          <h2>Jak buduje się inteligentny dom?</h2>
+          <p>Najpierw projekt i przewody, potem sprzęt. Najlepsze systemy działają stabilnie, bo mają dobrze zaplanowaną sieć, rozdzielnię, magistrale, sceny i serwis.</p>
+        </div>
+      </div>
+      <div class="grid-4">
+        <article class="step" data-step="01"><h3>Projekt funkcji</h3><p>Spisujesz, co dom ma robić: światło, rolety, audio, kino, ogrzewanie, alarm, wideodomofon i sceny.</p></article>
+        <article class="step" data-step="02"><h3>Okablowanie</h3><p>Do rozdzielni trafiają obwody, skrętka, przewody audio, sterowanie rolet i punkty pod czujniki.</p></article>
+        <article class="step" data-step="03"><h3>Urządzenia</h3><p>Dobierasz sterowniki, keypad, dimmery, procesory AV, moduły HVAC i sprzęt sieciowy.</p></article>
+        <article class="step" data-step="04"><h3>Programowanie</h3><p>Powstają sceny, automatyzacje, harmonogramy, dostęp użytkowników i kopia konfiguracji.</p></article>
+      </div>
+    </section>
+
+    <section id="sceny" class="section dark reveal">
+      <div class="section-head">
+        <div>
+          <h2>Co może robić taki dom?</h2>
+          <p>Dobry smart home ukrywa technikę. Użytkownik widzi proste sceny, a pod spodem pracują integracje.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <article class="card"><span class="icon">EV</span><h3>Scena wieczór</h3><p>Przyciemnione światło, opuszczone rolety, cicha muzyka, komfortowa temperatura i aktywna ochrona zewnętrzna.</p></article>
+        <article class="card"><span class="icon">AV</span><h3>Kino i audio</h3><p>Jeden przycisk włącza projektor, amplituner, źródło, rolety zaciemniające i światło orientacyjne.</p></article>
+        <article class="card"><span class="icon">EN</span><h3>Energia i komfort</h3><p>Ogrzewanie, klimatyzacja, rekuperacja, żaluzje i czujniki pomagają utrzymać komfort bez ręcznego klikania.</p></article>
+      </div>
+    </section>
+
+    <section id="systemy" class="section reveal">
+      <div class="section-head">
+        <div>
+          <h2>Systemy premium</h2>
+          <p>Savant, Control4 i Lutron są często spotykane w domach premium. Każdy ma trochę inny charakter, więc najlepiej dobierać je do oczekiwań użytkownika.</p>
+        </div>
+      </div>
+      <div class="system-grid">
+        <a class="system-card" href="smart-home-savant.html">
+          <div class="system-art">
+            <div class="brand-strip"><img src="assets/smart-home/logo-savant-original.png" alt="Savant"></div>
+          </div>
+          <div class="system-copy"><h3>Savant</h3><p>Elegancki system sterowania domem premium: sceny, audio/wideo, klimat, oświetlenie i aplikacja.</p><span class="open">Otwórz Savant</span></div>
+        </a>
+        <a class="system-card" href="smart-home-control4.html">
+          <div class="system-art">
+            <div class="brand-strip"><img src="assets/smart-home/logo-control4-original.png" alt="Control4"></div>
+          </div>
+          <div class="system-copy"><h3>Control4</h3><p>Elastyczna platforma automatyki: wiele integracji, sterowniki, piloty, touchpanele i sceny.</p><span class="open">Otwórz Control4</span></div>
+        </a>
+        <a class="system-card" href="smart-home-lutron.html">
+          <div class="system-art">
+            <div class="brand-strip"><img src="assets/smart-home/logo-lutron-original.png" alt="Lutron"></div>
+          </div>
+          <div class="system-copy"><h3>Lutron</h3><p>Światło, dimmery, keypad, rolety i systemy HomeWorks/RadioRA dla bardzo stabilnego sterowania.</p><span class="open">Otwórz Lutron</span></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-head">
+        <div>
+          <h2>Checklist Marcina</h2>
+          <p>Jeśli projektujesz dom, warto o tym pomyśleć jeszcze przed tynkami i rozdzielnią.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <article class="card"><span class="icon">LAN</span><h3>Sieć przewodowa</h3><p>Stabilny smart home zaczyna się od dobrej sieci, punktów Wi-Fi, racka i zapasu skrętki.</p></article>
+        <article class="card"><span class="icon">230</span><h3>Rozdzielnia i obwody</h3><p>Warto rozdzielić obwody oświetlenia, rolet, bram, HVAC i przygotować miejsce na moduły.</p></article>
+        <article class="card"><span class="icon">UX</span><h3>Proste sterowanie</h3><p>Domownicy nie mają być administratorami. Sceny i przyciski muszą być intuicyjne.</p></article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Buduj inteligentny dom z Marcinem.</span>
+      <span><a href="index.html">Powrót na główną</a></span>
+    </footer>
+  </main>
+
+  <script>
+    const progressBar = document.getElementById('progressBar');
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .card, .system-card, .step').forEach((element, index) => {
+      element.classList.add('reveal');
+      element.style.transitionDelay = `${Math.min(index * 35, 260)}ms`;
+      observer.observe(element);
+    });
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  </script>
+</body>
+</html>
