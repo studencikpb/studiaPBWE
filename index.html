@@ -495,68 +495,67 @@
 
     .photo-grid {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr 0.8fr;
+      grid-template-columns: 1.15fr 0.85fr;
       gap: 14px;
     }
 
     .photo-slot {
       position: relative;
-      min-height: 210px;
+      display: block;
+      min-height: 250px;
       overflow: hidden;
-      padding: 18px;
       border: 1px solid rgba(255,255,255,0.22);
       border-radius: 14px;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06)),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 18px);
+      background: rgba(255,255,255,0.08);
       box-shadow: 0 18px 44px rgba(0,0,0,0.18);
     }
 
     .photo-slot.large {
       grid-row: span 2;
-      min-height: 438px;
+      min-height: 516px;
     }
 
     .photo-slot::before {
       content: "";
       position: absolute;
-      inset: 16px;
-      border: 1px dashed rgba(255,255,255,0.36);
-      border-radius: 10px;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(180deg, transparent 40%, rgba(2, 6, 23, 0.74));
     }
 
-    .photo-slot strong,
-    .photo-slot span {
-      position: relative;
-      z-index: 1;
+    .photo-slot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      transition: transform 420ms ease;
+    }
+
+    .photo-slot:hover img {
+      transform: scale(1.045);
+    }
+
+    .photo-caption {
+      position: absolute;
+      z-index: 2;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
       display: block;
     }
 
-    .photo-slot strong {
-      margin-top: auto;
+    .photo-caption strong {
+      display: block;
       font-size: 21px;
       line-height: 1.18;
     }
 
-    .photo-slot span {
+    .photo-caption span {
+      display: block;
       margin-top: 10px;
       color: #d8ecff;
       line-height: 1.4;
-    }
-
-    .photo-slot .photo-mark {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      place-items: center;
-      width: 52px;
-      height: 52px;
-      margin-bottom: 82px;
-      border-radius: 15px;
-      color: #07192f;
-      background: #e7f6ff;
-      font-size: 24px;
-      font-weight: 900;
     }
 
     .exams {
@@ -1022,29 +1021,16 @@
       </div>
       <div class="photo-grid">
         <article class="photo-slot large">
-          <span class="photo-mark">+</span>
-          <strong>Galeria ze zjazdów</strong>
-          <span>Tu można wrzucić zdjęcia tablicy, sali, stanowisk laboratoryjnych albo wspólne materiały z grupy.</span>
+          <img src="assets/gallery/zjazd-01.jpeg" alt="Spotkanie grupy studentów przy stole">
+          <span class="photo-caption"><strong>Galeria ze zjazdów</strong><span>Najlepszy dowód, że zaoczne to nie tylko PDF-y i zaliczenia.</span></span>
         </article>
         <article class="photo-slot">
-          <span class="photo-mark">PDF</span>
-          <strong>Notatki i skany</strong>
-          <span>Slot na skany, zdjęcia notatek i krótkie opracowania przed zaliczeniem.</span>
+          <img src="assets/gallery/zjazd-02.jpeg" alt="Studenci podczas wspólnego spotkania">
+          <span class="photo-caption"><strong>Ekipa po zjeździe</strong><span>Materiały, terminy i integracja w jednym miejscu.</span></span>
         </article>
         <article class="photo-slot">
-          <span class="photo-mark">LAB</span>
-          <strong>Laboratoria</strong>
-          <span>Miejsce na zdjęcia stanowisk, wyniki pomiarów i instrukcje laboratoryjne.</span>
-        </article>
-        <article class="photo-slot">
-          <span class="photo-mark">ZIP</span>
-          <strong>Paczki projektowe</strong>
-          <span>Tu później można dopiąć archiwa, projekty i dodatkowe pliki do pobrania.</span>
-        </article>
-        <article class="photo-slot">
-          <span class="photo-mark">IMG</span>
-          <strong>Materiały wizualne</strong>
-          <span>Zdjęcia schematów, wykresów, układów i najważniejszych fragmentów wykładów.</span>
+          <img src="assets/gallery/zjazd-03.jpeg" alt="Grupowe zdjęcie studentów">
+          <span class="photo-caption"><strong>Zdjęcia i wspomnienia</strong><span>Tu będziemy dopinać kolejne fotki z zajęć i spotkań.</span></span>
         </article>
       </div>
     </section>
