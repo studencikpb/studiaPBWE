@@ -8,19 +8,53 @@
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#005baa">
-  <title>Control4 - automatyka domu</title>
+  <title>Control4 - profesjonalny smart home</title>
   <style>
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:#0f172a;background:radial-gradient(circle at 15% 10%,rgba(111,243,255,.24),transparent 30%),linear-gradient(135deg,#07192f,#005baa);font-family:Arial,Helvetica,sans-serif}.shell{position:relative;width:min(1120px,calc(100% - 32px));margin:0 auto;padding:28px 0 44px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0 32px}.topbar img{width:min(270px,58vw)}.home-link{display:inline-flex;min-height:42px;align-items:center;padding:10px 14px;border:1px solid rgba(255,255,255,.22);border-radius:999px;color:#fff;background:rgba(255,255,255,.1);text-decoration:none;font-weight:900}.hero,.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.card,.visual{border:1px solid rgba(255,255,255,.24);border-radius:18px;background:rgba(255,255,255,.94);box-shadow:0 28px 70px rgba(2,10,22,.3);backdrop-filter:blur(18px)}.card{padding:clamp(26px,4vw,46px)}.visual{overflow:hidden;padding:24px;color:#fff;background:linear-gradient(145deg,rgba(7,25,47,.96),rgba(0,91,170,.92))}.eyebrow{margin:0 0 18px;color:#005baa;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.brand-mark{display:flex;align-items:center;justify-content:center;width:min(300px,100%);height:82px;margin:0 0 18px;border:1px solid #d8e2ee;border-radius:18px;background:#fff;box-shadow:0 14px 34px rgba(3,16,34,.08)}.brand-mark img{display:block;width:86%;height:58px;object-fit:contain}h1{margin:0;color:#08172b;font-size:clamp(42px,6vw,74px);line-height:.96}h2{margin:0;color:#08172b;font-size:clamp(28px,4vw,42px)}.visual h2{color:#fff}.lead,p{line-height:1.5}.lead{margin-top:22px;color:#42536a;font-size:19px}.visual p{color:#d8ecff}.button{display:inline-flex;margin-top:24px;min-height:42px;align-items:center;padding:10px 14px;border-radius:10px;color:#061827;background:#6ff3ff;text-decoration:none;font-weight:900}.section{margin-top:22px;padding:28px;border-radius:18px;background:rgba(255,255,255,.94);box-shadow:0 18px 44px rgba(2,10,22,.18)}.tile{min-height:170px;padding:18px;border:1px solid #d8e2ee;border-radius:14px;background:#fff}.tile h3{margin:0 0 10px;color:#08172b;font-size:22px}.tile p{margin:0;color:#64748b}.mock{width:100%;height:auto;filter:drop-shadow(0 18px 28px rgba(0,0,0,.32))}.glow{animation:blink 1.7s ease-in-out infinite}@keyframes blink{0%,100%{opacity:.38}50%{opacity:1}}@media(max-width:900px){.topbar{align-items:flex-start;flex-direction:column}.hero,.grid{grid-template-columns:1fr}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:#0f172a;background:radial-gradient(circle at 18% 8%,rgba(111,243,255,.22),transparent 30%),linear-gradient(135deg,#07192f,#005baa);font-family:Arial,Helvetica,sans-serif}.shell{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 48px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 0 30px}.topbar img{width:min(270px,58vw)}.home-link,.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:900}.home-link{border:1px solid rgba(255,255,255,.22);color:#fff;background:rgba(255,255,255,.1)}.button{color:#061827;background:#6ff3ff}.hero,.split,.product-grid,.knowledge-grid{display:grid;gap:22px}.hero{grid-template-columns:1.05fr .95fr}.card,.media-card,.section{border:1px solid rgba(255,255,255,.24);border-radius:18px;background:rgba(255,255,255,.94);box-shadow:0 28px 70px rgba(2,10,22,.28);backdrop-filter:blur(18px)}.card{padding:clamp(28px,4vw,48px)}.media-card{overflow:hidden;background:#fff}.brand-mark{display:flex;align-items:center;justify-content:center;width:min(360px,100%);height:118px;margin:0 0 22px;border:1px solid #d8e2ee;border-radius:18px;background:#fff}.brand-mark img{width:88%;height:86px;object-fit:contain}.eyebrow{margin:0 0 14px;color:#005baa;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}h1{margin:0;color:#08172b;font-size:clamp(46px,7vw,82px);line-height:.94}h2{margin:0 0 14px;color:#08172b;font-size:clamp(28px,4vw,42px)}h3{margin:0 0 8px;color:#08172b;font-size:22px}.lead,p{line-height:1.55}.lead{margin:22px 0 0;color:#42536a;font-size:19px}.media-card img{display:block;width:100%;height:100%;min-height:360px;object-fit:contain;background:#f7fbff}.section{margin-top:22px;padding:28px}.split{grid-template-columns:1fr 1fr;align-items:center}.product-grid{grid-template-columns:repeat(4,1fr)}.knowledge-grid{grid-template-columns:repeat(3,1fr)}.product,.knowledge{overflow:hidden;border:1px solid #d8e2ee;border-radius:16px;background:#fff}.product img{display:block;width:100%;height:190px;object-fit:contain;background:#f8fafc}.product div,.knowledge{padding:16px}.product p,.knowledge p{margin:0;color:#64748b}.source{margin-top:18px;color:#64748b;font-size:13px}.source a{color:#005baa;font-weight:900}@media(max-width:900px){.topbar{align-items:flex-start;flex-direction:column}.hero,.split,.product-grid,.knowledge-grid{grid-template-columns:1fr}.media-card img{min-height:260px}}
   </style>
 </head>
 <body>
   <main class="shell">
-    <nav class="topbar"><img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny PB"><a class="home-link" href="smart-home-marcin.html">Smart home</a></nav>
+    <nav class="topbar"><img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny PB"><a class="home-link" href="smart-home-marcin.html#systemy">Smart home</a></nav>
     <section class="hero">
-      <div class="card"><p class="eyebrow">Platforma automatyki</p><div class="brand-mark"><img src="assets/logo-control4.svg" alt="Control4"></div><h1>Control4</h1><p class="lead">Control4 to system automatyki, który łączy oświetlenie, audio, wideo, klimat, bezpieczeństwo, interkom, piloty, touchpanele i wiele urządzeń innych producentów.</p><a class="button" href="https://www.control4.com/" target="_blank" rel="noopener">Oficjalna strona Control4</a></div>
-      <aside class="visual"><h2>Jeden system, wiele urządzeń</h2><p>Control4 jest mocny tam, gdzie dom ma dużo integracji i ma działać jak jeden spójny panel sterowania.</p><svg class="mock" viewBox="0 0 520 320"><rect x="42" y="38" width="436" height="230" rx="28" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.24)" stroke-width="2"/><rect x="128" y="72" width="264" height="166" rx="22" fill="#e7f6ff"/><rect x="156" y="104" width="84" height="64" rx="12" fill="#07192f"/><rect x="280" y="104" width="84" height="64" rx="12" fill="#0f766e"/><circle class="glow" cx="198" cy="198" r="10" fill="#facc15"/><circle class="glow" cx="322" cy="198" r="10" fill="#22c55e"/><text x="110" y="58" fill="#e7f6ff" font-family="Arial" font-size="18" font-weight="900">CONTROL4 OS</text></svg></aside>
+      <div class="card">
+        <p class="eyebrow">Platforma automatyki</p>
+        <div class="brand-mark"><img src="assets/smart-home/logo-control4-original.png" alt="Control4"></div>
+        <h1>Control4</h1>
+        <p class="lead">Control4 to ekosystem automatyki, który spina wiele instalacji w jeden interfejs: światło, audio, kino, klimat, bezpieczeństwo, interkom, rolety i sceny. Największa wartość jest wtedy, gdy dom ma dużo urządzeń różnych producentów i ma działać jak jeden system.</p>
+        <a class="button" href="https://www.control4.com/solutions/catalog" target="_blank" rel="noopener">Oficjalny katalog produktów</a>
+      </div>
+      <aside class="media-card"><img src="assets/smart-home/control4-app.webp" alt="Control4 App"></aside>
     </section>
-    <section class="section"><h2>Gdzie ma sens?</h2><div class="grid"><article class="tile"><h3>Integracje</h3><p>Dobre rozwiązanie, gdy chcesz połączyć wiele marek w jednym systemie.</p></article><article class="tile"><h3>AV i piloty</h3><p>Kino, multiroom, piloty, aplikacja i touchpanele mogą działać razem.</p></article><article class="tile"><h3>Sceny</h3><p>Dom może reagować na czas, obecność, przycisk, alarm lub stan urządzeń.</p></article><article class="tile"><h3>Instalator</h3><p>System zwykle wymaga profesjonalnej konfiguracji i serwisu.</p></article></div></section>
+
+    <section class="section split">
+      <div>
+        <h2>Aplikacja i interfejs</h2>
+        <p>Control4 opisuje aplikację jako zdalny dostęp do bezpieczeństwa, rozrywki, światła, komfortu i innych funkcji domu. W praktyce użytkownik widzi pokoje, sceny, multimedia, temperaturę, kamery, zamki i sterowanie oświetleniem w jednym układzie.</p>
+        <p>Ważne: użytkownik nie powinien zarządzać dziesięcioma aplikacjami. Integrator ma skonfigurować logikę tak, żeby codzienne akcje były proste: „kino”, „wyjście”, „noc”, „goście”, „sprzątanie”.</p>
+      </div>
+      <div class="media-card"><img src="assets/smart-home/control4-touchscreens.webp" alt="Control4 Touchscreens"></div>
+    </section>
+
+    <section class="section">
+      <h2>Główne elementy systemu</h2>
+      <div class="product-grid">
+        <article class="product"><img src="assets/smart-home/control4-controllers.webp" alt="Control4 Controllers"><div><h3>Kontrolery</h3><p>Serce instalacji. Koordynują urządzenia, sceny, sieć, audio/wideo i integracje.</p></div></article>
+        <article class="product"><img src="assets/smart-home/control4-touchscreens.webp" alt="Control4 Touchscreens"><div><h3>Touchscreeny</h3><p>Stałe panele na ścianie lub podstawce: szybkie sterowanie światłem, mediami i klimatem.</p></div></article>
+        <article class="product"><img src="assets/smart-home/control4-remotes.webp" alt="Control4 Remotes"><div><h3>Piloty</h3><p>Wygodne sterowanie kinem, telewizją, muzyką, scenami i wybranymi funkcjami domu.</p></div></article>
+        <article class="product"><img src="assets/smart-home/control4-app.webp" alt="Control4 App"><div><h3>Aplikacja</h3><p>Telefon i tablet jako centralny panel do domu lokalnie oraz zdalnie.</p></div></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Co trzeba wiedzieć przy projekcie</h2>
+      <div class="knowledge-grid">
+        <article class="knowledge"><h3>Integrator</h3><p>Control4 jest systemem profesjonalnym. Najważniejsze są projekt, konfiguracja i późniejszy serwis, a nie samo kupienie sprzętu.</p></article>
+        <article class="knowledge"><h3>Sieć</h3><p>Stabilna sieć LAN/Wi-Fi jest fundamentem. Przy większym domu trzeba planować szafy rack, VLAN-y, PoE i punkty dostępowe.</p></article>
+        <article class="knowledge"><h3>Sceny</h3><p>Dobrze zaprojektowany system ma mniej przycisków, ale lepszą logikę. Scena powinna sterować kilkoma instalacjami naraz.</p></article>
+      </div>
+      <p class="source">Źródło grafik i opisów: oficjalny katalog Control4 oraz strona producenta. <a href="https://www.control4.com/" target="_blank" rel="noopener">control4.com</a></p>
+    </section>
   </main>
 </body>
 </html>
