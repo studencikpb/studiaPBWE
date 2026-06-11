@@ -13,6 +13,7 @@ const SUBJECTS = {
       ['Układ z blokami A-B-C', 'Przykład liczenia struktury z gałęzią górną i dolną.', 'reliability_q_logic.html'],
       ['Dekompozycja mostka', 'Metoda R oraz Q, zwarcie i rozwarcie elementów.', 'bridge_decomposition_guide.html'],
       ['Dekompozycja tylko przez R', 'Pełne liczenie krok po kroku bez symbolu Q.', 'bridge_decomposition_R_only.html']
+      ['Test — niezawodność i diagnostyka', 'Interaktywny test 150 pytań z losową kolejnością, sprawdzaniem odpowiedzi i wynikiem.', 'materials/niezawodnoscd/test_niezawodnosc_diagnostyka_150.html']
     ]
   },
   technika_swiatlowodowa: {
@@ -160,7 +161,6 @@ const UPLOADED_MATERIALS = {
     ['15 - kompatybilność elektromagnetyczna odbiorników telewizyjnych', 'Materiał PDF z folderu przedmiotu.', 'materials/kompatybilnosc/15 - kompatybilność elektromagnetyczna odbiorników telewizyjnych.pdf']
   ],
   niezawodnosc: [
-niezawodnosc: [
     ['NIESTACJ NiD 2026 cz1', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz1.pdf'],
     ['NIESTACJ NiD 2026 cz2', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz2.pdf'],
     ['NIESTACJ NiD 2026 cz3', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz3.pdf'],
