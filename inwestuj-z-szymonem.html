@@ -647,6 +647,133 @@
       border: 0 !important;
     }
 
+    .news-radar {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .news-live,
+    .alert-box {
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.09);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.2);
+      backdrop-filter: blur(12px);
+    }
+
+    .news-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .news-top strong {
+      color: #fff;
+      font-size: 24px;
+      line-height: 1.1;
+    }
+
+    .news-top span {
+      color: #d8ecff;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .news-links {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .news-link {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      align-items: center;
+      min-height: 76px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 14px;
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+      text-decoration: none;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .news-link:hover {
+      transform: translateY(-3px);
+      border-color: rgba(111,243,255,0.52);
+      background: rgba(111,243,255,0.12);
+    }
+
+    .news-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      color: #07192f;
+      background: linear-gradient(135deg, #6ff3ff, #facc15);
+      font-weight: 900;
+    }
+
+    .news-link strong {
+      display: block;
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .news-link span:last-child {
+      display: block;
+      margin-top: 5px;
+      color: #d8ecff;
+      line-height: 1.35;
+    }
+
+    .alert-box {
+      padding: 18px;
+    }
+
+    .alert-box h3 {
+      margin: 0;
+      color: #fff;
+      font-size: 24px;
+      line-height: 1.15;
+    }
+
+    .alert-box p {
+      color: #d8ecff;
+      line-height: 1.45;
+    }
+
+    .alert-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .alert-tags a {
+      display: inline-flex;
+      min-height: 34px;
+      align-items: center;
+      padding: 7px 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      color: #e7f6ff;
+      background: rgba(255,255,255,0.08);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
     .footer {
       display: flex;
       justify-content: space-between;
@@ -697,6 +824,7 @@
       .hero,
       .ticker-grid,
       .spacex-layout,
+      .news-radar,
       .watchlist-grid {
         grid-template-columns: 1fr;
       }
@@ -895,6 +1023,44 @@
         <div id="sectorChart" class="sector-chart-frame tradingview-widget-container"></div>
         <div class="chart-note">Te wykresy pokazują tylko klimat sektora kosmicznego i aerospace. SpaceX pozostaje prywatną spółką, więc do czasu IPO nie ma normalnego publicznego wykresu akcji.</div>
       </div>
+      <div class="news-radar">
+        <article class="news-live">
+          <div class="news-top">
+            <strong>SpaceX news watch</strong>
+            <span id="newsUpdated">Aktualizacja: teraz</span>
+          </div>
+          <div class="news-links">
+            <a class="news-link" href="https://news.google.com/search?q=SpaceX%20IPO%20OR%20Starlink%20IPO%20when%3A7d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">
+              <span class="news-icon">G</span>
+              <span><strong>Google News: SpaceX IPO</strong><span>Świeże newsy z ostatnich dni o IPO, wycenie, Starlinku i debiucie giełdowym.</span></span>
+            </a>
+            <a class="news-link" href="https://www.reuters.com/search/news?blob=SpaceX%20IPO%20Starlink" target="_blank" rel="noopener">
+              <span class="news-icon">R</span>
+              <span><strong>Reuters: SpaceX / Starlink</strong><span>Najbardziej konkretne komunikaty rynkowe, finansowanie, wyceny i przecieki transakcyjne.</span></span>
+            </a>
+            <a class="news-link" href="https://www.spacex.com/updates/" target="_blank" rel="noopener">
+              <span class="news-icon">S</span>
+              <span><strong>Oficjalne aktualizacje SpaceX</strong><span>Starty, Starship, Starlink, misje i komunikaty bezpośrednio od SpaceX.</span></span>
+            </a>
+            <a class="news-link" href="https://www.nasa.gov/news-release/?search=SpaceX" target="_blank" rel="noopener">
+              <span class="news-icon">N</span>
+              <span><strong>NASA: kontrakty i misje</strong><span>Informacje o współpracy SpaceX z NASA, misjach załogowych i kontraktach kosmicznych.</span></span>
+            </a>
+          </div>
+        </article>
+        <aside class="alert-box">
+          <h3>Alerty, które warto klikać</h3>
+          <p>Tu są gotowe wyszukiwania, które same pokazują najnowsze wyniki. Najważniejsze dla IPO: wycena, sprzedaż prywatnych akcji, Starlink, Starship i kontrakty rządowe.</p>
+          <div class="alert-tags">
+            <a href="https://news.google.com/search?q=SpaceX%20valuation%20tender%20offer%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">valuation</a>
+            <a href="https://news.google.com/search?q=SpaceX%20tender%20offer%20shares%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">tender offer</a>
+            <a href="https://news.google.com/search?q=Starlink%20IPO%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">Starlink IPO</a>
+            <a href="https://news.google.com/search?q=SpaceX%20Starship%20test%20flight%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">Starship</a>
+            <a href="https://news.google.com/search?q=SpaceX%20NASA%20contract%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">NASA contracts</a>
+            <a href="https://news.google.com/search?q=SpaceX%20FCC%20Starlink%20when%3A30d&hl=pl&gl=PL&ceid=PL%3Apl" target="_blank" rel="noopener">FCC / Starlink</a>
+          </div>
+        </aside>
+      </div>
     </section>
 
     <section class="section reveal">
@@ -1021,6 +1187,18 @@
       renderSectorWidget(active.dataset.symbol, active.dataset.name);
     }
 
+    function updateNewsTimestamp() {
+      const target = document.getElementById('newsUpdated');
+      if (!target) return;
+      const formatter = new Intl.DateTimeFormat('pl-PL', {
+        day: '2-digit',
+        month: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      target.textContent = `Aktualizacja: ${formatter.format(new Date())}`;
+    }
+
     async function loadCoinGecko() {
       const tickers = document.querySelectorAll('#cryptoTickers .ticker');
       try {
@@ -1054,6 +1232,7 @@
     updateProgress();
     setupChartTabs();
     setupSectorTabs();
+    updateNewsTimestamp();
     loadCoinGecko();
   </script>
 </body>
