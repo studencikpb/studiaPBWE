@@ -151,8 +151,8 @@
     }
 
     .quick {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(116px, 1fr));
       gap: 12px;
       margin-top: 28px;
     }
@@ -171,6 +171,77 @@
       text-decoration: none;
       font-weight: 900;
       box-shadow: 0 12px 26px rgba(0, 91, 170, 0.26);
+    }
+
+    .quick-card {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      min-height: 132px;
+      padding: 15px;
+      border: 1px solid rgba(0, 91, 170, 0.16);
+      color: #0b1a2f;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(240, 248, 255, 0.94));
+      box-shadow: 0 16px 34px rgba(7, 25, 47, 0.12);
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+    }
+
+    .quick-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 91, 170, 0.34);
+      box-shadow: 0 22px 42px rgba(7, 25, 47, 0.18);
+    }
+
+    .quick-card.primary {
+      color: #fff;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(111, 243, 255, 0.28), transparent 34%),
+        linear-gradient(145deg, #005baa, #123b72);
+    }
+
+    .quick-card .icon {
+      display: inline-grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 12px;
+      color: #005baa;
+      background: #e8f5ff;
+    }
+
+    .quick-card.primary .icon {
+      color: #061827;
+      background: #9df6ff;
+    }
+
+    .quick-card svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .quick-card strong {
+      display: block;
+      margin-top: 16px;
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .quick-card span:not(.icon) {
+      display: block;
+      margin-top: 5px;
+      color: #526579;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .quick-card.primary span:not(.icon) {
+      color: rgba(255, 255, 255, 0.78);
     }
 
     .quick a.secondary {
@@ -954,6 +1025,7 @@
 
     .footer {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       gap: 16px;
       margin-top: 22px;
@@ -964,6 +1036,29 @@
     .footer a {
       color: #fff;
       font-weight: 800;
+    }
+
+    .visit-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .visit-counter svg {
+      width: 18px;
+      height: 18px;
+      stroke: #9df6ff;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .reveal {
@@ -1046,6 +1141,10 @@
         grid-template-columns: 1fr;
       }
 
+      .quick {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .photo-slot.large {
         min-height: 260px;
       }
@@ -1053,6 +1152,12 @@
       .badge { white-space: normal; }
 
       .lesson { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .quick {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -1072,11 +1177,31 @@
         <h1>Materiały do zajęć</h1>
         <p class="lead">Wiedza w pigułce dla studentów zaocznych Elektroniki i Telekomunikacji. W jednym miejscu: plan zajęć, terminy zaliczeń, prowadzący oraz uporządkowane materiały do każdego przedmiotu.</p>
         <div class="quick">
-          <a class="pulse" href="#przedmioty">Wybierz przedmiot</a>
-          <a class="secondary" href="subject-niezawodnosc.html">Niezawodność</a>
-          <a class="ghost" href="#zaliczenia">Zaliczenia</a>
-          <a class="ghost" href="#plan">Plan zajęć</a>
-          <a class="ghost" href="assets/tz2_2.pdf">PDF planu</a>
+          <a class="quick-card primary" href="#przedmioty">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h7.5A2.5 2.5 0 0 1 14 9v10H6.5A2.5 2.5 0 0 1 4 16.5z"/><path d="M14 9a2.5 2.5 0 0 1 2.5-2.5H20v10A2.5 2.5 0 0 1 17.5 19H14z"/></svg></span>
+            <strong>Przedmioty</strong>
+            <span>Lista zajęć i prowadzących</span>
+          </a>
+          <a class="quick-card" href="#przedmioty">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h5l2 2h9v8.5A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M8 13h8M8 16h5"/></svg></span>
+            <strong>Materiały</strong>
+            <span>HTML, PDF i notatki w jednym miejscu</span>
+          </a>
+          <a class="quick-card" href="#zaliczenia">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v4M16 3v4M4 8h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2z"/><path d="m8 15 2 2 5-6"/></svg></span>
+            <strong>Zaliczenia</strong>
+            <span>Terminy, sesja i projekty</span>
+          </a>
+          <a class="quick-card" href="#plan">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+            <strong>Plan zajęć</strong>
+            <span>Szybki podgląd zjazdu</span>
+          </a>
+          <a class="quick-card" href="assets/tz2_2.pdf">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/><path d="M9 16h6M9 12h3"/></svg></span>
+            <strong>PDF planu</strong>
+            <span>Otwórz oryginalny dokument</span>
+          </a>
         </div>
       </div>
 
@@ -1423,6 +1548,10 @@
 
     <footer class="footer">
       <span>Strona startowa do materiałów HTML.</span>
+      <span class="visit-counter" title="Licznik otworzeń strony">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.5"/></svg>
+        <span><span id="visitCounterValue">...</span> otworzeń</span>
+      </span>
       <span>Logo: <a href="https://we.pb.edu.pl/">Wydział Elektryczny PB</a></span>
     </footer>
   </main>
@@ -1456,6 +1585,28 @@
       showSlide(0);
       start();
     };
+    const setupVisitCounter = () => {
+      const counter = document.getElementById('visitCounterValue');
+      if (!counter) return;
+      const storageKey = 'studiawepb-home-open-count';
+      let localCount = 1;
+      try {
+        localCount = Number(localStorage.getItem(storageKey) || '0') + 1;
+        localStorage.setItem(storageKey, String(localCount));
+      } catch (error) {
+        localCount = 1;
+      }
+      counter.textContent = localCount.toLocaleString('pl-PL');
+
+      fetch('https://api.countapi.xyz/hit/studiawepb.pl/homepage')
+        .then((response) => response.ok ? response.json() : Promise.reject())
+        .then((data) => {
+          if (typeof data.value === 'number') counter.textContent = data.value.toLocaleString('pl-PL');
+        })
+        .catch(() => {
+          counter.title = 'Lokalny licznik na tym urządzeniu';
+        });
+    };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -1469,6 +1620,7 @@
     window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
     setupHeroSlider();
+    setupVisitCounter();
   </script>
 </body>
 </html>
