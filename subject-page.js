@@ -164,7 +164,7 @@ const UPLOADED_MATERIALS = {
     ['NIESTACJ NiD 2026 cz1', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz1.pdf'],
     ['NIESTACJ NiD 2026 cz2', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz2.pdf'],
     ['NIESTACJ NiD 2026 cz3', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz3.pdf'],
-    ['Test — niezawodność i diagnostyka', 'Interaktywny test 150 pytań z losową kolejnością, sprawdzaniem odpowiedzi i wynikiem.', 'materials/niezawodnoscd/test_niezawodnosc_diagnostyka_150.html']
+    ['NIESTACJ NiD 2026 cz3', 'Interaktywny test 150 pytań z losową kolejnością, sprawdzaniem odpowiedzi i wynikiem.', 'materials/niezawodnoscd/test_niezawodnosc_diagnostyka_150.html']
   ],
   narzedzia: [
     ['Odpowiedzi zaliczenie NWK', 'Strona HTML z odpowiedziami do zaliczenia z narzędzi komputerowego wspomagania projektowania sieci telekomunikacyjnych.', 'materials/nkwpst/odpowiedzi_zaliczenie_nwk.html'],
