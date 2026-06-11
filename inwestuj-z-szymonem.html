@@ -293,13 +293,7 @@
     .ticker.up .change { color: #15803d; }
     .ticker.down .change { color: #b91c1c; }
 
-    .chart-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .chart-card {
+    .market-terminal {
       overflow: hidden;
       border: 1px solid #d8e2ee;
       border-radius: 14px;
@@ -307,17 +301,91 @@
       box-shadow: 0 14px 34px rgba(3,16,34,0.08);
     }
 
-    .chart-card h3 {
-      margin: 0;
+    .terminal-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
       padding: 16px 18px;
-      color: #07192f;
-      font-size: 20px;
       border-bottom: 1px solid #edf2f7;
+      background: linear-gradient(135deg, #fff, #f7fbff);
     }
 
-    .chart-frame {
-      height: 390px;
+    .terminal-title strong {
+      display: block;
+      color: #07192f;
+      font-size: 24px;
+    }
+
+    .terminal-title span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .terminal-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #725100;
+      background: #fff7db;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .asset-tabs {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid #edf2f7;
+      background: #fbfdff;
+    }
+
+    .asset-tab {
+      min-height: 54px;
+      padding: 10px 8px;
+      border: 1px solid #d8e2ee;
+      border-radius: 12px;
+      color: #0b1d34;
+      background: #fff;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .asset-tab:hover,
+    .asset-tab.active {
+      transform: translateY(-2px);
+      border-color: #facc15;
+      box-shadow: 0 12px 24px rgba(250,204,21,0.22);
+    }
+
+    .asset-tab span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .main-chart-frame {
+      height: min(68vh, 720px);
+      min-height: 560px;
       background: #f8fafc;
+    }
+
+    .chart-note {
+      padding: 12px 18px 16px;
+      color: var(--muted);
+      background: #fff;
+      font-size: 14px;
+      line-height: 1.45;
     }
 
     .watchlist-grid {
@@ -387,9 +455,21 @@
 
       .hero,
       .ticker-grid,
-      .chart-grid,
       .watchlist-grid {
         grid-template-columns: 1fr;
+      }
+
+      .terminal-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .asset-tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .main-chart-frame {
+        height: 560px;
       }
     }
   </style>
@@ -451,35 +531,29 @@
     <section id="wykresy" class="section reveal">
       <div class="section-head">
         <div>
-          <h2>Wykresy live</h2>
-          <p>Osadzone wykresy rynkowe. Dane mogą być opóźnione zależnie od dostawcy i instrumentu.</p>
+          <h2>Terminal wykresów live</h2>
+          <p>Jeden duży, czytelny wykres zamiast sześciu małych okien. Przełącz instrument przyciskami pod nagłówkiem.</p>
         </div>
       </div>
-      <div class="chart-grid">
-        <article class="chart-card">
-          <h3>Złoto / USD</h3>
-          <div class="chart-frame tradingview-widget-container" data-symbol="OANDA:XAUUSD"></div>
-        </article>
-        <article class="chart-card">
-          <h3>BTC / USDT</h3>
-          <div class="chart-frame tradingview-widget-container" data-symbol="BINANCE:BTCUSDT"></div>
-        </article>
-        <article class="chart-card">
-          <h3>S&P 500</h3>
-          <div class="chart-frame tradingview-widget-container" data-symbol="SP:SPX"></div>
-        </article>
-        <article class="chart-card">
-          <h3>Tesla</h3>
-          <div class="chart-frame tradingview-widget-container" data-symbol="NASDAQ:TSLA"></div>
-        </article>
-        <article class="chart-card">
-          <h3>NVIDIA</h3>
-          <div class="chart-frame tradingview-widget-container" data-symbol="NASDAQ:NVDA"></div>
-        </article>
-        <article class="chart-card">
-          <h3>Apple</h3>
-          <div class="chart-frame tradingview-widget-container" data-symbol="NASDAQ:AAPL"></div>
-        </article>
+      <div class="market-terminal">
+        <div class="terminal-top">
+          <div class="terminal-title">
+            <strong id="activeChartName">Złoto / USD</strong>
+            <span id="activeChartSymbol">OANDA:XAUUSD</span>
+          </div>
+          <span class="terminal-badge">Live widget · dane mogą być opóźnione</span>
+        </div>
+        <div class="asset-tabs" aria-label="Wybór instrumentu">
+          <button class="asset-tab active" type="button" data-symbol="OANDA:XAUUSD" data-name="Złoto / USD">GOLD<span>XAUUSD</span></button>
+          <button class="asset-tab" type="button" data-symbol="BINANCE:BTCUSDT" data-name="BTC / USDT">BTC<span>BTCUSDT</span></button>
+          <button class="asset-tab" type="button" data-symbol="AMEX:SPY" data-name="S&P 500 ETF">S&P 500<span>SPY</span></button>
+          <button class="asset-tab" type="button" data-symbol="NASDAQ:TSLA" data-name="Tesla">TESLA<span>TSLA</span></button>
+          <button class="asset-tab" type="button" data-symbol="NASDAQ:NVDA" data-name="NVIDIA">NVIDIA<span>NVDA</span></button>
+          <button class="asset-tab" type="button" data-symbol="NASDAQ:AAPL" data-name="Apple">APPLE<span>AAPL</span></button>
+          <button class="asset-tab" type="button" data-symbol="NASDAQ:MSFT" data-name="Microsoft">MSFT<span>MSFT</span></button>
+        </div>
+        <div id="mainChart" class="main-chart-frame tradingview-widget-container"></div>
+        <div class="chart-note">S&P 500 jest pokazany przez ETF SPY, bo ten symbol działa stabilnie w osadzonym widżecie i nie wywołuje komunikatu o niedostępności platformy.</div>
       </div>
     </section>
 
@@ -521,32 +595,50 @@
       });
     }, { threshold: 0.12 });
 
-    document.querySelectorAll('.reveal, .ticker, .chart-card, .watch-card').forEach((element, index) => {
+    document.querySelectorAll('.reveal, .ticker, .market-terminal, .watch-card').forEach((element, index) => {
       element.classList.add('reveal');
       element.style.transitionDelay = `${Math.min(index * 35, 260)}ms`;
       observer.observe(element);
     });
 
-    function renderTradingViewWidgets() {
-      document.querySelectorAll('.tradingview-widget-container').forEach((container) => {
-        const symbol = container.dataset.symbol;
-        const script = document.createElement('script');
-        script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-        script.async = true;
-        script.text = JSON.stringify({
-          autosize: true,
-          symbol,
-          interval: '60',
-          timezone: 'Europe/Warsaw',
-          theme: 'light',
-          style: '1',
-          locale: 'pl',
-          allow_symbol_change: true,
-          calendar: false,
-          support_host: 'https://www.tradingview.com'
-        });
-        container.appendChild(script);
+    function renderTradingViewWidget(symbol, name) {
+      const container = document.getElementById('mainChart');
+      document.getElementById('activeChartName').textContent = name;
+      document.getElementById('activeChartSymbol').textContent = symbol;
+      container.innerHTML = '';
+      const script = document.createElement('script');
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+      script.async = true;
+      script.text = JSON.stringify({
+        autosize: true,
+        symbol,
+        interval: '60',
+        timezone: 'Europe/Warsaw',
+        theme: 'light',
+        style: '1',
+        locale: 'pl',
+        allow_symbol_change: true,
+        calendar: false,
+        withdateranges: true,
+        hide_side_toolbar: false,
+        details: true,
+        hotlist: false,
+        support_host: 'https://www.tradingview.com'
       });
+      container.appendChild(script);
+    }
+
+    function setupChartTabs() {
+      const tabs = document.querySelectorAll('.asset-tab');
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((item) => item.classList.remove('active'));
+          tab.classList.add('active');
+          renderTradingViewWidget(tab.dataset.symbol, tab.dataset.name);
+        });
+      });
+      const active = document.querySelector('.asset-tab.active');
+      renderTradingViewWidget(active.dataset.symbol, active.dataset.name);
     }
 
     async function loadCoinGecko() {
@@ -580,7 +672,7 @@
 
     window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
-    renderTradingViewWidgets();
+    setupChartTabs();
     loadCoinGecko();
   </script>
 </body>
