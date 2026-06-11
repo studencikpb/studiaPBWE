@@ -165,6 +165,7 @@ const UPLOADED_MATERIALS = {
     ['NIESTACJ NiD 2026 cz3', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz3.pdf']
   ],
   narzedzia: [
+    ['Odpowiedzi zaliczenie NWK', 'Strona HTML z odpowiedziami do zaliczenia z narzędzi komputerowego wspomagania projektowania sieci telekomunikacyjnych.', 'materials/nkwpst/odpowiedzi_zaliczenie_nwk.html'],
     ['ArCADia-SIECI TELEKOMUNIKACYJNE Przyklad 1', 'Plik APF z folderu przedmiotu.', 'materials/nkwpst/ArCADia-SIECI TELEKOMUNIKACYJNE Przyklad 1.apf'],
     ['Narzedzia CAD PS TZ 2022', 'Materiał PDF z folderu przedmiotu.', 'materials/nkwpst/Narzedzia CAD_PS TZ 2022.pdf'],
     ['Łapy - miasto', 'Plik BAK z folderu przedmiotu.', 'materials/nkwpst/projekty do arcadii/Łapy - miasto.bak'],
