@@ -330,10 +330,29 @@
         radial-gradient(circle at 80% 12%, rgba(250,204,21,0.18), transparent 34%);
     }
 
+    .brand-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 58px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+    }
+
+    .brand-strip img {
+      display: block;
+      width: min(220px, 86%);
+      height: 42px;
+      object-fit: contain;
+    }
+
     .system-art svg {
       display: block;
       width: 100%;
-      height: 100%;
+      height: calc(100% - 66px);
     }
 
     .system-copy {
@@ -484,6 +503,7 @@
       <div class="system-grid">
         <a class="system-card" href="smart-home-savant.html">
           <div class="system-art">
+            <div class="brand-strip"><img src="assets/logo-savant.svg" alt="Savant"></div>
             <svg viewBox="0 0 360 220" role="img" aria-label="Savant visual">
               <rect x="28" y="24" width="304" height="172" rx="22" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.26)" stroke-width="2"/>
               <rect x="76" y="54" width="208" height="116" rx="18" fill="#07192f"/>
@@ -496,6 +516,7 @@
         </a>
         <a class="system-card" href="smart-home-control4.html">
           <div class="system-art">
+            <div class="brand-strip"><img src="assets/logo-control4.svg" alt="Control4"></div>
             <svg viewBox="0 0 360 220" role="img" aria-label="Control4 visual">
               <rect x="28" y="24" width="304" height="172" rx="22" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.26)" stroke-width="2"/>
               <rect x="86" y="52" width="188" height="118" rx="16" fill="#e7f6ff"/>
@@ -510,6 +531,7 @@
         </a>
         <a class="system-card" href="smart-home-lutron.html">
           <div class="system-art">
+            <div class="brand-strip"><img src="assets/logo-lutron.svg" alt="Lutron"></div>
             <svg viewBox="0 0 360 220" role="img" aria-label="Lutron visual">
               <rect x="28" y="24" width="304" height="172" rx="22" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.26)" stroke-width="2"/>
               <rect x="82" y="50" width="78" height="128" rx="16" fill="#e7f6ff"/>
