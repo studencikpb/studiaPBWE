@@ -157,7 +157,17 @@ const UPLOADED_MATERIALS = {
     ['11 - wyładowanie elektrostatyczne', 'Materiał PDF z folderu przedmiotu.', 'materials/kompatybilnosc/11 - wyładowanie elektrostatyczne.pdf'],
     ['12 - pomiar promieniowanych i przewodzonych zaburzeń elektromagnetycznych', 'Materiał PDF z folderu przedmiotu.', 'materials/kompatybilnosc/12 - pomiar promieniowanych i przewodzonych zaburzeń elektromagnetycznych.pdf'],
     ['13 - zjawiska falowe w liniach długich', 'Materiał PDF z folderu przedmiotu.', 'materials/kompatybilnosc/13 - zjawiska falowe w liniach długich.pdf'],
-    ['15 - kompatybilność elektromagnetyczna odbiorników telewizyjnych', 'Materiał PDF z folderu przedmiotu.', 'materials/kompatybilnosc/15 - kompatybilność elektromagnetyczna odbiorników telewizyjnych.pdf']
+    ['15 - kompatybilność elektromagnetyczna odbiorników telewizyjnych', 'Materiał PDF z folderu przedmiotu.', 'materials/kompatybilnosc/15 - kompatybilność elektromagnetyczna odbiorników telewizyjnych.pdf'],
+    ['KEM - program i zaliczanie', 'Wykład PDF z folderu przedmiotu.', 'materials/kompatybilnosc/wyklady/KEM-TZ2E200007_Program-Zaliczanie.pdf'],
+    ['KEM - sylabus', 'Wykład PDF z folderu przedmiotu.', 'materials/kompatybilnosc/wyklady/KEM-TZ2E200007_Sylabus.pdf'],
+    ['KEM 1', 'Wykład PDF z folderu przedmiotu.', 'materials/kompatybilnosc/wyklady/KEM_1.pdf'],
+    ['KEM 2,3', 'Wykład PDF z folderu przedmiotu.', 'materials/kompatybilnosc/wyklady/KEM_2,3.pdf'],
+    ['KEM 4', 'Wykład PDF z folderu przedmiotu.', 'materials/kompatybilnosc/wyklady/KEM_4.pdf'],
+    ['KEM 5', 'Wykład PDF z folderu przedmiotu.', 'materials/kompatybilnosc/wyklady/KEM_5.pdf'],
+    ['KEM - odporność: pole magnetyczne', 'Wykład PDF z folderu przedmiotu.', 'materials/kompatybilnosc/wyklady/KEM-odporność_Pole magnetyczne.pdf'],
+    ['KEM - odporność: przewodzone RF', 'Wykład PDF z folderu przedmiotu.', 'materials/kompatybilnosc/wyklady/KEM-odporność_Przewodzone indukowane przez pola RF.pdf'],
+    ['KEM - odporność: tłumione', 'Wykład PDF z folderu przedmiotu.', 'materials/kompatybilnosc/wyklady/KEM-odporność_Tłumione.pdf'],
+    ['KEM - odporność: udar/burst', 'Wykład PDF z folderu przedmiotu.', 'materials/kompatybilnosc/wyklady/KEM-odporność_Udar-Burst.pdf']
   ],
   niezawodnosc: [
     ['NIESTACJ NiD 2026 cz1', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz1.pdf'],
