@@ -12,8 +12,7 @@ const SUBJECTS = {
     materials: [
       ['Układ z blokami A-B-C', 'Przykład liczenia struktury z gałęzią górną i dolną.', 'reliability_q_logic.html'],
       ['Dekompozycja mostka', 'Metoda R oraz Q, zwarcie i rozwarcie elementów.', 'bridge_decomposition_guide.html'],
-      ['Dekompozycja tylko przez R', 'Pełne liczenie krok po kroku bez symbolu Q.', 'test_niezawodnosc_diagnostyka_150.html'],
-      ['Test', 'Interaktywny test 150 pytań z losową kolejnością, sprawdzaniem odpowiedzi i wynikiem.', 'materials/niezawodnoscd/test_niezawodnosc_diagnostyka_150.html']
+      ['Dekompozycja tylko przez R', 'Pełne liczenie krok po kroku bez symbolu Q.', 'bridge_decomposition_R_only.html']
     ]
   },
   technika_swiatlowodowa: {
@@ -164,7 +163,7 @@ const UPLOADED_MATERIALS = {
     ['NIESTACJ NiD 2026 cz1', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz1.pdf'],
     ['NIESTACJ NiD 2026 cz2', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz2.pdf'],
     ['NIESTACJ NiD 2026 cz3', 'Materiał PDF z folderu przedmiotu.', 'materials/niezawodnoscd/NIESTACJ_NiD_2026_cz3.pdf'],
-    ['TEST', 'Interaktywny test 150 pytań z losową kolejnością, sprawdzaniem odpowiedzi i wynikiem.', 'materials/niezawodnoscd/test_niezawodnosc_diagnostyka_150.html']
+    ['Test 150 pytań', 'Interaktywny test 150 pytań z losową kolejnością, sprawdzaniem odpowiedzi i wynikiem.', 'materials/niezawodnoscd/test_niezawodnosc_diagnostyka_150.html']
   ],
   narzedzia: [
     ['Odpowiedzi zaliczenie NWK', 'Strona HTML z odpowiedziami do zaliczenia z narzędzi komputerowego wspomagania projektowania sieci telekomunikacyjnych.', 'materials/nkwpst/odpowiedzi_zaliczenie_nwk.html'],
@@ -214,20 +213,28 @@ Object.entries(UPLOADED_MATERIALS).forEach(([key, files]) => {
   if (SUBJECTS[key]) SUBJECTS[key].materials = [...SUBJECTS[key].materials, ...files];
 });
 
+function materialIcon(href) {
+  const clean = href.split('?')[0].toLowerCase();
+  if (clean.endsWith('.pdf')) return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/><path d="M9 15h6M9 18h4"/></svg>';
+  if (clean.endsWith('.html')) return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="m10 9-3 3 3 3M14 9l3 3-3 3"/></svg>';
+  if (clean.endsWith('.ppt') || clean.endsWith('.pptx')) return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h5"/><path d="M9 17v-3h3a1.5 1.5 0 0 1 0 3z"/></svg>';
+  if (clean.endsWith('.doc') || clean.endsWith('.docx')) return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 16h6M9 19h3"/></svg>';
+  if (clean.endsWith('.jpg') || clean.endsWith('.jpeg') || clean.endsWith('.png') || clean.endsWith('.webp')) return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><circle cx="9" cy="10" r="1.5"/><path d="m7 17 4-4 3 3 2-2 2 3"/></svg>';
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/><path d="M9 14h6M9 17h4"/></svg>';
+}
+
 function pageTemplate(subject) {
   const materials = subject.materials.length
     ? subject.materials.map(([title, description, href]) => `
-        <article class="material">
+        <a class="material" href="${href}" target="_blank" rel="noopener" title="${description}">
+          <span class="material-icon">${materialIcon(href)}</span>
           <h3>${title}</h3>
-          <p>${description}</p>
-          <a href="${href}">Otwórz materiał</a>
-        </article>
+        </a>
       `).join('')
     : `
         <article class="material">
+          <span class="material-icon">${materialIcon('material.pdf')}</span>
           <h3>Materiały w przygotowaniu</h3>
-          <p>To miejsce jest gotowe na kolejne pliki HTML, PDF, notatki albo opracowania.</p>
-          <span class="placeholder">Dodaj następny materiał</span>
         </article>
       `;
 

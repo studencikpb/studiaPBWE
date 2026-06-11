@@ -1,1 +1,104 @@
-
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test HTML - niezawodność</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #0f172a;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(40,169,224,.22), transparent 34%),
+        linear-gradient(135deg, #07192f, #123f6c);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    main {
+      width: min(980px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 34px 0;
+    }
+    .card {
+      padding: clamp(26px, 5vw, 52px);
+      border: 1px solid rgba(255,255,255,.26);
+      border-radius: 20px;
+      background: rgba(255,255,255,.96);
+      box-shadow: 0 28px 70px rgba(2,10,22,.28);
+    }
+    .eyebrow {
+      margin: 0 0 14px;
+      color: #005baa;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 7vw, 72px);
+      line-height: .96;
+    }
+    p {
+      max-width: 720px;
+      color: #526070;
+      font-size: 18px;
+      line-height: 1.55;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+    .tile {
+      min-height: 120px;
+      padding: 16px;
+      border: 1px solid #d9e3ef;
+      border-radius: 14px;
+      background: #fff;
+    }
+    .tile strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #08172b;
+      font-size: 18px;
+    }
+    .tile span {
+      color: #64748b;
+      line-height: 1.4;
+    }
+    a {
+      display: inline-flex;
+      margin-top: 28px;
+      min-height: 42px;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #fff;
+      background: #005baa;
+      text-decoration: none;
+      font-weight: 900;
+    }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card">
+      <p class="eyebrow">Materiał testowy HTML</p>
+      <h1>Test strony materiału</h1>
+      <p>Ta strona sprawdza, czy materiały HTML poprawnie otwierają się z poziomu przedmiotu „Niezawodność i diagnostyka”. Można ją później zastąpić właściwym opracowaniem.</p>
+      <div class="grid">
+        <div class="tile"><strong>Link działa</strong><span>Plik jest podpięty w kafelkach materiałów.</span></div>
+        <div class="tile"><strong>HTML działa</strong><span>Strona renderuje się jako normalny dokument.</span></div>
+        <div class="tile"><strong>Gotowe na treść</strong><span>Można tu wkleić właściwy test albo notatki.</span></div>
+      </div>
+      <a href="../subject-niezawodnosc.html">Wróć do niezawodności</a>
+    </section>
+  </main>
+</body>
+</html>
