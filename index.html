@@ -222,6 +222,79 @@
       margin-bottom: 0;
     }
 
+    .hero-slider {
+      position: relative;
+      z-index: 1;
+      min-height: 486px;
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(18px);
+      transition: opacity 520ms ease, transform 520ms ease;
+    }
+
+    .hero-slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .hero-slide h2 {
+      margin: 0;
+    }
+
+    .hero-slide p {
+      margin: 14px 0 0;
+    }
+
+    .slide-link {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 40px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+      padding: 10px 13px;
+      border-radius: 10px;
+      color: #07192f;
+      background: #e7f6ff;
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .slider-dots {
+      position: absolute;
+      z-index: 3;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .slider-dot {
+      width: 10px;
+      height: 10px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(231,246,255,0.42);
+      cursor: pointer;
+      transition: width 220ms ease, background 220ms ease;
+    }
+
+    .slider-dot.active {
+      width: 34px;
+      background: #fff;
+    }
+
     .circuit {
       position: relative;
       z-index: 1;
@@ -368,7 +441,7 @@
 
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
       gap: 18px;
       margin-top: 24px;
     }
@@ -376,18 +449,6 @@
     .feature-grid .investment-teaser,
     .feature-grid .data-center-teaser {
       margin-top: 0;
-    }
-
-    .feature-grid .investment-card,
-    .feature-grid .data-center-card {
-      grid-template-columns: 1fr;
-    }
-
-    .feature-grid .investment-chart-logo,
-    .feature-grid .data-center-logo {
-      justify-self: end;
-      width: min(190px, 100%);
-      margin-top: -8px;
     }
 
     .investment-card {
@@ -998,32 +1059,85 @@
         </div>
       </div>
 
-      <aside class="panel float-in">
-        <h2>Światłowodowy przepływ wiedzy</h2>
-        <p>Plan, zaliczenia i materiały płyną jednym torem, żeby szybko wejść w temat przed zjazdem, laboratorium albo egzaminem.</p>
-        <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowany przepływ światłowodowy">
-          <defs>
-            <style>
-              .fiber-bg { fill: rgba(255,255,255,0.07); stroke: rgba(231,246,255,0.26); stroke-width: 2; }
-            </style>
-            <clipPath id="fiberClip">
-              <rect x="48" y="34" width="524" height="268" rx="28"/>
-            </clipPath>
-          </defs>
-          <rect class="fiber-bg" x="48" y="34" width="524" height="268" rx="28"/>
-          <g clip-path="url(#fiberClip)">
-            <path class="fiber-strand" stroke="#38d9ff" d="M58 228C145 92 238 96 318 188S474 276 562 90"/>
-            <path class="fiber-strand" stroke="#9df6ff" d="M58 148C150 70 226 264 322 162S470 76 562 206"/>
-            <path class="fiber-strand" stroke="#ffffff" d="M58 198C148 282 232 86 318 188S462 286 562 146"/>
-            <path class="fiber-pulse" d="M58 228C145 92 238 96 318 188S474 276 562 90"/>
-            <path class="fiber-pulse two" d="M58 148C150 70 226 264 322 162S470 76 562 206"/>
-            <path class="fiber-pulse three" d="M58 198C148 282 232 86 318 188S462 286 562 146"/>
-          </g>
-          <circle class="fiber-orb" cx="146" cy="114" r="9"/>
-          <circle class="fiber-orb" cx="318" cy="188" r="13"/>
-          <circle class="fiber-orb" cx="482" cy="254" r="9"/>
-          <text class="fiber-label" x="76" y="282">PLAN · MATERIAŁY · ZALICZENIA</text>
-        </svg>
+      <aside class="panel float-in" aria-label="Polecane sekcje">
+        <div class="hero-slider" id="heroSlider">
+          <article class="hero-slide active">
+            <h2>Światłowodowy przepływ wiedzy</h2>
+            <p>Plan, zaliczenia i materiały płyną jednym torem, żeby szybko wejść w temat przed zjazdem, laboratorium albo egzaminem.</p>
+            <a class="slide-link" href="#przedmioty">Przejdź do materiałów</a>
+            <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowany przepływ światłowodowy">
+              <defs>
+                <style>
+                  .fiber-bg { fill: rgba(255,255,255,0.07); stroke: rgba(231,246,255,0.26); stroke-width: 2; }
+                </style>
+                <clipPath id="fiberClip">
+                  <rect x="48" y="34" width="524" height="268" rx="28"/>
+                </clipPath>
+              </defs>
+              <rect class="fiber-bg" x="48" y="34" width="524" height="268" rx="28"/>
+              <g clip-path="url(#fiberClip)">
+                <path class="fiber-strand" stroke="#38d9ff" d="M58 228C145 92 238 96 318 188S474 276 562 90"/>
+                <path class="fiber-strand" stroke="#9df6ff" d="M58 148C150 70 226 264 322 162S470 76 562 206"/>
+                <path class="fiber-strand" stroke="#ffffff" d="M58 198C148 282 232 86 318 188S462 286 562 146"/>
+                <path class="fiber-pulse" d="M58 228C145 92 238 96 318 188S474 276 562 90"/>
+                <path class="fiber-pulse two" d="M58 148C150 70 226 264 322 162S470 76 562 206"/>
+                <path class="fiber-pulse three" d="M58 198C148 282 232 86 318 188S462 286 562 146"/>
+              </g>
+              <circle class="fiber-orb" cx="146" cy="114" r="9"/>
+              <circle class="fiber-orb" cx="318" cy="188" r="13"/>
+              <circle class="fiber-orb" cx="482" cy="254" r="9"/>
+              <text class="fiber-label" x="76" y="282">PLAN · MATERIAŁY · ZALICZENIA</text>
+            </svg>
+          </article>
+
+          <article class="hero-slide">
+            <h2>Inwestuj z Szymonem</h2>
+            <p>Złoto, BTC, S&P 500, największe spółki i watchlisty sektorowe w jednym panelu do szybkiego podglądu rynku.</p>
+            <a class="slide-link" href="inwestuj-z-szymonem.html">Otwórz inwestycje</a>
+            <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowany wykres inwestycyjny">
+              <defs>
+                <linearGradient id="heroMoneyLine" x1="0" x2="1">
+                  <stop offset="0" stop-color="#6ff3ff"/>
+                  <stop offset="1" stop-color="#facc15"/>
+                </linearGradient>
+              </defs>
+              <rect x="54" y="42" width="512" height="250" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(231,246,255,0.26)" stroke-width="2"/>
+              <path d="M92 238H526M92 184H526M92 130H526M92 76H526" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+              <path d="M104 236L172 198L236 212L306 128L376 152L486 82" fill="none" stroke="url(#heroMoneyLine)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="fiber-pulse" d="M104 236L172 198L236 212L306 128L376 152L486 82"/>
+              <circle class="server-light" cx="486" cy="82" r="14" fill="#facc15"/>
+              <text class="fiber-label" x="92" y="292">GOLD · BTC · SP500 · AI</text>
+            </svg>
+          </article>
+
+          <article class="hero-slide">
+            <h2>Dwa Huberty o Data center</h2>
+            <p>Serwerownie pod cloud i AI: zasilanie, GPU, chłodzenie, światłowody, bezpieczeństwo i infrastruktura usług online.</p>
+            <a class="slide-link" href="data-center-huberty.html">Otwórz data center</a>
+            <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowane data center">
+              <rect x="54" y="42" width="512" height="250" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(231,246,255,0.26)" stroke-width="2"/>
+              <path d="M98 256H520M126 210H492M154 164H464" stroke="rgba(255,255,255,0.13)" stroke-width="2"/>
+              <rect x="132" y="88" width="74" height="142" rx="10" fill="#e7f6ff"/>
+              <rect x="254" y="76" width="86" height="166" rx="10" fill="#9bdcff"/>
+              <rect x="388" y="88" width="74" height="142" rx="10" fill="#e7f6ff"/>
+              <path d="M146 118H192M146 150H192M146 182H192M270 116H324M270 150H324M270 184H324M402 118H448M402 150H448M402 182H448" stroke="#07192f" stroke-width="8" stroke-linecap="round" opacity="0.78"/>
+              <circle class="server-light" cx="154" cy="214" r="6" fill="#22c55e"/>
+              <circle class="server-light delay-a" cx="178" cy="214" r="6" fill="#facc15"/>
+              <circle class="server-light delay-b" cx="282" cy="226" r="6" fill="#22c55e"/>
+              <circle class="server-light" cx="310" cy="226" r="6" fill="#facc15"/>
+              <circle class="server-light delay-a" cx="412" cy="214" r="6" fill="#22c55e"/>
+              <circle class="server-light delay-b" cx="436" cy="214" r="6" fill="#facc15"/>
+              <path class="data-pulse" d="M96 282C176 268 224 286 304 270C384 254 426 276 526 252" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+              <text class="fiber-label" x="92" y="304">POWER · COOLING · NETWORK · GPU</text>
+            </svg>
+          </article>
+
+          <div class="slider-dots" aria-label="Wybór slajdu">
+            <button class="slider-dot active" type="button" aria-label="Światłowodowy przepływ wiedzy"></button>
+            <button class="slider-dot" type="button" aria-label="Inwestuj z Szymonem"></button>
+            <button class="slider-dot" type="button" aria-label="Dwa Huberty o Data center"></button>
+          </div>
+        </div>
       </aside>
     </section>
 
@@ -1257,6 +1371,30 @@
       const max = document.documentElement.scrollHeight - window.innerHeight;
       progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
     };
+    const setupHeroSlider = () => {
+      const slides = Array.from(document.querySelectorAll('.hero-slide'));
+      const dots = Array.from(document.querySelectorAll('.slider-dot'));
+      if (!slides.length || !dots.length) return;
+      let index = 0;
+      let timer;
+      const showSlide = (nextIndex) => {
+        index = (nextIndex + slides.length) % slides.length;
+        slides.forEach((slide, slideIndex) => slide.classList.toggle('active', slideIndex === index));
+        dots.forEach((dot, dotIndex) => dot.classList.toggle('active', dotIndex === index));
+      };
+      const start = () => {
+        clearInterval(timer);
+        timer = setInterval(() => showSlide(index + 1), 3000);
+      };
+      dots.forEach((dot, dotIndex) => {
+        dot.addEventListener('click', () => {
+          showSlide(dotIndex);
+          start();
+        });
+      });
+      showSlide(0);
+      start();
+    };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -1269,6 +1407,7 @@
     });
     window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
+    setupHeroSlider();
   </script>
 </body>
 </html>
