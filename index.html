@@ -276,6 +276,7 @@
 
     .cards,
     .exams,
+    .investment-teaser,
     .resources,
     .gallery,
     .schedule,
@@ -340,12 +341,64 @@
     }
 
     .exams,
+    .investment-teaser,
     .resources,
     .gallery,
     .schedule,
     .subjects {
       padding: 28px;
       color: #102033;
+    }
+
+    .investment-teaser {
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(7, 25, 47, 0.97), rgba(0, 91, 170, 0.92)),
+        radial-gradient(circle at 85% 12%, rgba(40,169,224,0.34), transparent 34%);
+      color: #fff;
+    }
+
+    .investment-card {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 24px;
+      align-items: center;
+      min-height: 230px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .investment-card h2 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(30px, 4.8vw, 56px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .investment-card p {
+      max-width: 690px;
+      margin: 16px 0 0;
+      color: #d8ecff;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .investment-card .open {
+      display: inline-flex;
+      width: fit-content;
+      margin-top: 24px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: #07192f;
+      background: #e7f6ff;
+      font-weight: 900;
+    }
+
+    .investment-chart-logo {
+      width: min(220px, 100%);
+      height: auto;
+      filter: drop-shadow(0 22px 34px rgba(0,0,0,0.28));
     }
 
     .resources {
@@ -803,6 +856,7 @@
       .hero,
       .cards,
       .exam-grid,
+      .investment-card,
       .resource-grid,
       .photo-grid,
       .schedule-grid,
@@ -993,6 +1047,32 @@
           <span>Zdjęcia schematów, wykresów, układów i najważniejszych fragmentów wykładów.</span>
         </article>
       </div>
+    </section>
+
+    <section id="inwestuj" class="investment-teaser reveal">
+      <a class="investment-card" href="inwestuj-z-szymonem.html">
+        <div>
+          <p class="eyebrow">Rynek · wykresy · obserwacje</p>
+          <h2>Inwestuj z Szymonem</h2>
+          <p>Nie bądź głupi, pomnażaj ciężko zarobioną kasę. Złoto, BTC, S&P 500 i największe spółki w jednym miejscu do szybkiego podglądu.</p>
+          <span class="open">Otwórz panel inwestycyjny</span>
+        </div>
+        <svg class="investment-chart-logo" viewBox="0 0 260 210" role="img" aria-label="Wykres inwestycyjny">
+          <defs>
+            <linearGradient id="moneyLine" x1="0" x2="1">
+              <stop offset="0" stop-color="#6ff3ff"/>
+              <stop offset="1" stop-color="#facc15"/>
+            </linearGradient>
+          </defs>
+          <rect x="18" y="18" width="224" height="174" rx="22" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+          <path d="M42 154H222M42 116H222M42 78H222" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+          <path d="M48 152L80 134L112 142L144 96L176 108L214 54" fill="none" stroke="url(#moneyLine)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="214" cy="54" r="11" fill="#facc15"/>
+          <path d="M54 160L84 126L114 138L144 90L176 102L218 48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+          <text x="48" y="50" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="18" font-weight="900">+23.7%</text>
+          <text x="48" y="181" fill="#d8ecff" font-family="Arial, sans-serif" font-size="13" font-weight="900">GOLD · BTC · SP500</text>
+        </svg>
+      </a>
     </section>
 
     <section id="linki-we" class="resources reveal">

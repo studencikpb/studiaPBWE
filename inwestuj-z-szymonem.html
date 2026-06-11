@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inwestuj z Szymonem - panel rynkowy</title>
+  <style>
+    :root {
+      --accent: #facc15;
+      --accent-2: #6ff3ff;
+      --bg-a: #07192f;
+      --bg-b: #0f3d61;
+      --ink: #111827;
+      --muted: #68788a;
+      --paper: rgba(255,255,255,0.94);
+      --line: rgba(255,255,255,0.22);
+      --shadow: 0 28px 70px rgba(3, 16, 34, 0.26);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 12%, rgba(250,204,21,0.24), transparent 30%),
+        radial-gradient(circle at 88% 8%, rgba(111,243,255,0.28), transparent 34%),
+        linear-gradient(135deg, var(--bg-a), var(--bg-b));
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.15;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.35) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.35) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(180deg, #000 0%, transparent 86%);
+    }
+
+    .progress {
+      position: fixed;
+      z-index: 30;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 20px rgba(111,243,255,0.72);
+    }
+
+    .shell {
+      position: relative;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 26px 0 44px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 0 34px;
+      color: #fff;
+    }
+
+    .topbar img {
+      display: block;
+      width: min(270px, 58vw);
+      height: auto;
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .market-card,
+    .section {
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-card {
+      padding: clamp(26px, 4vw, 46px);
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: #a16207;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #08172b;
+      font-size: clamp(38px, 5.8vw, 72px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: #42536a;
+      font-size: 19px;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #07192f;
+      background: var(--accent);
+      text-decoration: none;
+      font-weight: 900;
+      box-shadow: 0 12px 26px rgba(250,204,21,0.28);
+    }
+
+    .button.secondary {
+      color: #0d4f88;
+      background: #f4faff;
+      box-shadow: none;
+    }
+
+    .market-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      color: #fff;
+      background:
+        linear-gradient(145deg, rgba(7,25,47,0.95), rgba(9,60,90,0.92)),
+        radial-gradient(circle at 30% 18%, rgba(250,204,21,0.22), transparent 40%);
+    }
+
+    .market-card h2,
+    .market-card p,
+    .market-svg {
+      position: relative;
+      z-index: 1;
+    }
+
+    .market-card h2 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+    }
+
+    .market-card p {
+      color: #d8ecff;
+      line-height: 1.5;
+    }
+
+    .market-svg {
+      width: 100%;
+      height: auto;
+      margin-top: 14px;
+      filter: drop-shadow(0 18px 28px rgba(0,0,0,0.26));
+    }
+
+    .market-line {
+      fill: none;
+      stroke: url(#marketGradient);
+      stroke-width: 9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 720;
+      animation: drawLine 3.2s ease-in-out infinite;
+    }
+
+    .disclaimer {
+      margin-top: 24px;
+      padding: 18px;
+      border: 1px solid rgba(250,204,21,0.34);
+      border-radius: 14px;
+      color: #513c06;
+      background: #fff7db;
+      line-height: 1.5;
+      font-weight: 800;
+    }
+
+    .section {
+      margin-top: 24px;
+      padding: 28px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: #08172b;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 620px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .ticker-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .ticker {
+      min-height: 112px;
+      padding: 18px;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 14px 34px rgba(3,16,34,0.08);
+    }
+
+    .ticker strong {
+      display: block;
+      color: #0b1d34;
+      font-size: 18px;
+    }
+
+    .ticker .price {
+      display: block;
+      margin-top: 12px;
+      color: #005baa;
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .ticker .change {
+      display: block;
+      margin-top: 4px;
+      color: #68788a;
+      font-weight: 800;
+    }
+
+    .ticker.up .change { color: #15803d; }
+    .ticker.down .change { color: #b91c1c; }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .chart-card {
+      overflow: hidden;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 14px 34px rgba(3,16,34,0.08);
+    }
+
+    .chart-card h3 {
+      margin: 0;
+      padding: 16px 18px;
+      color: #07192f;
+      font-size: 20px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .chart-frame {
+      height: 390px;
+      background: #f8fafc;
+    }
+
+    .watchlist-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .watch-card {
+      padding: 16px;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 14px 34px rgba(3,16,34,0.08);
+    }
+
+    .watch-card strong {
+      display: block;
+      color: #0b1d34;
+      font-size: 19px;
+    }
+
+    .watch-card span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 22px;
+      color: #d8ecff;
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes drawLine {
+      0% { stroke-dashoffset: 720; }
+      55%, 100% { stroke-dashoffset: 0; }
+    }
+
+    @media (max-width: 900px) {
+      .topbar,
+      .footer,
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero,
+      .ticker-grid,
+      .chart-grid,
+      .watchlist-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <main class="shell">
+    <nav class="topbar">
+      <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny Politechniki Białostockiej">
+      <a class="home-link" href="index.html">Strona główna</a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-card reveal">
+        <p class="eyebrow">Panel rynkowy · edukacyjnie</p>
+        <h1>Inwestuj z Szymonem</h1>
+        <p class="lead">Szybki pulpit do obserwowania złota, BTC, indeksu S&P 500 oraz kilku największych spółek technologicznych. Zero magii, dużo wykresów i zdrowy dystans do rynku.</p>
+        <div class="actions">
+          <a class="button" href="#wykresy">Wykresy live</a>
+          <a class="button secondary" href="#ceny">CoinGecko API</a>
+        </div>
+        <div class="disclaimer">To nie jest porada inwestycyjna ani rekomendacja kupna lub sprzedaży. Materiały mają charakter edukacyjny i informacyjny. Inwestowanie wiąże się z ryzykiem utraty kapitału.</div>
+      </div>
+
+      <aside class="market-card reveal">
+        <h2>Nie zgaduj. Obserwuj trend.</h2>
+        <p>Rynki potrafią być brutalne, dlatego najpierw patrzymy na dane, wykres i ryzyko.</p>
+        <svg class="market-svg" viewBox="0 0 520 310" aria-hidden="true">
+          <defs>
+            <linearGradient id="marketGradient" x1="0" x2="1">
+              <stop offset="0" stop-color="#6ff3ff"/>
+              <stop offset="0.55" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#facc15"/>
+            </linearGradient>
+          </defs>
+          <rect x="24" y="28" width="472" height="238" rx="24" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+          <path d="M58 220H462M58 168H462M58 116H462M58 64H462" stroke="rgba(255,255,255,0.13)" stroke-width="2"/>
+          <path class="market-line" d="M60 218L112 184L164 198L216 120L268 146L320 92L372 108L460 54"/>
+          <circle cx="460" cy="54" r="12" fill="#facc15"/>
+          <text x="58" y="252" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="18" font-weight="900">GOLD · BTC · SP500 · TSLA · NVDA</text>
+        </svg>
+      </aside>
+    </section>
+
+    <section id="ceny" class="section reveal">
+      <div class="section-head">
+        <div>
+          <h2>Ceny z CoinGecko API</h2>
+          <p>Aktualne wartości pobierane w przeglądarce z publicznego API CoinGecko. Jeśli API chwilowo limituje zapytania, kafle pokażą status błędu.</p>
+        </div>
+      </div>
+      <div class="ticker-grid" id="cryptoTickers">
+        <article class="ticker"><strong>Bitcoin</strong><span class="price">Ładowanie...</span><span class="change">BTC / USD</span></article>
+        <article class="ticker"><strong>Ethereum</strong><span class="price">Ładowanie...</span><span class="change">ETH / USD</span></article>
+        <article class="ticker"><strong>Tether</strong><span class="price">Ładowanie...</span><span class="change">USDT / USD</span></article>
+      </div>
+    </section>
+
+    <section id="wykresy" class="section reveal">
+      <div class="section-head">
+        <div>
+          <h2>Wykresy live</h2>
+          <p>Osadzone wykresy rynkowe. Dane mogą być opóźnione zależnie od dostawcy i instrumentu.</p>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <article class="chart-card">
+          <h3>Złoto / USD</h3>
+          <div class="chart-frame tradingview-widget-container" data-symbol="OANDA:XAUUSD"></div>
+        </article>
+        <article class="chart-card">
+          <h3>BTC / USDT</h3>
+          <div class="chart-frame tradingview-widget-container" data-symbol="BINANCE:BTCUSDT"></div>
+        </article>
+        <article class="chart-card">
+          <h3>S&P 500</h3>
+          <div class="chart-frame tradingview-widget-container" data-symbol="SP:SPX"></div>
+        </article>
+        <article class="chart-card">
+          <h3>Tesla</h3>
+          <div class="chart-frame tradingview-widget-container" data-symbol="NASDAQ:TSLA"></div>
+        </article>
+        <article class="chart-card">
+          <h3>NVIDIA</h3>
+          <div class="chart-frame tradingview-widget-container" data-symbol="NASDAQ:NVDA"></div>
+        </article>
+        <article class="chart-card">
+          <h3>Apple</h3>
+          <div class="chart-frame tradingview-widget-container" data-symbol="NASDAQ:AAPL"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-head">
+        <div>
+          <h2>Największe spółki do obserwacji</h2>
+          <p>Lista startowa do codziennego przeglądu. Dołożymy kolejne spółki, jeśli chcesz mieć szerszą watchlistę.</p>
+        </div>
+      </div>
+      <div class="watchlist-grid">
+        <article class="watch-card"><strong>NVDA</strong><span>NVIDIA - AI, GPU, centra danych.</span></article>
+        <article class="watch-card"><strong>MSFT</strong><span>Microsoft - chmura, AI, software.</span></article>
+        <article class="watch-card"><strong>AAPL</strong><span>Apple - hardware, usługi, ekosystem.</span></article>
+        <article class="watch-card"><strong>AMZN</strong><span>Amazon - AWS, e-commerce, logistyka.</span></article>
+        <article class="watch-card"><strong>GOOGL</strong><span>Alphabet - reklama, AI, cloud.</span></article>
+        <article class="watch-card"><strong>META</strong><span>Meta - reklama, social, AI.</span></article>
+        <article class="watch-card"><strong>TSLA</strong><span>Tesla - EV, energia, wysoka zmienność.</span></article>
+        <article class="watch-card"><strong>BRK.B</strong><span>Berkshire Hathaway - konglomerat Buffetta.</span></article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Panel edukacyjny. To nie jest porada inwestycyjna.</span>
+      <span>Źródła: CoinGecko API, widgety rynkowe, BullionVault/TradingView jako podgląd rynku.</span>
+    </footer>
+  </main>
+
+  <script>
+    const progressBar = document.getElementById('progressBar');
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .ticker, .chart-card, .watch-card').forEach((element, index) => {
+      element.classList.add('reveal');
+      element.style.transitionDelay = `${Math.min(index * 35, 260)}ms`;
+      observer.observe(element);
+    });
+
+    function renderTradingViewWidgets() {
+      document.querySelectorAll('.tradingview-widget-container').forEach((container) => {
+        const symbol = container.dataset.symbol;
+        const script = document.createElement('script');
+        script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+        script.async = true;
+        script.text = JSON.stringify({
+          autosize: true,
+          symbol,
+          interval: '60',
+          timezone: 'Europe/Warsaw',
+          theme: 'light',
+          style: '1',
+          locale: 'pl',
+          allow_symbol_change: true,
+          calendar: false,
+          support_host: 'https://www.tradingview.com'
+        });
+        container.appendChild(script);
+      });
+    }
+
+    async function loadCoinGecko() {
+      const tickers = document.querySelectorAll('#cryptoTickers .ticker');
+      try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd&include_24hr_change=true');
+        if (!response.ok) throw new Error('CoinGecko API error');
+        const data = await response.json();
+        const rows = [
+          ['bitcoin', 'Bitcoin'],
+          ['ethereum', 'Ethereum'],
+          ['tether', 'Tether']
+        ];
+        rows.forEach(([id], index) => {
+          const item = data[id];
+          const card = tickers[index];
+          const price = item.usd.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: id === 'tether' ? 4 : 2 });
+          const change = item.usd_24h_change || 0;
+          card.classList.toggle('up', change >= 0);
+          card.classList.toggle('down', change < 0);
+          card.querySelector('.price').textContent = price;
+          card.querySelector('.change').textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}% / 24h`;
+        });
+      } catch (error) {
+        tickers.forEach((card) => {
+          card.querySelector('.price').textContent = 'Brak danych';
+          card.querySelector('.change').textContent = 'CoinGecko chwilowo niedostępne';
+        });
+      }
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+    renderTradingViewWidgets();
+    loadCoinGecko();
+  </script>
+</body>
+</html>
