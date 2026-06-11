@@ -1588,23 +1588,15 @@
     const setupVisitCounter = () => {
       const counter = document.getElementById('visitCounterValue');
       if (!counter) return;
-      const storageKey = 'studiawepb-home-open-count';
-      let localCount = 1;
-      try {
-        localCount = Number(localStorage.getItem(storageKey) || '0') + 1;
-        localStorage.setItem(storageKey, String(localCount));
-      } catch (error) {
-        localCount = 1;
-      }
-      counter.textContent = localCount.toLocaleString('pl-PL');
-
-      fetch('https://api.countapi.xyz/hit/studiawepb.pl/homepage')
+      counter.textContent = '...';
+      fetch('https://api.counterapi.dev/v1/studiawepb/homepage/up', { cache: 'no-store' })
         .then((response) => response.ok ? response.json() : Promise.reject())
         .then((data) => {
-          if (typeof data.value === 'number') counter.textContent = data.value.toLocaleString('pl-PL');
+          if (typeof data.count === 'number') counter.textContent = data.count.toLocaleString('pl-PL');
         })
         .catch(() => {
-          counter.title = 'Lokalny licznik na tym urządzeniu';
+          counter.textContent = 'offline';
+          counter.title = 'Globalny licznik jest chwilowo niedostępny';
         });
     };
     const observer = new IntersectionObserver((entries) => {
