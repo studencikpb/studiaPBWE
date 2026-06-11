@@ -103,6 +103,7 @@
     .hero-main,
     .panel,
     .exams,
+    .data-center-teaser,
     .resources,
     .gallery,
     .schedule,
@@ -277,6 +278,7 @@
     .cards,
     .exams,
     .investment-teaser,
+    .data-center-teaser,
     .resources,
     .gallery,
     .schedule,
@@ -342,6 +344,7 @@
 
     .exams,
     .investment-teaser,
+    .data-center-teaser,
     .resources,
     .gallery,
     .schedule,
@@ -356,6 +359,30 @@
         linear-gradient(145deg, rgba(7, 25, 47, 0.97), rgba(0, 91, 170, 0.92)),
         radial-gradient(circle at 85% 12%, rgba(40,169,224,0.34), transparent 34%);
       color: #fff;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .feature-grid .investment-teaser,
+    .feature-grid .data-center-teaser {
+      margin-top: 0;
+    }
+
+    .feature-grid .investment-card,
+    .feature-grid .data-center-card {
+      grid-template-columns: 1fr;
+    }
+
+    .feature-grid .investment-chart-logo,
+    .feature-grid .data-center-logo {
+      justify-self: end;
+      width: min(190px, 100%);
+      margin-top: -8px;
     }
 
     .investment-card {
@@ -395,10 +422,68 @@
       font-weight: 900;
     }
 
-    .investment-chart-logo {
+    .investment-chart-logo,
+    .data-center-logo {
       width: min(220px, 100%);
       height: auto;
       filter: drop-shadow(0 22px 34px rgba(0,0,0,0.28));
+    }
+
+    .data-center-teaser {
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(4, 37, 48, 0.97), rgba(0, 91, 170, 0.9)),
+        radial-gradient(circle at 80% 16%, rgba(111,243,255,0.32), transparent 34%);
+      color: #fff;
+    }
+
+    .data-center-card {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 24px;
+      align-items: center;
+      min-height: 230px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .data-center-card h2 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(30px, 4.6vw, 52px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .data-center-card p {
+      max-width: 690px;
+      margin: 16px 0 0;
+      color: #d8ecff;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .data-center-card .open {
+      display: inline-flex;
+      width: fit-content;
+      margin-top: 24px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: #07192f;
+      background: #e7f6ff;
+      font-weight: 900;
+    }
+
+    .server-light {
+      animation: serverBlink 1.8s ease-in-out infinite;
+    }
+
+    .server-light.delay-a { animation-delay: -0.45s; }
+    .server-light.delay-b { animation-delay: -0.95s; }
+
+    .data-pulse {
+      stroke-dasharray: 18 170;
+      animation: rackPulse 2.4s linear infinite;
     }
 
     .resources {
@@ -844,6 +929,15 @@
       50% { transform: translateY(-14px); opacity: 1; }
     }
 
+    @keyframes serverBlink {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes rackPulse {
+      to { stroke-dashoffset: -188; }
+    }
+
     @media (max-width: 900px) {
       .topbar,
       .footer,
@@ -856,6 +950,8 @@
       .cards,
       .exam-grid,
       .investment-card,
+      .data-center-card,
+      .feature-grid,
       .resource-grid,
       .photo-grid,
       .schedule-grid,
@@ -1035,31 +1131,68 @@
       </div>
     </section>
 
-    <section id="inwestuj" class="investment-teaser reveal">
-      <a class="investment-card" href="inwestuj-z-szymonem.html">
-        <div>
-          <p class="eyebrow">Rynek · wykresy · obserwacje</p>
-          <h2>Inwestuj z Szymonem</h2>
-          <p>Nie bądź głupi, pomnażaj ciężko zarobioną kasę. Złoto, BTC, S&P 500 i największe spółki w jednym miejscu do szybkiego podglądu.</p>
-          <span class="open">Otwórz panel inwestycyjny</span>
-        </div>
-        <svg class="investment-chart-logo" viewBox="0 0 260 210" role="img" aria-label="Wykres inwestycyjny">
-          <defs>
-            <linearGradient id="moneyLine" x1="0" x2="1">
-              <stop offset="0" stop-color="#6ff3ff"/>
-              <stop offset="1" stop-color="#facc15"/>
-            </linearGradient>
-          </defs>
-          <rect x="18" y="18" width="224" height="174" rx="22" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
-          <path d="M42 154H222M42 116H222M42 78H222" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
-          <path d="M48 152L80 134L112 142L144 96L176 108L214 54" fill="none" stroke="url(#moneyLine)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="214" cy="54" r="11" fill="#facc15"/>
-          <path d="M54 160L84 126L114 138L144 90L176 102L218 48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
-          <text x="48" y="50" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="18" font-weight="900">+23.7%</text>
-          <text x="48" y="181" fill="#d8ecff" font-family="Arial, sans-serif" font-size="13" font-weight="900">GOLD · BTC · SP500</text>
-        </svg>
-      </a>
-    </section>
+    <div class="feature-grid">
+      <section id="inwestuj" class="investment-teaser reveal">
+        <a class="investment-card" href="inwestuj-z-szymonem.html">
+          <div>
+            <p class="eyebrow">Rynek · wykresy · obserwacje</p>
+            <h2>Inwestuj z Szymonem</h2>
+            <p>Nie bądź głupi, pomnażaj ciężko zarobioną kasę. Złoto, BTC, S&P 500 i największe spółki w jednym miejscu do szybkiego podglądu.</p>
+            <span class="open">Otwórz panel inwestycyjny</span>
+          </div>
+          <svg class="investment-chart-logo" viewBox="0 0 260 210" role="img" aria-label="Wykres inwestycyjny">
+            <defs>
+              <linearGradient id="moneyLine" x1="0" x2="1">
+                <stop offset="0" stop-color="#6ff3ff"/>
+                <stop offset="1" stop-color="#facc15"/>
+              </linearGradient>
+            </defs>
+            <rect x="18" y="18" width="224" height="174" rx="22" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+            <path d="M42 154H222M42 116H222M42 78H222" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <path d="M48 152L80 134L112 142L144 96L176 108L214 54" fill="none" stroke="url(#moneyLine)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="214" cy="54" r="11" fill="#facc15"/>
+            <path d="M54 160L84 126L114 138L144 90L176 102L218 48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+            <text x="48" y="50" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="18" font-weight="900">+23.7%</text>
+            <text x="48" y="181" fill="#d8ecff" font-family="Arial, sans-serif" font-size="13" font-weight="900">GOLD · BTC · SP500</text>
+          </svg>
+        </a>
+      </section>
+
+      <section id="data-center" class="data-center-teaser reveal">
+        <a class="data-center-card" href="data-center-huberty.html">
+          <div>
+            <p class="eyebrow">Cloud · AI · infrastruktura</p>
+            <h2>Dwa Huberty powiedzą ci wszystko o Data center</h2>
+            <p>Jak buduje się serwerownie pod chmurę, AI, GPU, sieci, chłodzenie, zasilanie i bezpieczeństwo usług online.</p>
+            <span class="open">Otwórz data center</span>
+          </div>
+          <svg class="data-center-logo" viewBox="0 0 260 210" role="img" aria-label="Ikona data center">
+            <defs>
+              <linearGradient id="rackFill" x1="0" x2="1">
+                <stop offset="0" stop-color="#e7f6ff"/>
+                <stop offset="1" stop-color="#6ff3ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="18" y="18" width="224" height="174" rx="22" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+            <path d="M58 55H202M58 105H202M58 155H202" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <rect x="58" y="46" width="54" height="118" rx="8" fill="url(#rackFill)" opacity="0.95"/>
+            <rect x="124" y="46" width="54" height="118" rx="8" fill="rgba(231,246,255,0.92)"/>
+            <rect x="64" y="62" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <rect x="64" y="86" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <rect x="64" y="110" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <rect x="130" y="62" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <rect x="130" y="86" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <rect x="130" y="110" width="42" height="10" rx="3" fill="#07192f" opacity="0.82"/>
+            <circle class="server-light" cx="72" cy="144" r="5" fill="#facc15"/>
+            <circle class="server-light delay-a" cx="92" cy="144" r="5" fill="#22c55e"/>
+            <circle class="server-light delay-b" cx="138" cy="144" r="5" fill="#facc15"/>
+            <circle class="server-light" cx="158" cy="144" r="5" fill="#22c55e"/>
+            <path class="data-pulse" d="M36 181C78 184 92 178 116 171C144 163 164 171 224 180" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+            <text x="54" y="34" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="13" font-weight="900">AI CLOUD CORE</text>
+          </svg>
+        </a>
+      </section>
+    </div>
 
     <section id="linki-we" class="resources reveal">
       <div class="section-head">
@@ -1124,7 +1257,7 @@
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal, .card, .exam-item, .resource-card, .photo-slot, .day, .subject').forEach((element, index) => {
+    document.querySelectorAll('.reveal, .card, .exam-item, .resource-card, .photo-slot, .day, .subject, .investment-teaser, .data-center-teaser').forEach((element, index) => {
       element.classList.add('reveal');
       element.style.transitionDelay = `${Math.min(index * 35, 260)}ms`;
       observer.observe(element);
