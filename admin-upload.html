@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dodaj materiał - PB WE</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --blue: #005baa;
+      --ink: #07192f;
+      --muted: #53657c;
+      --line: rgba(0, 91, 170, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 72% 10%, rgba(40, 169, 224, 0.32), transparent 32%),
+        linear-gradient(135deg, #07192f, #123f6c);
+      background-size: 56px 56px, 56px 56px, auto, auto;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+      color: #fff;
+    }
+
+    .topbar img { width: 190px; max-width: 48vw; }
+
+    .back {
+      color: #e7f6ff;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      border-radius: 999px;
+      padding: 10px 16px;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 0.72fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .card {
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(241, 248, 255, 0.94));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.26);
+      overflow: hidden;
+    }
+
+    .intro {
+      padding: clamp(28px, 5vw, 54px);
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 6vw, 72px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 22px 0 0;
+      color: #405168;
+      font-size: 20px;
+      line-height: 1.55;
+    }
+
+    .notice {
+      margin-top: 24px;
+      padding: 16px 18px;
+      border: 1px solid rgba(0, 91, 170, 0.18);
+      border-radius: 16px;
+      color: #24415f;
+      background: #eef7ff;
+      line-height: 1.55;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+      padding: clamp(22px, 4vw, 34px);
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      color: #173151;
+      font-weight: 900;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid #cddceb;
+      border-radius: 12px;
+      padding: 11px 13px;
+      color: var(--ink);
+      background: #fff;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #43566d;
+      font-weight: 800;
+    }
+
+    .check input {
+      width: 18px;
+      min-height: 18px;
+    }
+
+    button {
+      min-height: 52px;
+      border: 0;
+      border-radius: 14px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(111, 243, 255, 0.34), transparent 34%),
+        linear-gradient(145deg, #005baa, #123f6c);
+      font: inherit;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 0 18px 34px rgba(0, 91, 170, 0.28);
+    }
+
+    button:disabled {
+      opacity: 0.62;
+      cursor: wait;
+    }
+
+    .status {
+      min-height: 48px;
+      border-radius: 14px;
+      padding: 13px 15px;
+      color: #38506b;
+      background: #f6f9fc;
+      line-height: 1.45;
+    }
+
+    .status.ok {
+      color: #14532d;
+      background: #dcfce7;
+    }
+
+    .status.err {
+      color: #7f1d1d;
+      background: #fee2e2;
+    }
+
+    .preview {
+      display: grid;
+      place-items: center;
+      min-height: 100%;
+      padding: 28px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 68% 20%, rgba(111, 243, 255, 0.22), transparent 32%),
+        linear-gradient(145deg, rgba(7, 25, 47, 0.98), rgba(0, 91, 170, 0.9));
+    }
+
+    .upload-visual {
+      width: min(320px, 100%);
+      filter: drop-shadow(0 26px 40px rgba(0, 0, 0, 0.22));
+    }
+
+    .preview p {
+      max-width: 360px;
+      margin: 22px 0 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 16px;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav class="topbar">
+      <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny PB">
+      <a class="back" href="index.html">Strona główna</a>
+    </nav>
+
+    <section class="hero">
+      <div class="card intro">
+        <p class="eyebrow">Panel materiałów</p>
+        <h1>Dodaj plik na stronę</h1>
+        <p class="lead">Wrzucasz PDF, HTML, zdjęcie albo inny materiał, wybierasz przedmiot lub galerię i plik pojawia się na stronie jak reszta materiałów.</p>
+        <div class="notice">Token GitHuba wpisujesz tylko tutaj w przeglądarce. Nie jest zapisany w kodzie strony. Token musi mieć dostęp do repozytorium i uprawnienie <strong>Contents: Read and write</strong>.</div>
+      </div>
+
+      <div class="card preview">
+        <svg class="upload-visual" viewBox="0 0 420 320" role="img" aria-label="Dodawanie materiałów">
+          <defs>
+            <linearGradient id="screen" x1="0" x2="1">
+              <stop offset="0" stop-color="#e7f6ff"/>
+              <stop offset="1" stop-color="#9df6ff"/>
+            </linearGradient>
+          </defs>
+          <rect x="40" y="44" width="340" height="220" rx="28" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.36)" stroke-width="3"/>
+          <rect x="80" y="86" width="112" height="126" rx="14" fill="url(#screen)"/>
+          <rect x="214" y="92" width="126" height="20" rx="8" fill="rgba(255,255,255,0.72)"/>
+          <rect x="214" y="130" width="88" height="16" rx="7" fill="rgba(255,255,255,0.48)"/>
+          <rect x="214" y="162" width="104" height="16" rx="7" fill="rgba(255,255,255,0.48)"/>
+          <path d="M136 188V118" fill="none" stroke="#005baa" stroke-width="12" stroke-linecap="round"/>
+          <path d="M106 148l30-30 30 30" fill="none" stroke="#005baa" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M116 226h188" stroke="#fff" stroke-width="9" stroke-linecap="round" opacity="0.9"/>
+          <circle cx="314" cy="226" r="13" fill="#facc15"/>
+        </svg>
+        <p>Panel zapisuje plik oraz aktualizuje listę materiałów na gałęzi <strong>main</strong> i <strong>gh-pages</strong>, więc po chwili powinno być widoczne publicznie.</p>
+      </div>
+    </section>
+
+    <form class="card" id="uploadForm">
+      <div class="row">
+        <label>
+          Token GitHub
+          <input id="token" type="password" autocomplete="off" placeholder="github_pat_...">
+        </label>
+        <label>
+          Co dodajesz?
+          <select id="mode">
+            <option value="material">Materiał do przedmiotu</option>
+            <option value="gallery">Zdjęcie do galerii</option>
+          </select>
+        </label>
+      </div>
+
+      <label id="subjectWrap">
+        Przedmiot
+        <select id="subject">
+          <option value="niezawodnosc">Niezawodność i diagnostyka</option>
+          <option value="technika_swiatlowodowa">Technika światłowodowa i fotonika 2</option>
+          <option value="kompatybilnosc">Kompatybilność elektromagnetyczna</option>
+          <option value="budownictwo">Budownictwo telekomunikacyjne</option>
+          <option value="sieci_swiatlowodowe">Projektowanie światłowodowych sieci telekomunikacyjnych</option>
+          <option value="narzedzia">Narzędzia komputerowego wspomagania projektowania sieci telekomunikacyjnych</option>
+          <option value="bezpieczenstwo">Bezpieczeństwo systemów informacyjnych</option>
+          <option value="zarzadzanie">Zarządzanie sieciami i usługami w systemach komunikacji elektronicznej</option>
+          <option value="teleinformacyjne">Projektowanie sieci teleinformacyjnych</option>
+          <option value="uklady_cyfrowe">Programowalne układy cyfrowe 2</option>
+        </select>
+      </label>
+
+      <div class="row">
+        <label>
+          Tytuł kafelka
+          <input id="title" type="text" placeholder="np. Wykład 1 - notatki" required>
+        </label>
+        <label>
+          Plik
+          <input id="file" type="file" required>
+        </label>
+      </div>
+
+      <label>
+        Krótki opis
+        <textarea id="description" placeholder="Krótki opis widoczny w galerii albo jako podpowiedź przy materiale."></textarea>
+      </label>
+
+      <label class="check">
+        <input id="remember" type="checkbox">
+        Zapamiętaj token na tym komputerze
+      </label>
+
+      <button id="submitBtn" type="submit">Wyślij na stronę</button>
+      <div class="status" id="status">Gotowe do wrzucenia pliku.</div>
+    </form>
+  </main>
+
+  <script>
+    const OWNER = 'studencikpb';
+    const REPO = 'studiaPBWE';
+    const BRANCHES = ['main', 'gh-pages'];
+    const tokenInput = document.getElementById('token');
+    const rememberInput = document.getElementById('remember');
+    const modeInput = document.getElementById('mode');
+    const subjectWrap = document.getElementById('subjectWrap');
+    const statusBox = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+
+    const savedToken = localStorage.getItem('pbweGithubToken');
+    if (savedToken) {
+      tokenInput.value = savedToken;
+      rememberInput.checked = true;
+    }
+
+    modeInput.addEventListener('change', () => {
+      subjectWrap.style.display = modeInput.value === 'gallery' ? 'none' : 'grid';
+    });
+
+    function setStatus(message, type = '') {
+      statusBox.className = `status ${type}`;
+      statusBox.textContent = message;
+    }
+
+    function slugify(value) {
+      const map = { ą: 'a', ć: 'c', ę: 'e', ł: 'l', ń: 'n', ó: 'o', ś: 's', ż: 'z', ź: 'z' };
+      return value.toLowerCase()
+        .replace(/[ąćęłńóśżź]/g, (char) => map[char] || char)
+        .replace(/[^a-z0-9._-]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '') || 'plik';
+    }
+
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const bytes = new Uint8Array(reader.result);
+          let binary = '';
+          const chunk = 0x8000;
+          for (let index = 0; index < bytes.length; index += chunk) {
+            binary += String.fromCharCode(...bytes.subarray(index, index + chunk));
+          }
+          resolve(btoa(binary));
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    function decodeContent(content) {
+      return JSON.parse(decodeURIComponent(escape(atob(content.replace(/\n/g, '')))));
+    }
+
+    function encodeJson(data) {
+      return btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2) + '\n')));
+    }
+
+    async function github(path, token, options = {}) {
+      const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}${path}`, {
+        ...options,
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${token}`,
+          'X-GitHub-Api-Version': '2022-11-28',
+          ...(options.headers || {})
+        }
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`GitHub ${response.status}: ${text.slice(0, 220)}`);
+      }
+      return response.json();
+    }
+
+    async function getContent(path, branch, token) {
+      try {
+        return await github(`/contents/${encodeURI(path)}?ref=${encodeURIComponent(branch)}`, token);
+      } catch (error) {
+        if (String(error.message).includes('GitHub 404')) return null;
+        throw error;
+      }
+    }
+
+    async function putContent(path, branch, token, content, message, sha) {
+      return github(`/contents/${encodeURI(path)}`, token, {
+        method: 'PUT',
+        body: JSON.stringify({ message, content, branch, sha })
+      });
+    }
+
+    async function loadData(branch, token) {
+      const file = await getContent('site-data.json', branch, token);
+      if (!file) return { data: { materials: {}, gallery: [] }, sha: null };
+      return { data: decodeContent(file.content), sha: file.sha };
+    }
+
+    async function uploadToBranch(branch, token, payload) {
+      const currentFile = await getContent(payload.filePath, branch, token);
+      await putContent(payload.filePath, branch, token, payload.fileBase64, payload.message, currentFile?.sha);
+
+      const { data, sha } = await loadData(branch, token);
+      data.materials = data.materials && typeof data.materials === 'object' ? data.materials : {};
+      data.gallery = Array.isArray(data.gallery) ? data.gallery : [];
+
+      if (payload.mode === 'gallery') {
+        data.gallery.push({
+          title: payload.title,
+          description: payload.description || 'Zdjęcie dodane przez panel materiałów.',
+          href: payload.filePath
+        });
+      } else {
+        if (!Array.isArray(data.materials[payload.subject])) data.materials[payload.subject] = [];
+        data.materials[payload.subject].push([
+          payload.title,
+          payload.description || 'Materiał dodany przez panel.',
+          payload.filePath
+        ]);
+      }
+
+      await putContent('site-data.json', branch, token, encodeJson(data), payload.message, sha);
+    }
+
+    document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const token = tokenInput.value.trim();
+      const mode = modeInput.value;
+      const subject = document.getElementById('subject').value;
+      const title = document.getElementById('title').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const file = document.getElementById('file').files[0];
+
+      if (!token || !title || !file) {
+        setStatus('Uzupełnij token, tytuł i wybierz plik.', 'err');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      setStatus('Wysyłam plik do GitHuba...');
+
+      try {
+        if (rememberInput.checked) localStorage.setItem('pbweGithubToken', token);
+        else localStorage.removeItem('pbweGithubToken');
+
+        const safeName = `${Date.now()}-${slugify(file.name)}`;
+        const filePath = mode === 'gallery'
+          ? `assets/gallery/uploads/${safeName}`
+          : `materials/${subject}/uploads/${safeName}`;
+        const fileBase64 = await toBase64(file);
+        const payload = {
+          mode,
+          subject,
+          title,
+          description,
+          filePath,
+          fileBase64,
+          message: mode === 'gallery' ? `Dodaj zdjęcie: ${title}` : `Dodaj materiał: ${title}`
+        };
+
+        for (const branch of BRANCHES) {
+          setStatus(`Aktualizuję gałąź ${branch}...`);
+          await uploadToBranch(branch, token, payload);
+        }
+
+        setStatus(`Gotowe. Dodano: ${title}. Odśwież stronę za kilkanaście sekund, jeśli GitHub Pages jeszcze buduje cache.`, 'ok');
+        event.target.reset();
+        if (rememberInput.checked) {
+          rememberInput.checked = true;
+          tokenInput.value = token;
+        }
+      } catch (error) {
+        setStatus(`Nie udało się wrzucić pliku: ${error.message}`, 'err');
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

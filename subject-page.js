@@ -223,6 +223,20 @@ Object.entries(UPLOADED_MATERIALS).forEach(([key, files]) => {
   if (SUBJECTS[key]) SUBJECTS[key].materials = [...SUBJECTS[key].materials, ...files];
 });
 
+async function loadSiteData() {
+  try {
+    const response = await fetch(`site-data.json?v=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) return { materials: {}, gallery: [] };
+    const data = await response.json();
+    return {
+      materials: data.materials && typeof data.materials === 'object' ? data.materials : {},
+      gallery: Array.isArray(data.gallery) ? data.gallery : []
+    };
+  } catch (error) {
+    return { materials: {}, gallery: [] };
+  }
+}
+
 function materialIcon(href) {
   const clean = href.split('?')[0].toLowerCase();
   if (clean.endsWith('.pdf')) return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/><path d="M9 15h6M9 18h4"/></svg>';
@@ -305,32 +319,43 @@ function pageTemplate(subject) {
   `;
 }
 
-const key = document.body.dataset.subject;
-const subject = SUBJECTS[key] || SUBJECTS.niezawodnosc;
-document.documentElement.style.setProperty('--accent', subject.accent);
-document.documentElement.style.setProperty('--accent-2', subject.accent2);
-document.documentElement.style.setProperty('--bg-a', subject.bgA);
-document.documentElement.style.setProperty('--bg-b', subject.bgB);
-document.title = `${subject.title} - materiały PB WE`;
-document.body.innerHTML = pageTemplate(subject);
+async function initPage() {
+  const key = document.body.dataset.subject;
+  const baseSubject = SUBJECTS[key] || SUBJECTS.niezawodnosc;
+  const subject = { ...baseSubject, materials: [...baseSubject.materials] };
+  const siteData = await loadSiteData();
 
-const progressBar = document.getElementById('progressBar');
-const updateProgress = () => {
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
-};
+  if (Array.isArray(siteData.materials[key])) {
+    subject.materials = [...subject.materials, ...siteData.materials[key]];
+  }
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) entry.target.classList.add('visible');
+  document.documentElement.style.setProperty('--accent', subject.accent);
+  document.documentElement.style.setProperty('--accent-2', subject.accent2);
+  document.documentElement.style.setProperty('--bg-a', subject.bgA);
+  document.documentElement.style.setProperty('--bg-b', subject.bgB);
+  document.title = `${subject.title} - materiały PB WE`;
+  document.body.innerHTML = pageTemplate(subject);
+
+  const progressBar = document.getElementById('progressBar');
+  const updateProgress = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal, .material, .detail').forEach((element, index) => {
+    element.classList.add('reveal');
+    element.style.transitionDelay = `${Math.min(index * 45, 260)}ms`;
+    observer.observe(element);
   });
-}, { threshold: 0.12 });
 
-document.querySelectorAll('.reveal, .material, .detail').forEach((element, index) => {
-  element.classList.add('reveal');
-  element.style.transitionDelay = `${Math.min(index * 45, 260)}ms`;
-  observer.observe(element);
-});
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+}
 
-window.addEventListener('scroll', updateProgress, { passive: true });
-updateProgress();
+initPage();

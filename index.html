@@ -152,7 +152,7 @@
 
     .quick {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
       margin-top: 24px;
       max-width: 100%;
@@ -215,6 +215,18 @@
     .quick-card.primary .icon {
       color: #061827;
       background: #9df6ff;
+    }
+
+    .quick-card.upload-card {
+      color: #fff;
+      background:
+        radial-gradient(circle at 80% 18%, rgba(255, 255, 255, 0.28), transparent 32%),
+        linear-gradient(145deg, #0f766e, #005baa);
+    }
+
+    .quick-card.upload-card .icon {
+      color: #06251f;
+      background: #b7fff1;
     }
 
     .quick-card svg {
@@ -1264,6 +1276,11 @@
             <strong>PDF planu</strong>
             <span>Otwórz oryginalny dokument</span>
           </a>
+          <a class="quick-card upload-card" href="admin-upload.html">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></span>
+            <strong>Dodaj plik</strong>
+            <span>Materiały i zdjęcia</span>
+          </a>
         </div>
       </div>
 
@@ -1661,6 +1678,33 @@
           counter.title = 'Globalny licznik jest chwilowo niedostępny';
         });
     };
+    const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    }[char]));
+    const setupExtraGallery = () => {
+      const grid = document.querySelector('.photo-grid');
+      if (!grid) return;
+      fetch(`site-data.json?v=${Date.now()}`, { cache: 'no-store' })
+        .then((response) => response.ok ? response.json() : null)
+        .then((data) => {
+          const items = Array.isArray(data?.gallery) ? data.gallery : [];
+          items.forEach((item) => {
+            if (!item.href) return;
+            const article = document.createElement('article');
+            article.className = 'photo-slot reveal visible';
+            article.innerHTML = `
+              <img src="${escapeHtml(item.href)}" alt="${escapeHtml(item.title || 'Zdjęcie galerii')}">
+              <span class="photo-caption"><strong>${escapeHtml(item.title || 'Zdjęcie')}</strong><span>${escapeHtml(item.description || 'Dodane przez panel materiałów.')}</span></span>
+            `;
+            grid.appendChild(article);
+          });
+        })
+        .catch(() => {});
+    };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -1675,6 +1719,7 @@
     updateProgress();
     setupHeroSlider();
     setupVisitCounter();
+    setupExtraGallery();
   </script>
 </body>
 </html>
