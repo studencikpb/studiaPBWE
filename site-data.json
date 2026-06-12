@@ -20,5 +20,11 @@
       ]
     ]
   },
-  "gallery": []
+  "gallery": [
+    {
+      "title": "Mapa",
+      "description": "Mapa Kampusu",
+      "href": "assets/gallery/uploads/1781299781562-screenshot-2026-06-12-at-23.29.06.heic"
+    }
+  ]
 }
