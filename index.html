@@ -506,6 +506,7 @@
     .investment-teaser {
       position: relative;
       overflow: hidden;
+      padding: 24px;
       background:
         linear-gradient(90deg, rgba(250,204,21,0.34) 0 8px, transparent 8px),
         linear-gradient(135deg, #111827 0%, #164e63 55%, #0f766e 100%);
@@ -528,10 +529,10 @@
     .investment-card {
       position: relative;
       display: grid;
-      grid-template-columns: 1fr 230px;
-      gap: 24px;
+      grid-template-columns: minmax(0, 1fr) 210px;
+      gap: 30px;
       align-items: center;
-      min-height: 230px;
+      min-height: 210px;
       color: #fff;
       text-decoration: none;
     }
@@ -544,35 +545,37 @@
       inset: 18px;
       pointer-events: none;
       border: 1px solid rgba(255,255,255,0.11);
-      border-radius: 14px;
+      border-radius: 12px;
       opacity: 0.75;
     }
 
     .investment-card h2 {
       margin: 0;
       color: #fff;
-      font-size: clamp(32px, 4vw, 52px);
-      line-height: 1.04;
+      max-width: 900px;
+      font-size: clamp(28px, 3.2vw, 46px);
+      line-height: 1.08;
       letter-spacing: 0;
     }
 
     .investment-card p {
-      max-width: 690px;
-      margin: 16px 0 0;
+      max-width: 760px;
+      margin: 14px 0 0;
       color: #d8ecff;
-      font-size: 18px;
-      line-height: 1.5;
+      font-size: 16px;
+      line-height: 1.45;
     }
 
     .investment-card .open {
       display: inline-flex;
       width: fit-content;
-      margin-top: 24px;
-      padding: 11px 14px;
+      margin-top: 20px;
+      padding: 10px 13px;
       border-radius: 10px;
       color: #07192f;
       background: #fef3c7;
       font-weight: 900;
+      font-size: 15px;
       box-shadow: 0 12px 26px rgba(0,0,0,0.16);
     }
 
@@ -594,11 +597,12 @@
     .investment-chart-logo,
     .data-center-logo,
     .smart-home-logo {
-      width: min(220px, 100%);
+      width: min(205px, 100%);
       height: auto;
-      padding: 14px;
+      justify-self: end;
+      padding: 12px;
       border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 18px;
+      border-radius: 16px;
       background: rgba(255,255,255,0.12);
       filter: drop-shadow(0 22px 34px rgba(0,0,0,0.28));
     }
@@ -606,6 +610,7 @@
     .data-center-teaser {
       position: relative;
       overflow: hidden;
+      padding: 24px;
       background:
         linear-gradient(90deg, rgba(96,165,250,0.42) 0 8px, transparent 8px),
         linear-gradient(135deg, #101827 0%, #312e81 52%, #1d4ed8 100%);
@@ -615,6 +620,7 @@
     .smart-home-teaser {
       position: relative;
       overflow: hidden;
+      padding: 24px;
       background:
         linear-gradient(90deg, rgba(134,239,172,0.42) 0 8px, transparent 8px),
         linear-gradient(135deg, #13251c 0%, #166534 54%, #15803d 100%);
@@ -625,10 +631,10 @@
     .smart-home-card {
       position: relative;
       display: grid;
-      grid-template-columns: 1fr 230px;
-      gap: 24px;
+      grid-template-columns: minmax(0, 1fr) 210px;
+      gap: 30px;
       align-items: center;
-      min-height: 230px;
+      min-height: 210px;
       color: #fff;
       text-decoration: none;
     }
@@ -637,30 +643,32 @@
     .smart-home-card h2 {
       margin: 0;
       color: #fff;
-      font-size: clamp(32px, 4vw, 50px);
-      line-height: 1.04;
+      max-width: 920px;
+      font-size: clamp(28px, 3.2vw, 44px);
+      line-height: 1.08;
       letter-spacing: 0;
     }
 
     .data-center-card p,
     .smart-home-card p {
-      max-width: 690px;
-      margin: 16px 0 0;
+      max-width: 760px;
+      margin: 14px 0 0;
       color: #d8ecff;
-      font-size: 18px;
-      line-height: 1.5;
+      font-size: 16px;
+      line-height: 1.45;
     }
 
     .data-center-card .open,
     .smart-home-card .open {
       display: inline-flex;
       width: fit-content;
-      margin-top: 24px;
-      padding: 11px 14px;
+      margin-top: 20px;
+      padding: 10px 13px;
       border-radius: 10px;
       color: #07192f;
       background: #e7f6ff;
       font-weight: 900;
+      font-size: 15px;
       box-shadow: 0 12px 26px rgba(0,0,0,0.16);
     }
 
@@ -1193,6 +1201,19 @@
       .badge { white-space: normal; }
 
       .lesson { grid-template-columns: 1fr; }
+
+      .investment-chart-logo,
+      .data-center-logo,
+      .smart-home-logo {
+        justify-self: start;
+        width: min(190px, 100%);
+      }
+
+      .investment-card h2,
+      .data-center-card h2,
+      .smart-home-card h2 {
+        font-size: clamp(28px, 7vw, 40px);
+      }
     }
 
     @media (max-width: 640px) {
