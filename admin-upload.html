@@ -268,16 +268,9 @@
     <form class="card" id="uploadForm">
       <div class="row">
         <label>
-          Adres API
-          <input id="apiUrl" type="url" value="https://studiawepb-api.calabraaa.workers.dev" required>
-        </label>
-        <label>
           Hasło admina
           <input id="password" type="password" autocomplete="off" placeholder="Hasło z Cloudflare Worker" required>
         </label>
-      </div>
-
-      <div class="row">
         <label>
           Co dodajesz?
           <select id="mode">
@@ -321,7 +314,7 @@
 
       <label class="check">
         <input id="remember" type="checkbox">
-        Zapamiętaj adres API i hasło na tym komputerze
+        Zapamiętaj hasło na tym komputerze
       </label>
 
       <button id="submitBtn" type="submit">Wyślij na stronę</button>
@@ -330,7 +323,7 @@
   </main>
 
   <script>
-    const apiUrlInput = document.getElementById('apiUrl');
+    const API_URL = 'https://studiawepb-api.calabraaa.workers.dev';
     const passwordInput = document.getElementById('password');
     const rememberInput = document.getElementById('remember');
     const modeInput = document.getElementById('mode');
@@ -338,12 +331,7 @@
     const statusBox = document.getElementById('status');
     const submitBtn = document.getElementById('submitBtn');
 
-    const savedApiUrl = localStorage.getItem('pbweApiUrl');
     const savedPassword = localStorage.getItem('pbweAdminPassword');
-    if (savedApiUrl) {
-      apiUrlInput.value = savedApiUrl;
-      rememberInput.checked = true;
-    }
     if (savedPassword) {
       passwordInput.value = savedPassword;
       rememberInput.checked = true;
@@ -360,7 +348,6 @@
 
     document.getElementById('uploadForm').addEventListener('submit', async (event) => {
       event.preventDefault();
-      const apiUrl = apiUrlInput.value.trim().replace(/\/$/, '');
       const password = passwordInput.value;
       const mode = modeInput.value;
       const subject = document.getElementById('subject').value;
@@ -368,8 +355,8 @@
       const description = document.getElementById('description').value.trim();
       const file = document.getElementById('file').files[0];
 
-      if (!apiUrl || !password || !title || !file) {
-        setStatus('Uzupełnij adres API, hasło, tytuł i wybierz plik.', 'err');
+      if (!password || !title || !file) {
+        setStatus('Uzupełnij hasło, tytuł i wybierz plik.', 'err');
         return;
       }
 
@@ -378,10 +365,8 @@
 
       try {
         if (rememberInput.checked) {
-          localStorage.setItem('pbweApiUrl', apiUrl);
           localStorage.setItem('pbweAdminPassword', password);
         } else {
-          localStorage.removeItem('pbweApiUrl');
           localStorage.removeItem('pbweAdminPassword');
         }
 
@@ -393,7 +378,7 @@
         formData.append('description', description);
         formData.append('file', file);
 
-        const response = await fetch(`${apiUrl}/api/upload`, {
+        const response = await fetch(`${API_URL}/api/upload`, {
           method: 'POST',
           body: formData
         });
@@ -404,7 +389,6 @@
         event.target.reset();
         if (rememberInput.checked) {
           rememberInput.checked = true;
-          apiUrlInput.value = apiUrl;
           passwordInput.value = password;
         }
       } catch (error) {

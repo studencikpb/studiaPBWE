@@ -98,6 +98,35 @@
       white-space: nowrap;
     }
 
+    .top-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .date-badge,
+    .semester-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 11px;
+      border: 1px solid rgba(231, 246, 255, 0.24);
+      border-radius: 999px;
+      color: #d8ecff;
+      background: rgba(255, 255, 255, 0.07);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .semester-badge {
+      color: #07192f;
+      background: #9df6ff;
+      border-color: rgba(157, 246, 255, 0.8);
+    }
+
     .hero {
       display: grid;
       grid-template-columns: 1.05fr 0.95fr;
@@ -894,12 +923,23 @@
 
     .exam-item.important::before { background: #d97706; }
     .exam-item.session::before { background: #be123c; }
+    .exam-item.past::before { background: #94a3b8; }
+
+    .exam-item.past {
+      opacity: 0.72;
+    }
 
     .exam-item strong {
       display: block;
       color: #0b1d34;
       font-size: 18px;
       line-height: 1.22;
+    }
+
+    .exam-item.past strong {
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(15, 23, 42, 0.42);
     }
 
     .exam-meta {
@@ -929,6 +969,14 @@
     .exam-item.session .exam-meta span {
       color: #9f1239;
       background: #fff1f2;
+    }
+
+    .exam-meta span.past-date {
+      color: #64748b;
+      background: #f1f5f9;
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(100, 116, 139, 0.55);
     }
 
     .section-head {
@@ -1242,7 +1290,11 @@
       <div class="brand">
         <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny Politechniki Białostockiej">
       </div>
-      <div class="badge">Portal materiałów PB WE</div>
+      <div class="top-meta">
+        <span class="date-badge" id="todayBadge">15.06.2026</span>
+        <span class="semester-badge">Semestr II</span>
+        <div class="badge">Portal materiałów PB WE</div>
+      </div>
     </nav>
 
     <section class="hero">
@@ -1392,14 +1444,14 @@
         </div>
       </div>
       <div class="exam-grid">
-        <article class="exam-item"><strong>Niezawodność i diagnostyka</strong><div class="exam-meta"><span>12 czerwca</span></div></article>
-        <article class="exam-item"><strong>Technika światłowodowa i fotonika</strong><div class="exam-meta"><span>12 czerwca</span></div></article>
-        <article class="exam-item session"><strong>Kompatybilność elektromagnetyczna</strong><div class="exam-meta"><span>sesja</span><span>zerówka: 13 czerwca</span></div></article>
-        <article class="exam-item"><strong>Budownictwo telekomunikacyjne</strong><div class="exam-meta"><span>12 czerwca</span></div></article>
-        <article class="exam-item important"><strong>Narzędzia komputerowego wspomagania projektowania sieci telekomunikacyjnych</strong><div class="exam-meta"><span>13 czerwca</span></div></article>
-        <article class="exam-item important"><strong>Zarządzanie sieciami</strong><div class="exam-meta"><span>13 czerwca</span></div></article>
-        <article class="exam-item session"><strong>Bezpieczeństwo systemów informacyjnych</strong><div class="exam-meta"><span>sesja</span></div></article>
-        <article class="exam-item important"><strong>Budownictwo telekomunikacyjne - projekt</strong><div class="exam-meta"><span>13 czerwca</span><span>projekt</span></div></article>
+        <article class="exam-item past"><strong>Niezawodność i diagnostyka</strong><div class="exam-meta"><span class="past-date">12.06.2026</span></div></article>
+        <article class="exam-item past"><strong>Technika światłowodowa i fotonika</strong><div class="exam-meta"><span class="past-date">12.06.2026</span></div></article>
+        <article class="exam-item session"><strong>Kompatybilność elektromagnetyczna</strong><div class="exam-meta"><span>sesja</span><span class="past-date">zerówka: 13.06.2026</span></div></article>
+        <article class="exam-item past"><strong>Budownictwo telekomunikacyjne</strong><div class="exam-meta"><span class="past-date">12.06.2026</span></div></article>
+        <article class="exam-item important past"><strong>Narzędzia komputerowego wspomagania projektowania sieci telekomunikacyjnych</strong><div class="exam-meta"><span class="past-date">13.06.2026</span></div></article>
+        <article class="exam-item important past"><strong>Zarządzanie sieciami</strong><div class="exam-meta"><span class="past-date">13.06.2026</span></div></article>
+        <article class="exam-item session"><strong>Bezpieczeństwo systemów informacyjnych</strong><div class="exam-meta"><span>20.06.2026</span><span>sesja</span></div></article>
+        <article class="exam-item important past"><strong>Budownictwo telekomunikacyjne - projekt</strong><div class="exam-meta"><span class="past-date">13.06.2026</span><span>projekt</span></div></article>
       </div>
     </section>
 
@@ -1665,6 +1717,15 @@
       showSlide(0);
       start();
     };
+    const setupTodayBadge = () => {
+      const badge = document.getElementById('todayBadge');
+      if (!badge) return;
+      badge.textContent = new Intl.DateTimeFormat('pl-PL', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }).format(new Date());
+    };
     const setupVisitCounter = () => {
       const counter = document.getElementById('visitCounterValue');
       if (!counter) return;
@@ -1733,6 +1794,7 @@
     });
     window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
+    setupTodayBadge();
     setupHeroSlider();
     setupVisitCounter();
     setupExtraGallery();
