@@ -151,7 +151,18 @@ async function handleUpload(request, env, origin) {
     return json({ error: 'Brak sekretów GITHUB_TOKEN albo ADMIN_PASSWORD w Cloudflare Worker.' }, 500, origin);
   }
 
-  const form = await request.formData();
+  const contentType = request.headers.get('Content-Type') || '';
+  if (!contentType.includes('multipart/form-data')) {
+    return json({ error: 'Wyślij formularz multipart/form-data z plikiem.' }, 400, origin);
+  }
+
+  let form;
+  try {
+    form = await request.formData();
+  } catch (error) {
+    return json({ error: 'Nie udało się odczytać formularza.' }, 400, origin);
+  }
+
   const password = String(form.get('password') || '');
   if (password !== env.ADMIN_PASSWORD) {
     return json({ error: 'Błędne hasło admina.' }, 401, origin);
