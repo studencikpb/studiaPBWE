@@ -425,6 +425,9 @@
 
   <script>
     const API_URL = 'https://studiawepb-api.calabraaa.workers.dev';
+    const GITHUB_CONTENTS_API = 'https://api.github.com/repos/studencikpb/studiaPBWE/contents';
+    const GALLERY_DIRS = ['assets/gallery', 'assets/gallery/uploads'];
+    const IMAGE_EXTENSIONS = /\.(jpe?g|png|webp|gif|heic|heif)$/i;
     const STATIC_GALLERY = [
       {
         title: 'Galeria ze zjazdów',
@@ -471,6 +474,16 @@
       statusBox.textContent = message;
     }
 
+    function titleFromPath(path) {
+      return decodeURIComponent(path.split('/').pop() || 'Zdjęcie')
+        .replace(/\.[^.]+$/, '')
+        .replace(/^\d+-/, '')
+        .replace(/[-_]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .replace(/^./, (char) => char.toUpperCase()) || 'Zdjęcie';
+    }
+
     function renderGallery(items) {
       galleryGrid.innerHTML = items.map((item, index) => {
         const title = escapeHtml(item.title || 'Zdjęcie');
@@ -489,11 +502,15 @@
 
     async function loadGallery() {
       try {
-        const response = await fetch(`site-data.json?v=${Date.now()}`, { cache: 'no-store' });
-        const data = response.ok ? await response.json() : {};
-        const dynamicItems = Array.isArray(data.gallery) ? data.gallery : [];
+        const [siteData, folderItems] = await Promise.all([
+          fetch(`site-data.json?v=${Date.now()}`, { cache: 'no-store' })
+            .then((response) => response.ok ? response.json() : {})
+            .catch(() => ({})),
+          loadGithubGallery()
+        ]);
+        const dynamicItems = Array.isArray(siteData.gallery) ? siteData.gallery : [];
         const seen = new Set();
-        const allItems = [...dynamicItems.slice().reverse(), ...STATIC_GALLERY].filter((item) => {
+        const allItems = [...dynamicItems.slice().reverse(), ...folderItems, ...STATIC_GALLERY].filter((item) => {
           if (!item.href || seen.has(item.href)) return false;
           seen.add(item.href);
           return true;
@@ -502,6 +519,26 @@
       } catch (error) {
         renderGallery(STATIC_GALLERY);
       }
+    }
+
+    async function loadGithubGallery() {
+      const results = await Promise.all(GALLERY_DIRS.map(async (dir) => {
+        const response = await fetch(`${GITHUB_CONTENTS_API}/${dir}?ref=gh-pages`, {
+          headers: { Accept: 'application/vnd.github+json' },
+          cache: 'no-store'
+        });
+        if (!response.ok) return [];
+        const files = await response.json();
+        return files
+          .filter((file) => file.type === 'file' && IMAGE_EXTENSIONS.test(file.name))
+          .sort((a, b) => a.name.localeCompare(b.name, 'pl'))
+          .map((file) => ({
+            title: titleFromPath(file.path),
+            description: dir.includes('/uploads') ? 'Zdjęcie z folderu uploadów galerii.' : 'Zdjęcie z folderu galerii.',
+            href: file.path
+          }));
+      }));
+      return results.flat();
     }
 
     document.getElementById('galleryUploadForm').addEventListener('submit', async (event) => {

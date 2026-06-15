@@ -840,6 +840,10 @@
       text-decoration: none;
     }
 
+    .gallery-preview-card.split {
+      grid-template-columns: minmax(220px, 0.85fr) 1fr;
+    }
+
     .photo-slot {
       position: relative;
       display: block;
@@ -855,6 +859,28 @@
       min-height: 320px;
     }
 
+    .photo-slot.file-only img {
+      display: none;
+    }
+
+    .photo-slot .file-fallback {
+      display: none;
+      place-items: center;
+      min-height: inherit;
+      padding: 20px;
+      color: #e7f6ff;
+      background:
+        radial-gradient(circle at 70% 20%, rgba(111, 243, 255, 0.24), transparent 36%),
+        rgba(255, 255, 255, 0.08);
+      font-size: 24px;
+      font-weight: 950;
+      text-align: center;
+    }
+
+    .photo-slot.file-only .file-fallback {
+      display: grid;
+    }
+
     .gallery-preview-copy {
       display: flex;
       flex-direction: column;
@@ -864,6 +890,7 @@
       border: 1px solid rgba(231, 246, 255, 0.22);
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.08);
+      text-decoration: none;
     }
 
     .gallery-preview-copy h3 {
@@ -1579,17 +1606,18 @@
           <p>Na głównej zostaje tylko ostatnia wrzutka. Pełna galeria ma osobną stronę i własne dodawanie zdjęć.</p>
         </div>
       </div>
-      <a class="gallery-preview-card" href="galeria.html">
-        <article class="photo-slot" id="latestGalleryPhoto">
-          <img src="assets/gallery/zjazd-03.jpeg" alt="Najnowsze zdjęcie z galerii">
-          <span class="photo-caption"><strong>Najnowsza wrzutka</strong><span>Otwórz pełną galerię zdjęć.</span></span>
-        </article>
-        <div class="gallery-preview-copy">
+      <div class="gallery-preview-card split">
+        <a class="photo-slot" id="campusMapCard" href="assets/gallery/uploads/1781299781562-screenshot-2026-06-12-at-23.29.06.heic" target="_blank" rel="noopener">
+          <img src="assets/gallery/uploads/1781299781562-screenshot-2026-06-12-at-23.29.06.heic" alt="Mapa kampusu" onerror="this.closest('.photo-slot').classList.add('file-only')">
+          <span class="file-fallback">Mapa kampusu</span>
+          <span class="photo-caption"><strong>Mapa kampusu</strong><span>Otwórz zdjęcie mapy.</span></span>
+        </a>
+        <a class="gallery-preview-copy" href="galeria.html">
           <h3>Zdjęcia ze zjazdów</h3>
           <p>Wszystkie fotki, uploady i szybkie wrzutki są teraz w jednej podstronie galerii.</p>
           <span>Otwórz galerię</span>
-        </div>
-      </a>
+        </a>
+      </div>
     </section>
 
     <div class="feature-grid">
@@ -1809,22 +1837,6 @@
       '"': '&quot;',
       "'": '&#039;'
     }[char]));
-    const setupLatestGalleryCard = () => {
-      const card = document.getElementById('latestGalleryPhoto');
-      if (!card) return;
-      fetch(`site-data.json?v=${Date.now()}`, { cache: 'no-store' })
-        .then((response) => response.ok ? response.json() : null)
-        .then((data) => {
-          const items = Array.isArray(data?.gallery) ? data.gallery : [];
-          const item = [...items].reverse().find((entry) => entry?.href);
-          if (!item) return;
-          card.innerHTML = `
-            <img src="${escapeHtml(item.href)}" alt="${escapeHtml(item.title || 'Najnowsze zdjęcie z galerii')}">
-            <span class="photo-caption"><strong>${escapeHtml(item.title || 'Najnowsza wrzutka')}</strong><span>${escapeHtml(item.description || 'Otwórz pełną galerię zdjęć.')}</span></span>
-          `;
-        })
-        .catch(() => {});
-    };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -1840,7 +1852,6 @@
     setupTodayBadge();
     setupHeroSlider();
     setupVisitCounter();
-    setupLatestGalleryCard();
   </script>
 </body>
 </html>
