@@ -1635,6 +1635,7 @@
     </footer>
   </main>
   <script>
+    const PBWE_API_URL = 'https://studiawepb-api.calabraaa.workers.dev';
     const progressBar = document.getElementById('progressBar');
     const updateProgress = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -1668,11 +1669,26 @@
       const counter = document.getElementById('visitCounterValue');
       if (!counter) return;
       counter.textContent = '...';
-      fetch('https://api.counterapi.dev/v1/studiawepb/homepage/up', { cache: 'no-store' })
+      const fallbackCounter = () => fetch('https://api.counterapi.dev/v1/studiawepb/homepage/up', { cache: 'no-store' })
+        .then((response) => response.ok ? response.json() : Promise.reject())
+        .then((data) => {
+          if (typeof data.count === 'number') counter.textContent = data.count.toLocaleString('pl-PL');
+        });
+
+      if (!PBWE_API_URL) {
+        fallbackCounter().catch(() => {
+          counter.textContent = 'offline';
+          counter.title = 'Globalny licznik jest chwilowo niedostępny';
+        });
+        return;
+      }
+
+      fetch(`${PBWE_API_URL}/api/visits`, { method: 'POST', cache: 'no-store' })
         .then((response) => response.ok ? response.json() : Promise.reject())
         .then((data) => {
           if (typeof data.count === 'number') counter.textContent = data.count.toLocaleString('pl-PL');
         })
+        .catch(() => fallbackCounter())
         .catch(() => {
           counter.textContent = 'offline';
           counter.title = 'Globalny licznik jest chwilowo niedostępny';

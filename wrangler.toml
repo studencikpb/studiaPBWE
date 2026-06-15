@@ -1,0 +1,7 @@
+name = "studiawepb-api"
+main = "cloudflare-worker.js"
+compatibility_date = "2026-06-15"
+
+[[kv_namespaces]]
+binding = "visits"
+id = "UZUPELNIJ_PRAWDZIWE_ID_KV_NAMESPACE"
