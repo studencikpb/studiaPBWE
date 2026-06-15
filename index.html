@@ -882,6 +882,7 @@
     }
 
     .gallery-preview-copy {
+      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -889,8 +890,30 @@
       padding: clamp(18px, 3vw, 34px);
       border: 1px solid rgba(231, 246, 255, 0.22);
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.08);
+      background:
+        linear-gradient(145deg, rgba(5, 25, 51, 0.72), rgba(0, 91, 170, 0.58)),
+        var(--gallery-random-bg, linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.08)));
+      background-position: center;
+      background-size: cover;
       text-decoration: none;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    .gallery-preview-copy::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 78% 18%, rgba(157, 246, 255, 0.26), transparent 34%),
+        linear-gradient(90deg, rgba(5, 25, 51, 0.86), rgba(5, 25, 51, 0.34));
+    }
+
+    .gallery-preview-copy h3,
+    .gallery-preview-copy p,
+    .gallery-preview-copy span {
+      position: relative;
+      z-index: 1;
     }
 
     .gallery-preview-copy h3 {
@@ -1763,6 +1786,9 @@
   </main>
   <script>
     const PBWE_API_URL = 'https://studiawepb-api.calabraaa.workers.dev';
+    const GITHUB_CONTENTS_API = 'https://api.github.com/repos/studencikpb/studiaPBWE/contents';
+    const GALLERY_DIRS = ['assets/gallery', 'assets/gallery/uploads'];
+    const IMAGE_EXTENSIONS = /\.(jpe?g|png|webp|gif|heic|heif)$/i;
     const progressBar = document.getElementById('progressBar');
     const updateProgress = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -1830,6 +1856,24 @@
           counter.title = 'Globalny licznik jest chwilowo niedostępny';
         });
     };
+    const setupGalleryRandomBackground = async () => {
+      const target = document.querySelector('.gallery-preview-copy');
+      if (!target) return;
+      try {
+        const responses = await Promise.all(GALLERY_DIRS.map((dir) =>
+          fetch(`${GITHUB_CONTENTS_API}/${dir}?ref=gh-pages`, {
+            headers: { Accept: 'application/vnd.github+json' },
+            cache: 'no-store'
+          }).then((response) => response.ok ? response.json() : [])
+        ));
+        const photos = responses.flat()
+          .filter((file) => file.type === 'file' && IMAGE_EXTENSIONS.test(file.name))
+          .map((file) => file.path);
+        if (!photos.length) return;
+        const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
+        target.style.setProperty('--gallery-random-bg', `url("${randomPhoto}")`);
+      } catch (error) {}
+    };
     const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({
       '&': '&amp;',
       '<': '&lt;',
@@ -1852,6 +1896,7 @@
     setupTodayBadge();
     setupHeroSlider();
     setupVisitCounter();
+    setupGalleryRandomBackground();
   </script>
 </body>
 </html>
