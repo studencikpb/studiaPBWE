@@ -247,7 +247,7 @@ function materialIcon(href) {
   return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/><path d="M9 14h6M9 17h4"/></svg>';
 }
 
-function pageTemplate(subject) {
+function pageTemplate(subject, subjectKey) {
   const materials = subject.materials.length
     ? subject.materials.map(([title, description, href]) => `
         <a class="material" href="${href}" target="_blank" rel="noopener" title="${description}">
@@ -278,6 +278,7 @@ function pageTemplate(subject) {
           <div class="actions">
             <a class="button" href="#materialy">Materiały</a>
             <a class="button secondary" href="assets/tz2_2.pdf">Plan PDF</a>
+            <a class="button secondary" href="admin-upload.html?subject=${encodeURIComponent(subjectKey)}">Dodaj plik</a>
           </div>
         </div>
 
@@ -334,7 +335,7 @@ async function initPage() {
   document.documentElement.style.setProperty('--bg-a', subject.bgA);
   document.documentElement.style.setProperty('--bg-b', subject.bgB);
   document.title = `${subject.title} - materiały PB WE`;
-  document.body.innerHTML = pageTemplate(subject);
+  document.body.innerHTML = pageTemplate(subject, key);
 
   const progressBar = document.getElementById('progressBar');
   const updateProgress = () => {
