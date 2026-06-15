@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Galeria - PB WE</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --blue: #005baa;
+      --ink: #07192f;
+      --muted: #53657c;
+      --line: rgba(0, 91, 170, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 74% 12%, rgba(111, 243, 255, 0.22), transparent 34%),
+        linear-gradient(135deg, #07192f, #123f6c);
+      background-size: 56px 56px, 56px 56px, auto, auto;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .topbar img {
+      width: min(250px, 56vw);
+      height: auto;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 9px 15px;
+      border: 1px solid rgba(231, 246, 255, 0.28);
+      border-radius: 999px;
+      color: #e7f6ff;
+      background: rgba(255, 255, 255, 0.08);
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .hero,
+    .section {
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(241, 248, 255, 0.94));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 0.74fr;
+      gap: 20px;
+      padding: clamp(26px, 5vw, 56px);
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #08172b;
+      font-size: clamp(42px, 7vw, 86px);
+      line-height: 0.96;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: #42536a;
+      font-size: 20px;
+      line-height: 1.55;
+    }
+
+    .hero-art {
+      min-height: 280px;
+      border: 1px solid rgba(0, 91, 170, 0.16);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 70% 24%, rgba(157, 246, 255, 0.28), transparent 32%),
+        linear-gradient(145deg, #07192f, #005baa);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-art::before,
+    .hero-art::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      border: 26px solid rgba(231, 246, 255, 0.12);
+    }
+
+    .hero-art::before {
+      width: 280px;
+      height: 280px;
+      right: -110px;
+      bottom: -100px;
+    }
+
+    .hero-art::after {
+      width: 180px;
+      height: 180px;
+      left: -72px;
+      top: -60px;
+    }
+
+    .hero-art span {
+      position: absolute;
+      inset: auto 28px 26px;
+      color: #fff;
+      font-size: 26px;
+      font-weight: 950;
+      letter-spacing: 0.03em;
+    }
+
+    .section {
+      margin-top: 20px;
+      padding: clamp(20px, 4vw, 36px);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: #08172b;
+      font-size: clamp(28px, 4vw, 46px);
+    }
+
+    .section-head p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .photo-card {
+      position: relative;
+      min-height: 270px;
+      overflow: hidden;
+      border: 1px solid #d8e2ee;
+      border-radius: 16px;
+      background: #eef7ff;
+      box-shadow: 0 16px 34px rgba(3, 16, 34, 0.11);
+    }
+
+    .photo-card.featured {
+      grid-column: span 2;
+      min-height: 420px;
+    }
+
+    .photo-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(180deg, transparent 42%, rgba(2, 6, 23, 0.78));
+      pointer-events: none;
+    }
+
+    .photo-card img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      transition: transform 420ms ease;
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.045);
+    }
+
+    .file-fallback {
+      display: none;
+      place-items: center;
+      min-height: inherit;
+      padding: 24px;
+      color: #0d4f88;
+      background:
+        radial-gradient(circle at 70% 20%, rgba(40,169,224,0.22), transparent 36%),
+        #eef7ff;
+      font-size: 22px;
+      font-weight: 950;
+      text-align: center;
+    }
+
+    .photo-card.file-only .file-fallback {
+      display: grid;
+    }
+
+    .photo-card.file-only img {
+      display: none;
+    }
+
+    .caption {
+      position: absolute;
+      z-index: 2;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      color: #fff;
+    }
+
+    .caption strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.12;
+    }
+
+    .caption span {
+      display: block;
+      margin-top: 6px;
+      color: #d8ecff;
+      line-height: 1.35;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      color: #173151;
+      font-weight: 900;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid #cddceb;
+      border-radius: 12px;
+      padding: 11px 13px;
+      color: var(--ink);
+      background: #fff;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #43566d;
+      font-weight: 800;
+    }
+
+    .check input {
+      width: 18px;
+      min-height: 18px;
+    }
+
+    button {
+      min-height: 52px;
+      border: 0;
+      border-radius: 14px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(111, 243, 255, 0.34), transparent 34%),
+        linear-gradient(145deg, #005baa, #123f6c);
+      font: inherit;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 0 18px 34px rgba(0, 91, 170, 0.28);
+    }
+
+    button:disabled {
+      opacity: 0.62;
+      cursor: wait;
+    }
+
+    .status {
+      min-height: 48px;
+      border-radius: 14px;
+      padding: 13px 15px;
+      color: #38506b;
+      background: #f6f9fc;
+      line-height: 1.45;
+    }
+
+    .status.ok {
+      color: #14532d;
+      background: #dcfce7;
+    }
+
+    .status.err {
+      color: #7f1d1d;
+      background: #fee2e2;
+    }
+
+    @media (max-width: 900px) {
+      .topbar,
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero,
+      .gallery-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-card.featured {
+        grid-column: auto;
+        min-height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav class="topbar">
+      <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny PB">
+      <a class="back" href="index.html">Strona główna</a>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Zdjęcia · zjazdy · wrzutki</p>
+        <h1>Galeria</h1>
+        <p class="lead">Wszystkie zdjęcia z folderu galerii i nowe wrzutki z panelu. Tu lądują fotki ze zjazdów, spotkań, laboratoriów i szybkie materiały obrazkowe.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true"><span>PB WE · GALERIA</span></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Dodaj zdjęcie</h2>
+          <p>Zdjęcie zapisze się w galerii i automatycznie pojawi się jako najnowsza wrzutka na głównej stronie.</p>
+        </div>
+      </div>
+      <form id="galleryUploadForm">
+        <div class="form-grid">
+          <label>
+            Hasło admina
+            <input id="password" type="password" autocomplete="off" placeholder="podaj haslo" required>
+          </label>
+          <label>
+            Tytuł zdjęcia
+            <input id="title" type="text" placeholder="np. Zjazd czerwiec" required>
+          </label>
+          <label>
+            Zdjęcie
+            <input id="file" type="file" accept="image/*,.heic,.heif" required>
+          </label>
+        </div>
+        <label>
+          Opis
+          <textarea id="description" placeholder="Krótki opis zdjęcia"></textarea>
+        </label>
+        <label class="check">
+          <input id="remember" type="checkbox">
+          Zapamiętaj hasło na tym komputerze
+        </label>
+        <button id="submitBtn" type="submit">Dodaj zdjęcie do galerii</button>
+        <div class="status" id="status">Gotowe do dodania zdjęcia.</div>
+      </form>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Wszystkie zdjęcia</h2>
+          <p>Stałe zdjęcia z folderu `assets/gallery` oraz wrzutki zapisane w `site-data.json`.</p>
+        </div>
+      </div>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+  </main>
+
+  <script>
+    const API_URL = 'https://studiawepb-api.calabraaa.workers.dev';
+    const STATIC_GALLERY = [
+      {
+        title: 'Galeria ze zjazdów',
+        description: 'Spotkanie grupy studentów przy stole.',
+        href: 'assets/gallery/zjazd-01.jpeg',
+        featured: true
+      },
+      {
+        title: 'Ekipa po zjeździe',
+        description: 'Materiały, terminy i integracja w jednym miejscu.',
+        href: 'assets/gallery/zjazd-02.jpeg'
+      },
+      {
+        title: 'Zdjęcia i wspomnienia',
+        description: 'Kolejna fotka z folderu galerii.',
+        href: 'assets/gallery/zjazd-03.jpeg'
+      }
+    ];
+
+    const passwordInput = document.getElementById('password');
+    const rememberInput = document.getElementById('remember');
+    const statusBox = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+    const galleryGrid = document.getElementById('galleryGrid');
+
+    const savedPassword = localStorage.getItem('pbweAdminPassword');
+    if (savedPassword) {
+      passwordInput.value = savedPassword;
+      rememberInput.checked = true;
+    }
+
+    function escapeHtml(value = '') {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[char]));
+    }
+
+    function setStatus(message, type = '') {
+      statusBox.className = `status ${type}`;
+      statusBox.textContent = message;
+    }
+
+    function renderGallery(items) {
+      galleryGrid.innerHTML = items.map((item, index) => {
+        const title = escapeHtml(item.title || 'Zdjęcie');
+        const description = escapeHtml(item.description || 'Zdjęcie z galerii.');
+        const href = escapeHtml(item.href);
+        const isFeatured = item.featured || index === 0;
+        return `
+          <a class="photo-card ${isFeatured ? 'featured' : ''}" href="${href}" target="_blank" rel="noopener">
+            <img src="${href}" alt="${title}" onerror="this.closest('.photo-card').classList.add('file-only')">
+            <span class="file-fallback">Otwórz plik zdjęcia</span>
+            <span class="caption"><strong>${title}</strong><span>${description}</span></span>
+          </a>
+        `;
+      }).join('');
+    }
+
+    async function loadGallery() {
+      try {
+        const response = await fetch(`site-data.json?v=${Date.now()}`, { cache: 'no-store' });
+        const data = response.ok ? await response.json() : {};
+        const dynamicItems = Array.isArray(data.gallery) ? data.gallery : [];
+        const seen = new Set();
+        const allItems = [...dynamicItems.slice().reverse(), ...STATIC_GALLERY].filter((item) => {
+          if (!item.href || seen.has(item.href)) return false;
+          seen.add(item.href);
+          return true;
+        });
+        renderGallery(allItems);
+      } catch (error) {
+        renderGallery(STATIC_GALLERY);
+      }
+    }
+
+    document.getElementById('galleryUploadForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const password = passwordInput.value;
+      const title = document.getElementById('title').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const file = document.getElementById('file').files[0];
+
+      if (!password || !title || !file) {
+        setStatus('Uzupełnij hasło, tytuł i wybierz zdjęcie.', 'err');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      setStatus('Wysyłam zdjęcie do galerii...');
+
+      try {
+        if (rememberInput.checked) localStorage.setItem('pbweAdminPassword', password);
+        else localStorage.removeItem('pbweAdminPassword');
+
+        const formData = new FormData();
+        formData.append('password', password);
+        formData.append('mode', 'gallery');
+        formData.append('subject', '');
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('file', file);
+
+        const response = await fetch(`${API_URL}/api/upload`, {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || `Backend ${response.status}`);
+
+        setStatus(`Gotowe. Dodano: ${result.title || title}.`, 'ok');
+        event.target.reset();
+        if (rememberInput.checked) {
+          rememberInput.checked = true;
+          passwordInput.value = password;
+        }
+        setTimeout(loadGallery, 900);
+      } catch (error) {
+        setStatus(`Nie udało się dodać zdjęcia: ${error.message}`, 'err');
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    loadGallery();
+  </script>
+</body>
+</html>

@@ -239,7 +239,7 @@
       <div class="card intro">
         <p class="eyebrow">Panel materiałów</p>
         <h1>Dodaj plik na stronę</h1>
-        <p class="lead">Wrzucasz PDF, HTML, zdjęcie albo inny materiał, wybierasz przedmiot lub galerię i plik pojawia się na stronie jak reszta materiałów.</p>
+        <p class="lead">Wrzucasz PDF, HTML, zdjęcie z notatkami albo inny materiał, wybierasz przedmiot i plik pojawia się na stronie przedmiotu jak reszta materiałów.</p>
         <div class="notice">Panel działa przez backend Cloudflare Worker. Wpisujesz tylko hasło admina, a token GitHuba jest schowany w sekretach Cloudflare i nie trafia do kodu strony.</div>
       </div>
 
@@ -266,19 +266,10 @@
     </section>
 
     <form class="card" id="uploadForm">
-      <div class="row">
-        <label>
-          Hasło admina
-          <input id="password" type="password" autocomplete="off" placeholder="Hasło z Cloudflare Worker" required>
-        </label>
-        <label>
-          Co dodajesz?
-          <select id="mode">
-            <option value="material">Materiał do przedmiotu</option>
-            <option value="gallery">Zdjęcie do galerii</option>
-          </select>
-        </label>
-      </div>
+      <label>
+        Hasło admina
+        <input id="password" type="password" autocomplete="off" placeholder="podaj haslo" required>
+      </label>
 
       <label id="subjectWrap">
         Przedmiot
@@ -326,8 +317,6 @@
     const API_URL = 'https://studiawepb-api.calabraaa.workers.dev';
     const passwordInput = document.getElementById('password');
     const rememberInput = document.getElementById('remember');
-    const modeInput = document.getElementById('mode');
-    const subjectWrap = document.getElementById('subjectWrap');
     const statusBox = document.getElementById('status');
     const submitBtn = document.getElementById('submitBtn');
 
@@ -337,10 +326,6 @@
       rememberInput.checked = true;
     }
 
-    modeInput.addEventListener('change', () => {
-      subjectWrap.style.display = modeInput.value === 'gallery' ? 'none' : 'grid';
-    });
-
     function setStatus(message, type = '') {
       statusBox.className = `status ${type}`;
       statusBox.textContent = message;
@@ -349,7 +334,7 @@
     document.getElementById('uploadForm').addEventListener('submit', async (event) => {
       event.preventDefault();
       const password = passwordInput.value;
-      const mode = modeInput.value;
+      const mode = 'material';
       const subject = document.getElementById('subject').value;
       const title = document.getElementById('title').value.trim();
       const description = document.getElementById('description').value.trim();
