@@ -1406,17 +1406,14 @@
           <a class="quick-card primary" href="#przedmioty">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h7.5A2.5 2.5 0 0 1 14 9v10H6.5A2.5 2.5 0 0 1 4 16.5z"/><path d="M14 9a2.5 2.5 0 0 1 2.5-2.5H20v10A2.5 2.5 0 0 1 17.5 19H14z"/></svg></span>
             <strong>Przedmioty</strong>
-            <span>Lista zajęć i prowadzących</span>
           </a>
           <a class="quick-card" href="#przedmioty">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h5l2 2h9v8.5A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M8 13h8M8 16h5"/></svg></span>
             <strong>Materiały</strong>
-            <span>HTML, PDF i notatki w jednym miejscu</span>
           </a>
           <a class="quick-card" href="#zaliczenia">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v4M16 3v4M4 8h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2z"/><path d="m8 15 2 2 5-6"/></svg></span>
             <strong>Zaliczenia</strong>
-            <span>Terminy, sesja i projekty</span>
           </a>
           <a class="quick-card" href="#plan">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
@@ -1426,7 +1423,6 @@
           <a class="quick-card" href="galeria.html">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><circle cx="9" cy="10" r="1.5"/><path d="m7 17 4-4 3 3 2-2 2 3"/></svg></span>
             <strong>Galeria</strong>
-            <span>Zdjęcia i wrzutki</span>
           </a>
           <a class="quick-card upload-card" href="admin-upload.html">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></span>
@@ -1540,7 +1536,6 @@
       <div class="section-head">
         <div>
           <h2>Terminy zaliczeń</h2>
-          <p>Zestawienie terminów dla 2 semestru EiT mgr, przepisane z notatki z zaliczeniami.</p>
         </div>
       </div>
       <div class="exam-grid">
@@ -1593,7 +1588,6 @@
       <div class="section-head">
         <div>
           <h2>Przedmioty i materiały</h2>
-          <p>Każdy przedmiot prowadzi do osobnej strony z informacjami z planu i miejscem na materiały.</p>
         </div>
       </div>
       <div class="subject-tools">
@@ -1626,7 +1620,6 @@
       <div class="section-head">
         <div>
           <h2>Galeria</h2>
-          <p>Na głównej zostaje tylko ostatnia wrzutka. Pełna galeria ma osobną stronę i własne dodawanie zdjęć.</p>
         </div>
       </div>
       <div class="gallery-preview-card split">
@@ -1787,7 +1780,8 @@
   <script>
     const PBWE_API_URL = 'https://studiawepb-api.calabraaa.workers.dev';
     const GITHUB_CONTENTS_API = 'https://api.github.com/repos/studencikpb/studiaPBWE/contents';
-    const GALLERY_DIRS = ['assets/gallery', 'assets/gallery/uploads'];
+    const GALLERY_BRANCHES = ['gh-pages', 'main'];
+    const GALLERY_DIRS = ['assets/gallery', 'assets/gallery/uploads', 'gallery'];
     const IMAGE_EXTENSIONS = /\.(jpe?g|png|webp|gif|heic|heif)$/i;
     const progressBar = document.getElementById('progressBar');
     const updateProgress = () => {
@@ -1860,15 +1854,27 @@
       const target = document.querySelector('.gallery-preview-copy');
       if (!target) return;
       try {
-        const responses = await Promise.all(GALLERY_DIRS.map((dir) =>
-          fetch(`${GITHUB_CONTENTS_API}/${dir}?ref=gh-pages`, {
+        const requests = [];
+        GALLERY_BRANCHES.forEach((branch) => {
+          GALLERY_DIRS.forEach((dir) => requests.push({ branch, dir }));
+        });
+        const responses = await Promise.all(requests.map(({ branch, dir }) =>
+          fetch(`${GITHUB_CONTENTS_API}/${dir}?ref=${branch}`, {
             headers: { Accept: 'application/vnd.github+json' },
             cache: 'no-store'
-          }).then((response) => response.ok ? response.json() : [])
+          })
+            .then((response) => response.ok ? response.json() : [])
+            .then((files) => files.map((file) => ({ ...file, branch })))
         ));
+        const seen = new Set();
         const photos = responses.flat()
           .filter((file) => file.type === 'file' && IMAGE_EXTENSIONS.test(file.name))
-          .map((file) => file.path);
+          .filter((file) => {
+            if (seen.has(file.path)) return false;
+            seen.add(file.path);
+            return true;
+          })
+          .map((file) => file.branch === 'gh-pages' ? file.path : file.download_url);
         if (!photos.length) return;
         const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
         target.style.setProperty('--gallery-random-bg', `url("${randomPhoto}")`);
