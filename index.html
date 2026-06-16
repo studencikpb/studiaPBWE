@@ -1536,7 +1536,6 @@
       <div class="section-head">
         <div>
           <h2>Terminy zaliczeń</h2>
-          <p>Zestawienie terminów dla 2 semestru EiT mgr, przepisane z notatki z zaliczeniami.</p>
         </div>
       </div>
       <div class="exam-grid">
@@ -1589,7 +1588,6 @@
       <div class="section-head">
         <div>
           <h2>Przedmioty i materiały</h2>
-          <p>Każdy przedmiot prowadzi do osobnej strony z informacjami z planu i miejscem na materiały.</p>
         </div>
       </div>
       <div class="subject-tools">
@@ -1622,7 +1620,6 @@
       <div class="section-head">
         <div>
           <h2>Galeria</h2>
-          <p>Na głównej zostaje tylko ostatnia wrzutka. Pełna galeria ma osobną stronę i własne dodawanie zdjęć.</p>
         </div>
       </div>
       <div class="gallery-preview-card split">
@@ -1783,7 +1780,8 @@
   <script>
     const PBWE_API_URL = 'https://studiawepb-api.calabraaa.workers.dev';
     const GITHUB_CONTENTS_API = 'https://api.github.com/repos/studencikpb/studiaPBWE/contents';
-    const GALLERY_DIRS = ['assets/gallery', 'assets/gallery/uploads'];
+    const GALLERY_BRANCHES = ['gh-pages', 'main'];
+    const GALLERY_DIRS = ['assets/gallery', 'assets/gallery/uploads', 'gallery'];
     const IMAGE_EXTENSIONS = /\.(jpe?g|png|webp|gif|heic|heif)$/i;
     const progressBar = document.getElementById('progressBar');
     const updateProgress = () => {
@@ -1856,15 +1854,27 @@
       const target = document.querySelector('.gallery-preview-copy');
       if (!target) return;
       try {
-        const responses = await Promise.all(GALLERY_DIRS.map((dir) =>
-          fetch(`${GITHUB_CONTENTS_API}/${dir}?ref=gh-pages`, {
+        const requests = [];
+        GALLERY_BRANCHES.forEach((branch) => {
+          GALLERY_DIRS.forEach((dir) => requests.push({ branch, dir }));
+        });
+        const responses = await Promise.all(requests.map(({ branch, dir }) =>
+          fetch(`${GITHUB_CONTENTS_API}/${dir}?ref=${branch}`, {
             headers: { Accept: 'application/vnd.github+json' },
             cache: 'no-store'
-          }).then((response) => response.ok ? response.json() : [])
+          })
+            .then((response) => response.ok ? response.json() : [])
+            .then((files) => files.map((file) => ({ ...file, branch })))
         ));
+        const seen = new Set();
         const photos = responses.flat()
           .filter((file) => file.type === 'file' && IMAGE_EXTENSIONS.test(file.name))
-          .map((file) => file.path);
+          .filter((file) => {
+            if (seen.has(file.path)) return false;
+            seen.add(file.path);
+            return true;
+          })
+          .map((file) => file.branch === 'gh-pages' ? file.path : file.download_url);
         if (!photos.length) return;
         const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
         target.style.setProperty('--gallery-random-bg', `url("${randomPhoto}")`);
