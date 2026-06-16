@@ -146,6 +146,40 @@ async function handleVisits(request, env, origin) {
   return json({ count: current }, 200, origin);
 }
 
+async function handleForex(request, env, origin) {
+  const response = await fetch('https://open.er-api.com/v6/latest/PLN', {
+    headers: { Accept: 'application/json' },
+    cf: { cacheTtl: 30, cacheEverything: false }
+  });
+
+  if (!response.ok) {
+    return json({ error: 'Nie udało się pobrać kursów walut.' }, 502, origin);
+  }
+
+  const data = await response.json();
+  const sourceRates = data.rates || {};
+  const rates = ['USD', 'GBP', 'EUR'].map((code) => {
+    const value = sourceRates[code] ? 1 / sourceRates[code] : null;
+    return {
+      code,
+      pair: `${code}/PLN`,
+      value,
+      source: 'open.er-api.com'
+    };
+  }).filter((row) => Number.isFinite(row.value));
+
+  if (rates.length !== 3) {
+    return json({ error: 'Źródło kursów zwróciło niepełne dane.' }, 502, origin);
+  }
+
+  return json({
+    base: 'PLN',
+    rates,
+    updated: data.time_last_update_utc || new Date().toISOString(),
+    nextUpdate: data.time_next_update_utc || null
+  }, 200, origin);
+}
+
 async function handleUpload(request, env, origin) {
   if (!env.GITHUB_TOKEN || !env.ADMIN_PASSWORD) {
     return json({ error: 'Brak sekretów GITHUB_TOKEN albo ADMIN_PASSWORD w Cloudflare Worker.' }, 500, origin);
@@ -215,6 +249,7 @@ export default {
 
     try {
       if (url.pathname === '/api/visits') return handleVisits(request, env, origin);
+      if (url.pathname === '/api/forex') return handleForex(request, env, origin);
       if (url.pathname === '/api/upload' && request.method === 'POST') return handleUpload(request, env, origin);
       return json({ error: 'Nie znaleziono endpointu.' }, 404, origin);
     } catch (error) {
