@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#005baa">
+  <title>Semestr I - Materiały PB WE</title>
+  <style>
+    :root {
+      --navy: #07192f;
+      --blue: #005baa;
+      --cyan: #28a9e0;
+      --paper: #ffffff;
+      --muted: #526176;
+      --line: rgba(255, 255, 255, 0.22);
+      --shadow: 0 28px 70px rgba(3, 16, 34, 0.28);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #122033;
+      background:
+        radial-gradient(circle at 16% 18%, rgba(40, 169, 224, 0.34), transparent 30%),
+        radial-gradient(circle at 86% 12%, rgba(0, 91, 170, 0.44), transparent 34%),
+        linear-gradient(135deg, #07192f 0%, #0d2f54 48%, #16456f 100%);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.16;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.32) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.32) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: linear-gradient(180deg, #000 0%, transparent 88%);
+    }
+
+    .shell {
+      position: relative;
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 42px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 0 34px;
+      color: #fff;
+    }
+
+    .brand img {
+      display: block;
+      width: min(270px, 58vw);
+      height: auto;
+    }
+
+    .top-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .date-badge,
+    .semester-badge,
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 11px;
+      border: 1px solid rgba(231, 246, 255, 0.24);
+      border-radius: 999px;
+      color: #d8ecff;
+      background: rgba(255, 255, 255, 0.07);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .semester-badge {
+      color: #07192f;
+      background: #9df6ff;
+      border-color: rgba(157, 246, 255, 0.8);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .panel,
+    .pdf-panel {
+      border: 1px solid rgba(231, 246, 255, 0.22);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel {
+      padding: clamp(28px, 6vw, 62px);
+      background: #f8fbff;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: #1f5fa9;
+      font-size: 14px;
+      font-weight: 950;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #071225;
+      font-size: clamp(48px, 9vw, 92px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 26px 0 0;
+      color: #344155;
+      font-size: clamp(19px, 2.4vw, 27px);
+      line-height: 1.45;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 13px 18px;
+      border-radius: 12px;
+      color: #07192f;
+      background: #9df6ff;
+      font-weight: 950;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      color: #174c89;
+      background: #e7f6ff;
+    }
+
+    .pdf-panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 640px;
+      background: rgba(255, 255, 255, 0.94);
+    }
+
+    .pdf-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid #d9e6f2;
+      background: #ffffff;
+    }
+
+    .pdf-head strong {
+      display: block;
+      color: #071225;
+      font-size: 20px;
+    }
+
+    .pdf-head span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    iframe {
+      width: 100%;
+      flex: 1;
+      border: 0;
+      background: #ffffff;
+    }
+
+    @media (max-width: 900px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .top-meta {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .pdf-panel {
+        min-height: 520px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav class="topbar" aria-label="Nagłówek">
+      <a class="brand" href="index.html">
+        <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny Politechniki Białostockiej">
+      </a>
+      <div class="top-meta">
+        <a class="semester-badge" href="semestr-1.html">Semestr I</a>
+        <a class="date-badge" href="index.html">Semestr II</a>
+        <a class="date-badge" href="semestr-3.html">Semestr III</a>
+        <span class="badge">Archiwum</span>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <article class="panel">
+        <p class="eyebrow">Wydział Elektryczny PB · semestr I</p>
+        <h1>Semestr I</h1>
+        <p class="lead">To już stare i nie chciało mi się nic dodawać. Zostaje tylko rozkład zajęć, żeby było wiadomo co, gdzie i kiedy było.</p>
+        <div class="actions">
+          <a class="button" href="assets/rozklad-zajec-tz2-1.pdf">Pobierz PDF planu</a>
+          <a class="button secondary" href="index.html">Wróć do semestru II</a>
+        </div>
+      </article>
+
+      <article class="pdf-panel">
+        <div class="pdf-head">
+          <strong>Rozkład zajęć - TZ2_1</strong>
+          <span>Podgląd PDF. Na telefonie wygodniej użyć przycisku pobierania.</span>
+        </div>
+        <iframe src="assets/rozklad-zajec-tz2-1.pdf" title="Rozkład zajęć TZ2_1"></iframe>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

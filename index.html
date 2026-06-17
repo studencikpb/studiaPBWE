@@ -127,6 +127,20 @@
       border-color: rgba(157, 246, 255, 0.8);
     }
 
+    .semester-link {
+      text-decoration: none;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .semester-link:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .semester-link.current:hover {
+      background: #9df6ff;
+    }
+
     .hero {
       display: grid;
       grid-template-columns: 1.05fr 0.95fr;
@@ -1446,7 +1460,9 @@
       </div>
       <div class="top-meta">
         <span class="date-badge" id="todayBadge">15.06.2026</span>
-        <span class="semester-badge">Semestr II</span>
+        <a class="date-badge semester-link" href="semestr-1.html">Semestr I</a>
+        <a class="semester-badge semester-link current" href="index.html">Semestr II</a>
+        <a class="date-badge semester-link" href="semestr-3.html">Semestr III</a>
         <div class="badge">Portal materiałów PB WE</div>
       </div>
     </nav>
