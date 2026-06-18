@@ -2,4 +2,5 @@
 pbwe-reliability-site/
 pbwe-reliability-site.zip
 *.png
+!assets/inwestuj-szymonem-banner.png
 *.svg.png

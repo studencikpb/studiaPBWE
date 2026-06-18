@@ -231,6 +231,44 @@
       font-weight: 800;
     }
 
+    .szymon-banner-card {
+      margin-top: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 18px;
+      background:
+        linear-gradient(145deg, rgba(7,25,47,0.96), rgba(15,61,97,0.9));
+      box-shadow: var(--shadow);
+    }
+
+    .szymon-banner-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 21 / 9;
+      object-fit: cover;
+    }
+
+    .szymon-banner-caption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      color: #e7f6ff;
+      background: rgba(7,25,47,0.72);
+    }
+
+    .szymon-banner-caption strong {
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .szymon-banner-caption span {
+      color: #d8ecff;
+      line-height: 1.45;
+    }
+
     .section {
       margin-top: 24px;
       padding: 28px;
@@ -920,6 +958,11 @@
       .main-chart-frame {
         height: 560px;
       }
+
+      .szymon-banner-caption {
+        align-items: flex-start;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -962,6 +1005,10 @@
           <text x="58" y="252" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="18" font-weight="900">GOLD · BTC · SP500 · TSLA · NVDA</text>
         </svg>
       </aside>
+    </section>
+
+    <section class="szymon-banner-card reveal" aria-label="Wykres nie kłamie">
+      <img src="assets/inwestuj-szymonem-banner.png" alt="Bajkowy baner inwestycyjny: wykres nie kłamie, BTC i rosnący wykres">
     </section>
 
     <section id="ceny" class="section reveal">
