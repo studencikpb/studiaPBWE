@@ -73,6 +73,25 @@
     .market-guide { padding:18px; border:1px solid #d7e4df; border-radius:12px; background:#fff; }
     .market-guide strong { display:block; font-size:17px; }
     .market-guide span { display:block; margin-top:7px; color:var(--muted); line-height:1.42; }
+    .world-cup { color:#fff; background:linear-gradient(145deg,#081b31,#0b4d5c 55%,#0f766e); }
+    .world-cup .section-head h2 { color:#fff; }
+    .world-cup .section-head p { color:#cceee8; }
+    .bracket-scroll { overflow-x:auto; padding:8px 4px 18px; scrollbar-color:var(--amber) rgba(255,255,255,.12); }
+    .bracket { display:grid; grid-template-columns:180px 180px 180px 180px 190px 150px; gap:26px; align-items:center; min-width:1210px; }
+    .round { display:grid; align-content:center; gap:9px; }
+    .round h3 { position:sticky; top:0; z-index:2; margin:0 0 9px; padding:8px 5px; color:var(--amber); background:#0a3346; font-size:13px; text-align:center; text-transform:uppercase; }
+    .bracket-match { position:relative; display:grid; gap:3px; min-height:43px; padding:8px 10px; border:1px solid rgba(255,255,255,.22); border-radius:8px; background:rgba(255,255,255,.09); }
+    .bracket-match::after { content:""; position:absolute; left:100%; top:50%; width:27px; height:1px; background:rgba(94,234,212,.58); }
+    .bracket-match strong { color:#fff; font-size:12px; }
+    .bracket-match span { color:#bfe6df; font-size:10px; }
+    .round-16 { gap:29px; }
+    .round-8 { gap:73px; }
+    .round-4 { gap:161px; }
+    .round-final { gap:10px; }
+    .trophy-stage { display:grid; place-items:center; align-content:center; min-height:310px; text-align:center; }
+    .trophy { width:112px; height:112px; padding:20px; border:1px solid rgba(251,191,36,.5); border-radius:50%; color:var(--amber); background:rgba(251,191,36,.1); filter:drop-shadow(0 0 24px rgba(251,191,36,.34)); animation:trophyGlow 2.4s ease-in-out infinite; }
+    .trophy-stage strong { margin-top:16px; color:#fff; font-size:18px; }
+    .trophy-stage span { margin-top:7px; color:#bfe6df; font-size:12px; }
     .radar-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:18px; }
     .radar { position:relative; min-height:340px; overflow:hidden; padding:26px; border-radius:14px; color:#fff; background:linear-gradient(145deg,#052e2b,#0f766e); }
     .radar-ring { position:absolute; right:-60px; bottom:-90px; width:350px; aspect-ratio:1; border:1px solid rgba(94,234,212,.35); border-radius:50%; box-shadow:inset 0 0 0 70px rgba(94,234,212,.04),inset 0 0 0 140px rgba(94,234,212,.04); }
@@ -98,6 +117,7 @@
     .footer a { color:#fff; }
     @keyframes pulse { 50% { opacity:.45; } }
     @keyframes sweep { to { transform:rotate(360deg); } }
+    @keyframes trophyGlow { 50% { transform:translateY(-8px) scale(1.04); filter:drop-shadow(0 0 34px rgba(251,191,36,.72)); } }
     @media(max-width:850px) { .matches,.tips-grid,.markets-grid{grid-template-columns:1fr 1fr}.radar-grid{grid-template-columns:1fr}.hero::after{background:linear-gradient(0deg,rgba(3,20,31,.97),rgba(3,20,31,.1) 78%)}.hero-copy{justify-content:flex-end;max-width:100%;margin-left:0;padding-top:190px}.section-head,.footer{align-items:flex-start;flex-direction:column} }
     @media(max-width:560px) { .shell{width:min(100% - 18px,1180px)}.topbar{align-items:flex-start;flex-direction:column}.hero,.hero-copy{min-height:620px}.hero img{object-position:33% center}.hero-copy{padding:210px 22px 24px}.matches,.tips-grid,.markets-grid{grid-template-columns:1fr}.filter-row{align-items:flex-start;flex-direction:column}.filter-label{min-width:0}.section{padding:18px}.operator{padding:0}.operator-banner>img{aspect-ratio:1.45/1}.operator-brand{left:12px;bottom:12px;width:132px;padding:9px 12px}.notice{grid-template-columns:1fr}h1{font-size:clamp(34px,10.5vw,46px)} }
     @media(prefers-reduced-motion:reduce) { html{scroll-behavior:auto}.radar-line,.status::before{animation:none} }
@@ -158,6 +178,42 @@
         <article class="market-guide"><strong>Powyżej / poniżej</strong><span>Zakład na łączną liczbę goli lub punktów względem wskazanej granicy.</span></article>
         <article class="market-guide"><strong>Handicap</strong><span>Wirtualna przewaga lub strata dodawana do wyniku. Tu warto dwa razy przeczytać zasady.</span></article>
         <article class="market-guide"><strong>Zakład live</strong><span>Decyzja podczas meczu. Tempo jest większe, więc emocje jeszcze łatwiej wyprzedzają rozsądek.</span></article>
+      </div>
+    </section>
+
+    <section class="section world-cup" id="world-cup">
+      <div class="section-head"><div><p class="eyebrow">Canada · Mexico · USA</p><h2>World Cup 2026 · droga po puchar</h2><p>Po fazie grupowej 32 drużyny rozpoczynają bezpośrednią walkę o finał. Przesuń drabinkę poziomo, aby przejść od pierwszej rundy aż do trofeum.</p></div><a class="button" href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/knockout-stage-match-schedule-bracket" target="_blank" rel="noopener">Oficjalna drabinka FIFA</a></div>
+      <div class="bracket-scroll" aria-label="Drabinka fazy pucharowej World Cup 2026">
+        <div class="bracket">
+          <div class="round round-32"><h3>1/16 finału · 32</h3>
+            <div class="bracket-match"><strong>Mecz 73</strong><span>Para fazy pucharowej</span></div><div class="bracket-match"><strong>Mecz 74</strong><span>Para fazy pucharowej</span></div>
+            <div class="bracket-match"><strong>Mecz 75</strong><span>Para fazy pucharowej</span></div><div class="bracket-match"><strong>Mecz 76</strong><span>Para fazy pucharowej</span></div>
+            <div class="bracket-match"><strong>Mecz 77</strong><span>Para fazy pucharowej</span></div><div class="bracket-match"><strong>Mecz 78</strong><span>Para fazy pucharowej</span></div>
+            <div class="bracket-match"><strong>Mecz 79</strong><span>Para fazy pucharowej</span></div><div class="bracket-match"><strong>Mecz 80</strong><span>Para fazy pucharowej</span></div>
+            <div class="bracket-match"><strong>Mecz 81</strong><span>Para fazy pucharowej</span></div><div class="bracket-match"><strong>Mecz 82</strong><span>Para fazy pucharowej</span></div>
+            <div class="bracket-match"><strong>Mecz 83</strong><span>Para fazy pucharowej</span></div><div class="bracket-match"><strong>Mecz 84</strong><span>Para fazy pucharowej</span></div>
+            <div class="bracket-match"><strong>Mecz 85</strong><span>Para fazy pucharowej</span></div><div class="bracket-match"><strong>Mecz 86</strong><span>Para fazy pucharowej</span></div>
+            <div class="bracket-match"><strong>Mecz 87</strong><span>Para fazy pucharowej</span></div><div class="bracket-match"><strong>Mecz 88</strong><span>Para fazy pucharowej</span></div>
+          </div>
+          <div class="round round-16"><h3>1/8 finału · 16</h3>
+            <div class="bracket-match"><strong>Mecz 89</strong><span>Zwycięzcy M73–M74</span></div><div class="bracket-match"><strong>Mecz 90</strong><span>Zwycięzcy M75–M76</span></div>
+            <div class="bracket-match"><strong>Mecz 91</strong><span>Zwycięzcy M77–M78</span></div><div class="bracket-match"><strong>Mecz 92</strong><span>Zwycięzcy M79–M80</span></div>
+            <div class="bracket-match"><strong>Mecz 93</strong><span>Zwycięzcy M81–M82</span></div><div class="bracket-match"><strong>Mecz 94</strong><span>Zwycięzcy M83–M84</span></div>
+            <div class="bracket-match"><strong>Mecz 95</strong><span>Zwycięzcy M85–M86</span></div><div class="bracket-match"><strong>Mecz 96</strong><span>Zwycięzcy M87–M88</span></div>
+          </div>
+          <div class="round round-8"><h3>Ćwierćfinały</h3>
+            <div class="bracket-match"><strong>Mecz 97</strong><span>Zwycięzcy 1/8 finału</span></div><div class="bracket-match"><strong>Mecz 98</strong><span>Zwycięzcy 1/8 finału</span></div>
+            <div class="bracket-match"><strong>Mecz 99</strong><span>Zwycięzcy 1/8 finału</span></div><div class="bracket-match"><strong>Mecz 100</strong><span>Zwycięzcy 1/8 finału</span></div>
+          </div>
+          <div class="round round-4"><h3>Półfinały</h3>
+            <div class="bracket-match"><strong>Mecz 101</strong><span>Zwycięzcy ćwierćfinałów</span></div><div class="bracket-match"><strong>Mecz 102</strong><span>Zwycięzcy ćwierćfinałów</span></div>
+          </div>
+          <div class="round round-final"><h3>Wielki finał</h3><div class="bracket-match"><strong>Mecz 104</strong><span>19 lipca · New York New Jersey</span></div></div>
+          <div class="trophy-stage">
+            <svg class="trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M5 6H3v1a4 4 0 0 0 4 4M19 6h2v1a4 4 0 0 1-4 4"/></svg>
+            <strong>Mistrz świata 2026</strong><span>Trofeum czeka na zwycięzcę</span>
+          </div>
+        </div>
       </div>
     </section>
 
