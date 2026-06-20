@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <meta name="theme-color" content="#052e2b">
+  <title>Meczyki z Sędzią Marcinem</title>
+  <style>
+    :root { --navy:#061b25; --green:#065f46; --mint:#5eead4; --amber:#fbbf24; --paper:#f8fbfa; --ink:#10221e; --muted:#60736d; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); font-family:Arial,Helvetica,sans-serif; background:linear-gradient(145deg,#03141f,#064e3b 58%,#0f766e); }
+    body::before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.12; background-image:linear-gradient(rgba(255,255,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.35) 1px,transparent 1px); background-size:54px 54px; }
+    .progress { position:fixed; z-index:20; inset:0 0 auto; height:4px; background:rgba(255,255,255,.12); }
+    .progress span { display:block; width:0; height:100%; background:linear-gradient(90deg,var(--amber),var(--mint)); }
+    .shell { position:relative; width:min(1180px,calc(100% - 28px)); margin:auto; padding:24px 0 46px; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:8px 0 24px; color:#fff; }
+    .brand { font-size:15px; font-weight:950; letter-spacing:.08em; text-transform:uppercase; }
+    .home { padding:10px 14px; border:1px solid rgba(255,255,255,.25); border-radius:999px; color:#fff; text-decoration:none; font-weight:900; background:rgba(255,255,255,.09); }
+    .hero { position:relative; min-height:480px; overflow:hidden; border:1px solid rgba(255,255,255,.22); border-radius:18px; background:#061b25; box-shadow:0 30px 80px rgba(0,0,0,.34); }
+    .hero img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
+    .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(270deg,rgba(3,20,31,.96) 0%,rgba(3,20,31,.78) 46%,rgba(3,20,31,.08) 78%),linear-gradient(0deg,rgba(3,20,31,.62),transparent 48%); }
+    .hero-copy { position:relative; z-index:2; display:flex; flex-direction:column; justify-content:center; min-height:480px; max-width:650px; margin-left:auto; padding:clamp(30px,4.5vw,56px); color:#fff; }
+    .eyebrow { margin:0 0 12px; color:var(--amber); font-size:12px; font-weight:950; letter-spacing:.06em; text-transform:none; }
+    h1 { margin:0; max-width:620px; font-size:clamp(38px,4.4vw,58px); line-height:1.02; letter-spacing:0; }
+    .lead { margin:18px 0 0; color:#d7f7ef; font-size:16px; line-height:1.5; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+    .button { display:inline-flex; align-items:center; min-height:44px; padding:11px 15px; border:0; border-radius:10px; color:#08231d; background:var(--amber); text-decoration:none; font:900 15px Arial; cursor:pointer; }
+    .button.alt { background:#e8fffa; }
+    .notice { display:block; margin-top:18px; padding:14px 16px; border:1px solid rgba(251,191,36,.35); border-radius:12px; color:#fff8dc; background:rgba(71,45,4,.55); font-size:13px; line-height:1.42; }
+    .notice strong { display:block; color:var(--amber); }
+    .notice span { display:block; margin-top:5px; }
+    .section { margin-top:24px; padding:clamp(20px,4vw,38px); border:1px solid rgba(255,255,255,.22); border-radius:18px; background:rgba(248,251,250,.96); box-shadow:0 24px 60px rgba(0,0,0,.2); }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap:18px; margin-bottom:22px; }
+    .section h2 { margin:0; font-size:clamp(28px,4vw,44px); line-height:1.06; }
+    .section-head p { max-width:600px; margin:8px 0 0; color:var(--muted); line-height:1.5; }
+    .status { display:inline-flex; align-items:center; gap:8px; color:#065f46; font-size:13px; font-weight:900; }
+    .status::before { content:""; width:9px; height:9px; border-radius:50%; background:#22c55e; box-shadow:0 0 0 6px rgba(34,197,94,.13); animation:pulse 1.8s infinite; }
+    .filters { display:flex; flex-wrap:wrap; gap:9px; margin-bottom:18px; }
+    .filter { min-height:40px; padding:9px 13px; border:1px solid #cbdad5; border-radius:999px; color:#17453a; background:#fff; font-weight:900; cursor:pointer; }
+    .filter.active { color:#fff; border-color:var(--green); background:var(--green); }
+    .filter-groups { display:grid; gap:12px; margin-bottom:20px; }
+    .filter-row { display:flex; align-items:center; flex-wrap:wrap; gap:9px; }
+    .filter-label { min-width:82px; color:var(--muted); font-size:12px; font-weight:950; text-transform:uppercase; }
+    .view-filter { min-height:38px; padding:8px 12px; border:1px solid #d9c98e; border-radius:9px; color:#6f5200; background:#fffaf0; font-weight:900; cursor:pointer; }
+    .view-filter.active { color:#172019; border-color:var(--amber); background:var(--amber); }
+    .matches { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+    .match { position:relative; min-height:194px; padding:18px; border:1px solid #d7e4df; border-radius:12px; background:#fff; overflow:hidden; }
+    .match::before { content:""; position:absolute; inset:0 auto 0 0; width:5px; background:var(--mint); }
+    .match.live::before { background:#ef4444; }
+    .match-top { display:flex; justify-content:space-between; gap:10px; color:#60736d; font-size:12px; font-weight:900; text-transform:uppercase; }
+    .live-pill { color:#b91c1c; }
+    .teams { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10px; margin-top:26px; text-align:center; }
+    .team { font-weight:950; line-height:1.2; }
+    .score { min-width:58px; font-size:24px; font-weight:950; }
+    .league { margin-top:24px; color:var(--muted); font-size:13px; text-align:center; }
+    .odds { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin-top:15px; }
+    .odd { display:grid; place-items:center; min-height:38px; padding:5px; border:1px solid #ead486; border-radius:7px; color:#5f4700; background:#fff8dc; font-size:12px; font-weight:950; text-align:center; }
+    .odd small { display:block; color:#897446; font-size:9px; }
+    .odds-pending { grid-column:1/-1; color:#7b897f; font-size:11px; text-align:center; }
+    .loading { grid-column:1/-1; padding:38px; border:1px dashed #9bb8ae; border-radius:12px; color:var(--muted); text-align:center; }
+    .count { display:inline-flex; margin-left:8px; padding:3px 8px; border-radius:999px; color:#fff; background:var(--green); font-size:11px; vertical-align:middle; }
+    .tips-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+    .tip-card { position:relative; min-height:210px; padding:20px; overflow:hidden; border:1px solid #d7e4df; border-radius:12px; background:linear-gradient(145deg,#fff,#effaf6); }
+    .tip-card::after { content:""; position:absolute; right:-38px; bottom:-48px; width:130px; aspect-ratio:1; border:24px solid rgba(6,95,70,.07); border-radius:50%; }
+    .tip-index { display:grid; place-items:center; width:34px; height:34px; border-radius:9px; color:#fff; background:var(--green); font-weight:950; }
+    .tip-card h3 { position:relative; margin:18px 0 8px; font-size:20px; line-height:1.15; }
+    .tip-card p { position:relative; margin:0; color:var(--muted); line-height:1.45; }
+    .tip-market { position:relative; display:inline-flex; margin-top:16px; padding:8px 10px; border-radius:8px; color:#6f5200; background:#fff0b8; font-size:13px; font-weight:950; }
+    .markets-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .market-guide { padding:18px; border:1px solid #d7e4df; border-radius:12px; background:#fff; }
+    .market-guide strong { display:block; font-size:17px; }
+    .market-guide span { display:block; margin-top:7px; color:var(--muted); line-height:1.42; }
+    .radar-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:18px; }
+    .radar { position:relative; min-height:340px; overflow:hidden; padding:26px; border-radius:14px; color:#fff; background:linear-gradient(145deg,#052e2b,#0f766e); }
+    .radar-ring { position:absolute; right:-60px; bottom:-90px; width:350px; aspect-ratio:1; border:1px solid rgba(94,234,212,.35); border-radius:50%; box-shadow:inset 0 0 0 70px rgba(94,234,212,.04),inset 0 0 0 140px rgba(94,234,212,.04); }
+    .radar-line { position:absolute; right:108px; bottom:83px; width:180px; height:2px; transform-origin:right center; background:linear-gradient(90deg,transparent,var(--mint)); animation:sweep 4s linear infinite; }
+    .radar h3 { position:relative; margin:0; font-size:28px; }
+    .radar p { position:relative; max-width:480px; color:#d7f7ef; line-height:1.55; }
+    .radar-pick { position:relative; display:inline-flex; margin-top:18px; padding:12px 14px; border-radius:10px; color:#08231d; background:var(--amber); font-weight:950; }
+    .rules { display:grid; gap:10px; }
+    .rule { padding:18px; border:1px solid #d7e4df; border-radius:12px; background:#fff; }
+    .rule strong { display:block; font-size:17px; }
+    .rule span { display:block; margin-top:7px; color:var(--muted); line-height:1.4; }
+    .operator { display:block; padding:0; overflow:hidden; color:#fff; background:linear-gradient(135deg,#181b20,#24282e); }
+    .operator-banner { position:relative; display:block; overflow:hidden; background:#101216; }
+    .operator-banner > img { display:block; width:100%; height:auto; aspect-ratio:2.5 / 1; object-fit:cover; object-position:center; }
+    .operator-brand { position:absolute; left:22px; bottom:20px; display:grid; place-items:center; width:170px; padding:12px 16px; border:1px solid rgba(255,255,255,.18); border-radius:10px; background:rgba(24,27,32,.9); backdrop-filter:blur(10px); }
+    .operator-brand img { display:block; width:100%; height:auto; }
+    .operator-copy { padding:clamp(22px,4vw,38px); }
+    .operator-copy h2 { color:#fff; }
+    .operator-copy p { max-width:660px; color:#d7dedb; line-height:1.55; }
+    .operator-copy .button { margin-top:10px; }
+    .operator-note { display:block; margin-top:14px; color:#aebbb7; font-size:12px; line-height:1.5; }
+    .footer { display:flex; justify-content:space-between; gap:16px; padding:28px 4px 0; color:#d7f7ef; font-size:13px; line-height:1.5; }
+    .footer a { color:#fff; }
+    @keyframes pulse { 50% { opacity:.45; } }
+    @keyframes sweep { to { transform:rotate(360deg); } }
+    @media(max-width:850px) { .matches,.tips-grid,.markets-grid{grid-template-columns:1fr 1fr}.radar-grid{grid-template-columns:1fr}.hero::after{background:linear-gradient(0deg,rgba(3,20,31,.97),rgba(3,20,31,.1) 78%)}.hero-copy{justify-content:flex-end;max-width:100%;margin-left:0;padding-top:190px}.section-head,.footer{align-items:flex-start;flex-direction:column} }
+    @media(max-width:560px) { .shell{width:min(100% - 18px,1180px)}.topbar{align-items:flex-start;flex-direction:column}.hero,.hero-copy{min-height:620px}.hero img{object-position:33% center}.hero-copy{padding:210px 22px 24px}.matches,.tips-grid,.markets-grid{grid-template-columns:1fr}.filter-row{align-items:flex-start;flex-direction:column}.filter-label{min-width:0}.section{padding:18px}.operator{padding:0}.operator-banner>img{aspect-ratio:1.45/1}.operator-brand{left:12px;bottom:12px;width:132px;padding:9px 12px}.notice{grid-template-columns:1fr}h1{font-size:clamp(34px,10.5vw,46px)} }
+    @media(prefers-reduced-motion:reduce) { html{scroll-behavior:auto}.radar-line,.status::before{animation:none} }
+  </style>
+</head>
+<body>
+  <div class="progress"><span id="progress"></span></div>
+  <main class="shell">
+    <header class="topbar"><span class="brand">PBWE · sportowe laboratorium</span><a class="home" href="index.html">Wróć na główną</a></header>
+
+    <section class="hero">
+      <img src="assets/maly-marcin-meczyki.png?v=sedzia" alt="Rysunkowy Sędzia Marcin analizuje mecz piłkarski">
+      <div class="hero-copy">
+        <p class="eyebrow">forma · terminarz · zdrowy rozsądek</p>
+        <h1>Jak meczyki, to tylko z Sędzią Marcinem</h1>
+        <p class="lead">Tu piłka jest okrągła, bramki są dwie, a „pewniak” zwykle właśnie przegrał z ostatnią drużyną tabeli. Sprawdzamy mecze i bawimy się analizą bez napinki.</p>
+        <div class="hero-actions"><a class="button" href="#mecze">Dzisiejsze mecze</a><a class="button alt" href="#radar">Radar Marcina</a></div>
+        <div class="notice"><strong>18+ · To nie jest porada bukmacherska.</strong><span>Zakłady wiążą się z ryzykiem utraty pieniędzy. Graj wyłącznie u legalnych operatorów, nie pożyczaj na grę i ustaw twardy limit. Najbezpieczniejsza stawka to 0 zł.</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="mecze">
+      <div class="section-head"><div><h2>Centrum meczowe <span class="count" id="matchCount">0</span></h2><p>Terminarz i dostępne wyniki z kilku kolejnych dni. Przełącz dyscyplinę oraz zakres czasu bez przeładowywania strony.</p></div><span class="status" id="liveStatus">Aktualizacja danych</span></div>
+      <div class="filter-groups">
+        <div class="filter-row filters" aria-label="Wybór dyscypliny">
+          <span class="filter-label">Dyscyplina</span>
+          <button class="filter active" data-sport="Soccer">Piłka nożna</button>
+          <button class="filter" data-sport="Basketball">Koszykówka</button>
+          <button class="filter" data-sport="Tennis">Tenis</button>
+          <button class="filter" data-sport="Volleyball">Siatkówka</button>
+          <button class="filter" data-sport="Ice Hockey">Hokej</button>
+          <button class="filter" data-sport="Motorsport">Motorsport</button>
+        </div>
+        <div class="filter-row" aria-label="Zakres czasu">
+          <span class="filter-label">Termin</span>
+          <button class="view-filter" data-view="live">Na żywo</button>
+          <button class="view-filter active" data-view="today">Dzisiaj</button>
+          <button class="view-filter" data-view="tomorrow">Jutro</button>
+          <button class="view-filter" data-view="upcoming">Najbliższe 4 dni</button>
+        </div>
+      </div>
+      <div class="matches" id="matches"><div class="loading">Sędzia Marcin rozkłada właśnie tabelę taktyczną...</div></div>
+    </section>
+
+    <section class="section" id="typy">
+      <div class="section-head"><div><h2>Tablica Sędziego</h2><p>Trzy wydarzenia wybrane z aktualnego terminarza. To luźne inspiracje do oglądania, a nie kupon z gwarancją.</p></div></div>
+      <div class="tips-grid" id="tipsGrid">
+        <article class="tip-card"><span class="tip-index">1</span><h3>Czekamy na terminarz</h3><p>Po pobraniu danych pojawią się tutaj spotkania do obserwacji.</p><span class="tip-market">analiza w toku</span></article>
+      </div>
+    </section>
+
+    <section class="section" id="rynki">
+      <div class="section-head"><div><h2>Zakładki analizy meczu</h2><p>Krótka ściąga, co właściwie oznaczają najpopularniejsze rynki. Najpierw rozumiesz, dopiero potem klikasz.</p></div></div>
+      <div class="markets-grid">
+        <article class="market-guide"><strong>1X2</strong><span>Wygrana gospodarzy, remis albo wygrana gości. Proste w nazwie, trudniejsze w praktyce.</span></article>
+        <article class="market-guide"><strong>Podwójna szansa</strong><span>Dwa wyniki w jednym wyborze: 1X, X2 lub 12. Niższe ryzyko zwykle oznacza niższy kurs.</span></article>
+        <article class="market-guide"><strong>Obie strzelą</strong><span>Liczy się gol każdej drużyny, a nie zwycięzca. Bramkarze potrafią jednak zepsuć każdą teorię.</span></article>
+        <article class="market-guide"><strong>Powyżej / poniżej</strong><span>Zakład na łączną liczbę goli lub punktów względem wskazanej granicy.</span></article>
+        <article class="market-guide"><strong>Handicap</strong><span>Wirtualna przewaga lub strata dodawana do wyniku. Tu warto dwa razy przeczytać zasady.</span></article>
+        <article class="market-guide"><strong>Zakład live</strong><span>Decyzja podczas meczu. Tempo jest większe, więc emocje jeszcze łatwiej wyprzedzają rozsądek.</span></article>
+      </div>
+    </section>
+
+    <section class="section" id="radar">
+      <div class="section-head"><div><h2>Radar Sędziego Marcina</h2><p>Humorystyczne wskazówki do oglądania spotkań. Bez kursów, bez gwarancji i bez magicznej kuli.</p></div></div>
+      <div class="radar-grid">
+        <article class="radar"><div class="radar-ring"></div><div class="radar-line"></div><h3 id="radarTitle">Mecz do obserwacji</h3><p id="radarText">Radar czeka na aktualny terminarz. Gdy pojawią się wydarzenia, wybierze jedno spotkanie na podstawie dostępnych danych, a nie fazy księżyca.</p><span class="radar-pick" id="radarPick">Typ zabawowy: oglądamy, nie gonimy strat</span></article>
+        <div class="rules">
+          <article class="rule"><strong>1. Najpierw skład</strong><span>Nazwa drużyny na koszulce nie strzela goli. Sprawdź absencje i rotację.</span></article>
+          <article class="rule"><strong>2. Derbów nie licz Excelem</strong><span>Forma pomaga, ale lokalne mecze lubią wyrzucać arkusz przez okno.</span></article>
+          <article class="rule"><strong>3. Limit przed pierwszym gwizdkiem</strong><span>Nie podnoś stawki po porażce. Emocje są fatalnym doradcą finansowym.</span></article>
+          <article class="rule"><strong>4. Kupon to rozrywka</strong><span>Jeżeli przestaje bawić, robisz przerwę. Wynik meczu nie jest planem inwestycyjnym.</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section operator" aria-label="LV BET">
+      <a class="operator-banner" href="https://lvbet.pl/pl/" target="_blank" rel="noopener sponsored" aria-label="Otwórz oficjalną stronę LV BET">
+        <img src="assets/lvbet-banner.png" alt="Oferta sportowa LV BET z ambasadorami marki">
+        <span class="operator-brand"><img src="assets/lvbet-logo.png" alt="LV BET"></span>
+      </a>
+      <div class="operator-copy">
+        <p class="eyebrow">Link zewnętrzny · 18+</p>
+        <h2>Chcesz sprawdzić ofertę meczową?</h2>
+        <p>LV BET udostępnia zakłady przedmeczowe i live dla wielu dyscyplin. Przed grą sprawdź regulamin, ustaw limit i pamiętaj, że żaden kurs nie jest obietnicą wygranej.</p>
+        <a class="button" href="https://lvbet.pl/pl/" target="_blank" rel="noopener sponsored">Przejdź do LV BET</a>
+        <span class="operator-note">Strona dla osób pełnoletnich. Hazard wiąże się z ryzykiem utraty pieniędzy. To zwykły link zewnętrzny, nie informacja o gwarantowanym zysku.</span>
+      </div>
+    </section>
+
+    <footer class="footer"><span>Dane sportowe: <a href="https://www.thesportsdb.com/" target="_blank" rel="noopener">TheSportsDB</a>. Wyniki mogą być opóźnione.</span><span>Sprawdź legalność operatora na <a href="https://puesc.gov.pl/uslugi/gry-hazardowe" target="_blank" rel="noopener">puesc.gov.pl</a>.</span></footer>
+  </main>
+  <script>
+    const PBWE_API_URL='https://studiawepb-api.calabraaa.workers.dev';
+    const matches=document.getElementById('matches'), status=document.getElementById('liveStatus');
+    const radarTitle=document.getElementById('radarTitle'), radarText=document.getElementById('radarText'), radarPick=document.getElementById('radarPick');
+    const matchCount=document.getElementById('matchCount'), tipsGrid=document.getElementById('tipsGrid');
+    const filters=[...document.querySelectorAll('.filter')], viewFilters=[...document.querySelectorAll('.view-filter')];
+    let allEvents=[], activeView='today';
+    const esc=(value='')=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+    const dateAt=(offset=0)=>{const date=new Date();date.setHours(12,0,0,0);date.setDate(date.getDate()+offset);return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Warsaw'}).format(date);};
+    const eventTime=event=>event.strTime?event.strTime.slice(0,5):'godzina TBD';
+    const isLive=event=>['1H','2H','HT','Live','LIVE'].includes(event.strStatus);
+    const eventKey=event=>`event-${event.idEvent||`${event.strHomeTeam}-${event.strAwayTeam}`}`.replace(/[^a-zA-Z0-9-]/g,'');
+    const eventsForView=()=>allEvents.filter(event=>activeView==='live'?isLive(event):activeView==='today'?event.dateEvent===dateAt(0):activeView==='tomorrow'?event.dateEvent===dateAt(1):true);
+    const renderTips=events=>{
+      const selected=events.filter(event=>event.strHomeTeam&&event.strAwayTeam).slice(0,3);
+      if(!selected.length){tipsGrid.innerHTML='<article class="tip-card"><span class="tip-index">–</span><h3>Brak wydarzeń</h3><p>Zmień dyscyplinę albo termin.</p><span class="tip-market">radar czeka</span></article>';return;}
+      const labels=['Mecz do obserwacji','Potencjalnie otwarte spotkanie','Sędziowski wybór transmisji'];
+      tipsGrid.innerHTML=selected.map((event,index)=>`<article class="tip-card"><span class="tip-index">${index+1}</span><h3>${esc(event.strHomeTeam)} – ${esc(event.strAwayTeam)}</h3><p>${esc(event.strLeague||'Rozgrywki sportowe')} · ${esc(event.dateEvent)} · ${esc(eventTime(event))}</p><span class="tip-market">${labels[index]}</span></article>`).join('');
+    };
+    const oddsFallback=events=>events.forEach(event=>{const node=document.getElementById(`odds-${eventKey(event)}`);if(node)node.innerHTML='<span class="odds-pending">Kursy chwilowo niedostępne · sprawdź LV BET</span>';});
+    async function loadOdds(events){
+      const requested=events.filter(event=>event.strHomeTeam&&event.strAwayTeam).slice(0,12);if(!requested.length)return;
+      try{
+        const response=await fetch(`${PBWE_API_URL}/api/lvbet-odds`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({events:requested.map(event=>({key:eventKey(event),home:event.strHomeTeam,away:event.strAwayTeam}))})});
+        if(!response.ok)throw new Error('odds');const data=await response.json();
+        requested.forEach(event=>{const node=document.getElementById(`odds-${eventKey(event)}`),item=data.odds?.[eventKey(event)];if(!node)return;if(!item?.selections?.length){node.innerHTML='<span class="odds-pending">Brak dopasowanego kursu LV BET</span>';return;}node.innerHTML=item.selections.slice(0,3).map(selection=>`<span class="odd"><small>${esc(selection.name)}</small>${Number(selection.rate).toFixed(2)}</span>`).join('');});
+      }catch(error){oddsFallback(requested);}
+    }
+    const render=events=>{
+      const visible=events.slice().sort((a,b)=>String(a.strTimestamp||'').localeCompare(String(b.strTimestamp||''))).slice(0,18);matchCount.textContent=visible.length;renderTips(visible);
+      if(!visible.length){matches.innerHTML='<div class="loading">Brak wydarzeń w tej zakładce. Sędzia Marcin zarządził zmianę ustawienia.</div>';return;}
+      matches.innerHTML=visible.map(event=>{const live=isLive(event),hasScore=event.intHomeScore!==null&&event.intHomeScore!==undefined;return `<article class="match ${live?'live':''}"><div class="match-top"><span>${esc(event.dateEvent||dateAt(0))} · ${esc(eventTime(event))}</span><span class="${live?'live-pill':''}">${live?'● LIVE':esc(event.strStatus||'zaplanowany')}</span></div><div class="teams"><span class="team">${esc(event.strHomeTeam||'Gospodarze')}</span><span class="score">${hasScore?`${esc(event.intHomeScore)}:${esc(event.intAwayScore)}`:'–'}</span><span class="team">${esc(event.strAwayTeam||'Goście')}</span></div><div class="league">${esc(event.strLeague||event.strSport||'Wydarzenie sportowe')}</div><div class="odds" id="odds-${eventKey(event)}"><span class="odds-pending">Pobieranie kursów LV BET...</span></div></article>`;}).join('');
+      const pick=visible.find(isLive)||visible[0];radarTitle.textContent=`${pick.strHomeTeam||'Gospodarze'} – ${pick.strAwayTeam||'Goście'}`;radarText.textContent=`${pick.strLeague||'Rozgrywki'}, ${eventTime(pick)}. Radar wskazuje ten mecz do obserwacji. To wybór transmisji, nie obietnica wyniku.`;radarPick.textContent=isLive(pick)?'Na żywo: najpierw oglądamy przebieg':'Typ zabawowy: emocje powyżej 2,5';loadOdds(visible);
+    };
+    async function loadSport(sport='Soccer'){
+      matches.innerHTML='<div class="loading">Sędzia Marcin rozkłada właśnie tabelę taktyczną...</div>';status.textContent='Pobieranie terminarza';
+      try{const responses=await Promise.all([0,1,2,3].map(offset=>fetch(`https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${dateAt(offset)}&s=${encodeURIComponent(sport)}`,{cache:'no-store'})));if(responses.some(response=>!response.ok))throw new Error('API');const payloads=await Promise.all(responses.map(response=>response.json()));const seen=new Set();allEvents=payloads.flatMap(data=>data.events||[]).filter(event=>{const key=event.idEvent||eventKey(event);if(seen.has(key))return false;seen.add(key);return true;});render(eventsForView());status.textContent=`Odświeżono ${new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}`;}catch(error){matches.innerHTML='<div class="loading">Nie udało się pobrać terminarza. Spróbuj odświeżyć stronę za chwilę.</div>';status.textContent='Dane chwilowo niedostępne';}
+    }
+    filters.forEach(button=>button.addEventListener('click',()=>{filters.forEach(item=>item.classList.remove('active'));button.classList.add('active');loadSport(button.dataset.sport);}));
+    viewFilters.forEach(button=>button.addEventListener('click',()=>{viewFilters.forEach(item=>item.classList.remove('active'));button.classList.add('active');activeView=button.dataset.view;render(eventsForView());}));
+    const updateProgress=()=>{const max=document.documentElement.scrollHeight-innerHeight;document.getElementById('progress').style.width=`${max>0?scrollY/max*100:0}%`;};
+    addEventListener('scroll',updateProgress,{passive:true});updateProgress();loadSport();setInterval(()=>loadSport(document.querySelector('.filter.active').dataset.sport),120000);
+  </script>
+</body>
+</html>

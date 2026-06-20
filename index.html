@@ -484,6 +484,7 @@
     .investment-teaser,
     .data-center-teaser,
     .smart-home-teaser,
+    .betting-teaser,
     .resources,
     .gallery,
     .schedule,
@@ -577,7 +578,8 @@
 
     .feature-grid .investment-teaser,
     .feature-grid .data-center-teaser,
-    .feature-grid .smart-home-teaser {
+    .feature-grid .smart-home-teaser,
+    .feature-grid .betting-teaser {
       margin-top: 0;
     }
 
@@ -594,7 +596,8 @@
 
     .investment-card::before,
     .data-center-card::before,
-    .smart-home-card::before {
+    .smart-home-card::before,
+    .betting-card::before {
       content: "";
       position: absolute;
       inset: 18px;
@@ -636,14 +639,16 @@
 
     .investment-teaser,
     .data-center-teaser,
-    .smart-home-teaser {
+    .smart-home-teaser,
+    .betting-teaser {
       border-color: rgba(255,255,255,0.18);
       transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
     }
 
     .investment-teaser:hover,
     .data-center-teaser:hover,
-    .smart-home-teaser:hover {
+    .smart-home-teaser:hover,
+    .betting-teaser:hover {
       transform: translateY(-4px);
       border-color: rgba(157,246,255,0.34);
       box-shadow: 0 34px 76px rgba(3,16,34,0.34);
@@ -651,7 +656,8 @@
 
     .investment-chart-logo,
     .data-center-logo,
-    .smart-home-logo {
+    .smart-home-logo,
+    .betting-logo {
       width: min(205px, 100%);
       height: auto;
       justify-self: end;
@@ -682,8 +688,19 @@
       color: #fff;
     }
 
+    .betting-teaser {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      background:
+        linear-gradient(90deg, rgba(251,191,36,0.62) 0 8px, transparent 8px),
+        linear-gradient(135deg, #071b18 0%, #065f46 52%, #0f766e 100%);
+      color: #fff;
+    }
+
     .data-center-card,
-    .smart-home-card {
+    .smart-home-card,
+    .betting-card {
       position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1fr) 210px;
@@ -695,7 +712,8 @@
     }
 
     .data-center-card h2,
-    .smart-home-card h2 {
+    .smart-home-card h2,
+    .betting-card h2 {
       margin: 0;
       color: #fff;
       max-width: 920px;
@@ -705,7 +723,8 @@
     }
 
     .data-center-card p,
-    .smart-home-card p {
+    .smart-home-card p,
+    .betting-card p {
       max-width: 760px;
       margin: 14px 0 0;
       color: #d8ecff;
@@ -714,7 +733,8 @@
     }
 
     .data-center-card .open,
-    .smart-home-card .open {
+    .smart-home-card .open,
+    .betting-card .open {
       display: inline-flex;
       width: fit-content;
       margin-top: 20px;
@@ -729,6 +749,26 @@
 
     .data-center-card .open { background: #dbeafe; }
     .smart-home-card .open { background: #dcfce7; }
+    .betting-card .open { background: #fef3c7; }
+
+    .betting-card {
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+    }
+
+    .betting-card h2 {
+      max-width: 760px;
+      font-size: clamp(25px, 2.6vw, 37px);
+      line-height: 1.06;
+    }
+
+    .betting-logo {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 16 / 9;
+      padding: 0;
+      object-fit: contain;
+      object-position: center;
+    }
 
     .home-pulse {
       stroke-dasharray: 16 150;
@@ -1355,6 +1395,7 @@
       .investment-card,
       .data-center-card,
       .smart-home-card,
+      .betting-card,
       .feature-grid,
       .resource-grid,
       .gallery-preview-card,
@@ -1389,15 +1430,28 @@
 
       .investment-chart-logo,
       .data-center-logo,
-      .smart-home-logo {
+      .smart-home-logo,
+      .betting-logo {
         justify-self: start;
         width: min(190px, 100%);
       }
 
       .investment-card h2,
       .data-center-card h2,
-      .smart-home-card h2 {
+      .smart-home-card h2,
+      .betting-card h2 {
         font-size: clamp(28px, 7vw, 40px);
+      }
+
+      .betting-logo {
+        width: 100%;
+        max-width: 560px;
+        height: auto;
+        aspect-ratio: auto;
+      }
+
+      .betting-card h2 {
+        font-size: clamp(25px, 6.5vw, 34px);
       }
     }
 
@@ -1600,11 +1654,31 @@
             </svg>
           </article>
 
+          <article class="hero-slide">
+            <h2>Meczyki tylko z Sędzią Marcinem</h2>
+            <p>Aktualne mecze, wyniki i humorystyczny radar spotkań. Najpierw forma drużyn, potem emocje, a portfel najlepiej zostawić w spokoju.</p>
+            <a class="slide-link" href="meczyki-maly-marcin.html">Otwórz centrum meczowe</a>
+            <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowana analiza meczu piłkarskiego">
+              <rect x="54" y="42" width="512" height="250" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(231,246,255,0.26)" stroke-width="2"/>
+              <rect x="92" y="70" width="436" height="190" rx="8" fill="rgba(15,118,110,0.22)" stroke="#9df6ff" stroke-width="4"/>
+              <path d="M310 70V260M92 165H528" stroke="rgba(231,246,255,0.52)" stroke-width="3"/>
+              <circle cx="310" cy="165" r="44" fill="none" stroke="rgba(231,246,255,0.52)" stroke-width="3"/>
+              <path d="M92 118H148V212H92M528 118H472V212H528" fill="none" stroke="rgba(231,246,255,0.52)" stroke-width="3"/>
+              <circle class="server-light" cx="188" cy="116" r="10" fill="#facc15"/>
+              <circle class="server-light delay-a" cx="254" cy="194" r="10" fill="#6ff3ff"/>
+              <circle class="server-light delay-b" cx="378" cy="130" r="10" fill="#facc15"/>
+              <circle class="server-light" cx="444" cy="212" r="10" fill="#6ff3ff"/>
+              <path class="home-pulse" d="M116 286C198 256 240 304 316 274C388 246 442 286 512 250" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+              <text class="fiber-label" x="92" y="318">MECZE · WYNIKI · FORMA · HUMOR</text>
+            </svg>
+          </article>
+
           <div class="slider-dots" aria-label="Wybór slajdu">
             <button class="slider-dot active" type="button" aria-label="Światłowodowy przepływ wiedzy"></button>
             <button class="slider-dot" type="button" aria-label="Inwestuj z Szymonem"></button>
             <button class="slider-dot" type="button" aria-label="Dwa Huberty o Data center"></button>
             <button class="slider-dot" type="button" aria-label="Inteligentny dom z Marcinem"></button>
+            <button class="slider-dot" type="button" aria-label="Meczyki z Sędzią Marcinem"></button>
           </div>
         </div>
       </aside>
@@ -1797,6 +1871,18 @@
           </svg>
         </a>
       </section>
+
+      <section id="meczyki" class="betting-teaser reveal">
+        <a class="betting-card" href="meczyki-maly-marcin.html">
+          <div>
+            <p class="eyebrow">Mecze · typy · emocje</p>
+            <h2>Jak obstawiać meczyki? Tylko z Sędzią Marcinem!</h2>
+            <p>Aktualny terminarz, wyniki i humorystyczny radar spotkań. Bez pewniaków z internetu i bez gonienia strat.</p>
+            <span class="open">Otwórz centrum meczowe</span>
+          </div>
+          <img class="betting-logo" src="assets/maly-marcin-meczyki.png?v=sedzia" alt="Rysunkowy Sędzia Marcin analizuje mecz">
+        </a>
+      </section>
     </div>
 
     <section id="linki-we" class="resources reveal">
@@ -1970,7 +2056,7 @@
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal, .card, .exam-item, .resource-card, .photo-slot, .day, .subject, .investment-teaser, .data-center-teaser').forEach((element, index) => {
+    document.querySelectorAll('.reveal, .card, .exam-item, .resource-card, .photo-slot, .day, .subject, .investment-teaser, .data-center-teaser, .betting-teaser').forEach((element, index) => {
       element.classList.add('reveal');
       element.style.transitionDelay = `${Math.min(index * 35, 260)}ms`;
       observer.observe(element);

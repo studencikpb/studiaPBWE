@@ -7,6 +7,7 @@ const ALLOWED_ORIGINS = [
   'https://www.studiawepb.pl',
   'https://studencikpb.github.io',
   'http://localhost:8771',
+  'http://localhost:8772',
   'null'
 ];
 
@@ -180,6 +181,61 @@ async function handleForex(request, env, origin) {
   }, 200, origin);
 }
 
+function normalizeTeam(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/\b(fc|cf|sc|afc|women|wom|kobiety|u\d{2}|club)\b/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+async function handleLvbetOdds(request, origin) {
+  if (request.method !== 'POST') return json({ error: 'Użyj metody POST.' }, 405, origin);
+  const body = await request.json();
+  const requested = Array.isArray(body.events) ? body.events.slice(0, 18) : [];
+  if (!requested.length) return json({ odds: {} }, 200, origin);
+
+  const matchesResponse = await fetch('https://offer.lvbet.pl/client-api/v5/matches/?lang=pl', {
+    headers: { 'Accept-Language': 'pl', device: 'desktop' },
+    cf: { cacheTtl: 30, cacheEverything: true }
+  });
+  if (!matchesResponse.ok) return json({ error: 'LV BET nie zwrócił listy meczów.' }, 502, origin);
+  const lvMatches = await matchesResponse.json();
+
+  const resolved = await Promise.all(requested.map(async (event) => {
+    const home = normalizeTeam(event.home);
+    const away = normalizeTeam(event.away);
+    const found = lvMatches.find((match) => {
+      const lvHome = normalizeTeam(match.home?.[0]);
+      const lvAway = normalizeTeam(match.away?.[0]);
+      return (lvHome === home && lvAway === away) || (lvHome === away && lvAway === home);
+    });
+    if (!found) return [event.key, null];
+
+    const marketsResponse = await fetch(`https://offer.lvbet.pl/client-api/v5/matches/${encodeURIComponent(found.match_id)}/markets/?lang=pl`, {
+      headers: { 'Accept-Language': 'pl', device: 'desktop' },
+      cf: { cacheTtl: 20, cacheEverything: true }
+    });
+    if (!marketsResponse.ok) return [event.key, null];
+    const markets = await marketsResponse.json();
+    const market = markets.find((item) => item.is_primary && item.selections?.length >= 2 && item.selections?.length <= 3)
+      || markets.find((item) => item.selections?.length === 3)
+      || markets.find((item) => item.selections?.length === 2);
+    if (!market) return [event.key, null];
+    return [event.key, {
+      matchId: found.match_id,
+      market: market.label || market.name,
+      selections: market.selections.map((selection) => ({
+        name: selection.name,
+        rate: selection.rate?.decimal
+      })).filter((selection) => Number.isFinite(selection.rate))
+    }];
+  }));
+
+  return json({ odds: Object.fromEntries(resolved), updated: new Date().toISOString(), source: 'LV BET' }, 200, origin);
+}
+
 async function handleUpload(request, env, origin) {
   if (!env.GITHUB_TOKEN || !env.ADMIN_PASSWORD) {
     return json({ error: 'Brak sekretów GITHUB_TOKEN albo ADMIN_PASSWORD w Cloudflare Worker.' }, 500, origin);
@@ -250,6 +306,7 @@ export default {
     try {
       if (url.pathname === '/api/visits') return handleVisits(request, env, origin);
       if (url.pathname === '/api/forex') return handleForex(request, env, origin);
+      if (url.pathname === '/api/lvbet-odds') return handleLvbetOdds(request, origin);
       if (url.pathname === '/api/upload' && request.method === 'POST') return handleUpload(request, env, origin);
       return json({ error: 'Nie znaleziono endpointu.' }, 404, origin);
     } catch (error) {

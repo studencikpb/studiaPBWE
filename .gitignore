@@ -3,4 +3,7 @@ pbwe-reliability-site/
 pbwe-reliability-site.zip
 *.png
 !assets/inwestuj-szymonem-banner.png
+!assets/maly-marcin-meczyki.png
+!assets/lvbet-logo.png
+!assets/lvbet-banner.png
 *.svg.png
