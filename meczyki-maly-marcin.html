@@ -6,7 +6,7 @@
   <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <meta name="theme-color" content="#052e2b">
-  <title>Meczyki z Sędzią Marcinem</title>
+  <title>Meczyki z Panem X</title>
   <style>
     :root { --navy:#061b25; --green:#065f46; --mint:#5eead4; --amber:#fbbf24; --paper:#f8fbfa; --ink:#10221e; --muted:#60736d; }
     * { box-sizing:border-box; }
@@ -129,12 +129,12 @@
     <header class="topbar"><span class="brand">PBWE · sportowe laboratorium</span><a class="home" href="index.html">Wróć na główną</a></header>
 
     <section class="hero">
-      <img src="assets/maly-marcin-meczyki.png?v=sedzia" alt="Rysunkowy Sędzia Marcin analizuje mecz piłkarski">
+      <img src="assets/maly-marcin-meczyki.png?v=panx" alt="Rysunkowy Pan X analizuje mecz piłkarski">
       <div class="hero-copy">
         <p class="eyebrow">forma · terminarz · zdrowy rozsądek</p>
-        <h1>Jak meczyki, to tylko z Sędzią Marcinem</h1>
+        <h1>Jak meczyki, to tylko z Panem X</h1>
         <p class="lead">Tu piłka jest okrągła, bramki są dwie, a „pewniak” zwykle właśnie przegrał z ostatnią drużyną tabeli. Sprawdzamy mecze i bawimy się analizą bez napinki.</p>
-        <div class="hero-actions"><a class="button" href="#mecze">Dzisiejsze mecze</a><a class="button alt" href="#radar">Radar Marcina</a></div>
+        <div class="hero-actions"><a class="button" href="#mecze">Dzisiejsze mecze</a><a class="button alt" href="#radar">Radar Pana X</a></div>
         <div class="notice"><strong>18+ · To nie jest porada bukmacherska.</strong><span>Zakłady wiążą się z ryzykiem utraty pieniędzy. Graj wyłącznie u legalnych operatorów, nie pożyczaj na grę i ustaw twardy limit. Najbezpieczniejsza stawka to 0 zł.</span></div>
       </div>
     </section>
@@ -159,11 +159,11 @@
           <button class="view-filter" data-view="upcoming">Najbliższe 4 dni</button>
         </div>
       </div>
-      <div class="matches" id="matches"><div class="loading">Sędzia Marcin rozkłada właśnie tabelę taktyczną...</div></div>
+      <div class="matches" id="matches"><div class="loading">Pan X rozkłada właśnie tabelę taktyczną...</div></div>
     </section>
 
     <section class="section" id="typy">
-      <div class="section-head"><div><h2>Tablica Sędziego</h2><p>Trzy wydarzenia wybrane z aktualnego terminarza. To luźne inspiracje do oglądania, a nie kupon z gwarancją.</p></div></div>
+      <div class="section-head"><div><h2>Tablica Pana X</h2><p>Trzy wydarzenia wybrane z aktualnego terminarza. To luźne inspiracje do oglądania, a nie kupon z gwarancją.</p></div></div>
       <div class="tips-grid" id="tipsGrid">
         <article class="tip-card"><span class="tip-index">1</span><h3>Czekamy na terminarz</h3><p>Po pobraniu danych pojawią się tutaj spotkania do obserwacji.</p><span class="tip-market">analiza w toku</span></article>
       </div>
@@ -218,7 +218,7 @@
     </section>
 
     <section class="section" id="radar">
-      <div class="section-head"><div><h2>Radar Sędziego Marcina</h2><p>Humorystyczne wskazówki do oglądania spotkań. Bez kursów, bez gwarancji i bez magicznej kuli.</p></div></div>
+      <div class="section-head"><div><h2>Radar Pana X</h2><p>Humorystyczne wskazówki do oglądania spotkań. Bez kursów, bez gwarancji i bez magicznej kuli.</p></div></div>
       <div class="radar-grid">
         <article class="radar"><div class="radar-ring"></div><div class="radar-line"></div><h3 id="radarTitle">Mecz do obserwacji</h3><p id="radarText">Radar czeka na aktualny terminarz. Gdy pojawią się wydarzenia, wybierze jedno spotkanie na podstawie dostępnych danych, a nie fazy księżyca.</p><span class="radar-pick" id="radarPick">Typ zabawowy: oglądamy, nie gonimy strat</span></article>
         <div class="rules">
@@ -262,7 +262,7 @@
     const renderTips=events=>{
       const selected=events.filter(event=>event.strHomeTeam&&event.strAwayTeam).slice(0,3);
       if(!selected.length){tipsGrid.innerHTML='<article class="tip-card"><span class="tip-index">–</span><h3>Brak wydarzeń</h3><p>Zmień dyscyplinę albo termin.</p><span class="tip-market">radar czeka</span></article>';return;}
-      const labels=['Mecz do obserwacji','Potencjalnie otwarte spotkanie','Sędziowski wybór transmisji'];
+      const labels=['Mecz do obserwacji','Potencjalnie otwarte spotkanie','Wybór transmisji Pana X'];
       tipsGrid.innerHTML=selected.map((event,index)=>`<article class="tip-card"><span class="tip-index">${index+1}</span><h3>${esc(event.strHomeTeam)} – ${esc(event.strAwayTeam)}</h3><p>${esc(event.strLeague||'Rozgrywki sportowe')} · ${esc(event.dateEvent)} · ${esc(eventTime(event))}</p><span class="tip-market">${labels[index]}</span></article>`).join('');
     };
     const oddsFallback=events=>events.forEach(event=>{const node=document.getElementById(`odds-${eventKey(event)}`);if(node)node.innerHTML='<span class="odds-pending">Kursy chwilowo niedostępne · sprawdź LV BET</span>';});
@@ -276,12 +276,12 @@
     }
     const render=events=>{
       const visible=events.slice().sort((a,b)=>String(a.strTimestamp||'').localeCompare(String(b.strTimestamp||''))).slice(0,18);matchCount.textContent=visible.length;renderTips(visible);
-      if(!visible.length){matches.innerHTML='<div class="loading">Brak wydarzeń w tej zakładce. Sędzia Marcin zarządził zmianę ustawienia.</div>';return;}
+      if(!visible.length){matches.innerHTML='<div class="loading">Brak wydarzeń w tej zakładce. Pan X zarządził zmianę ustawienia.</div>';return;}
       matches.innerHTML=visible.map(event=>{const live=isLive(event),hasScore=event.intHomeScore!==null&&event.intHomeScore!==undefined;return `<article class="match ${live?'live':''}"><div class="match-top"><span>${esc(event.dateEvent||dateAt(0))} · ${esc(eventTime(event))}</span><span class="${live?'live-pill':''}">${live?'● LIVE':esc(event.strStatus||'zaplanowany')}</span></div><div class="teams"><span class="team">${esc(event.strHomeTeam||'Gospodarze')}</span><span class="score">${hasScore?`${esc(event.intHomeScore)}:${esc(event.intAwayScore)}`:'–'}</span><span class="team">${esc(event.strAwayTeam||'Goście')}</span></div><div class="league">${esc(event.strLeague||event.strSport||'Wydarzenie sportowe')}</div><div class="odds" id="odds-${eventKey(event)}"><span class="odds-pending">Pobieranie kursów LV BET...</span></div></article>`;}).join('');
       const pick=visible.find(isLive)||visible[0];radarTitle.textContent=`${pick.strHomeTeam||'Gospodarze'} – ${pick.strAwayTeam||'Goście'}`;radarText.textContent=`${pick.strLeague||'Rozgrywki'}, ${eventTime(pick)}. Radar wskazuje ten mecz do obserwacji. To wybór transmisji, nie obietnica wyniku.`;radarPick.textContent=isLive(pick)?'Na żywo: najpierw oglądamy przebieg':'Typ zabawowy: emocje powyżej 2,5';loadOdds(visible);
     };
     async function loadSport(sport='Soccer'){
-      matches.innerHTML='<div class="loading">Sędzia Marcin rozkłada właśnie tabelę taktyczną...</div>';status.textContent='Pobieranie terminarza';
+      matches.innerHTML='<div class="loading">Pan X rozkłada właśnie tabelę taktyczną...</div>';status.textContent='Pobieranie terminarza';
       try{const responses=await Promise.all([0,1,2,3].map(offset=>fetch(`https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${dateAt(offset)}&s=${encodeURIComponent(sport)}`,{cache:'no-store'})));if(responses.some(response=>!response.ok))throw new Error('API');const payloads=await Promise.all(responses.map(response=>response.json()));const seen=new Set();allEvents=payloads.flatMap(data=>data.events||[]).filter(event=>{const key=event.idEvent||eventKey(event);if(seen.has(key))return false;seen.add(key);return true;});render(eventsForView());status.textContent=`Odświeżono ${new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}`;}catch(error){matches.innerHTML='<div class="loading">Nie udało się pobrać terminarza. Spróbuj odświeżyć stronę za chwilę.</div>';status.textContent='Dane chwilowo niedostępne';}
     }
     filters.forEach(button=>button.addEventListener('click',()=>{filters.forEach(item=>item.classList.remove('active'));button.classList.add('active');loadSport(button.dataset.sport);}));
