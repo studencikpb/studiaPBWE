@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#005baa">
+  <title>Postęp MGR - PB WE</title>
+  <style>
+    :root {
+      --navy: #07192f;
+      --blue: #005baa;
+      --cyan: #9df6ff;
+      --paper: #f8fbff;
+      --ink: #08172b;
+      --muted: #5b6b80;
+      --line: rgba(231, 246, 255, 0.22);
+      --shadow: 0 28px 70px rgba(3, 16, 34, 0.26);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% 16%, rgba(157, 246, 255, 0.36), transparent 28%),
+        radial-gradient(circle at 88% 8%, rgba(250, 204, 21, 0.18), transparent 30%),
+        linear-gradient(135deg, #07192f 0%, #0c2b4c 46%, #0e7490 100%);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.28) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.28) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: linear-gradient(180deg, #000 0%, transparent 90%);
+    }
+
+    .shell {
+      position: relative;
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 0 34px;
+      color: #fff;
+    }
+
+    .brand img {
+      display: block;
+      width: min(270px, 58vw);
+      height: auto;
+    }
+
+    .top-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .badge,
+    .semester-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 11px;
+      border: 1px solid rgba(231, 246, 255, 0.24);
+      border-radius: 999px;
+      color: #d8ecff;
+      background: rgba(255, 255, 255, 0.07);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .badge {
+      color: #07192f;
+      background: var(--cyan);
+      border-color: rgba(157, 246, 255, 0.8);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel,
+    .card,
+    .timeline,
+    .checklist {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .panel {
+      padding: clamp(28px, 5vw, 52px);
+      background: rgba(255, 255, 255, 0.94);
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: var(--ink);
+      font-size: clamp(42px, 7vw, 82px);
+      line-height: 0.96;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin-bottom: 0;
+      color: #42536a;
+      font-size: clamp(18px, 2.2vw, 24px);
+      line-height: 1.48;
+    }
+
+    .progress-card {
+      position: relative;
+      padding: 26px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 82% 20%, rgba(157, 246, 255, 0.24), transparent 34%),
+        linear-gradient(145deg, #061827 0%, #0f3b5f 52%, #0e7490 100%);
+      overflow: hidden;
+    }
+
+    .progress-card::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -110px;
+      width: 260px;
+      height: 260px;
+      border: 38px solid rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+    }
+
+    .progress-label {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+      color: #d8ecff;
+      font-size: 14px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .percent {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: end;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .percent strong {
+      font-size: clamp(54px, 9vw, 96px);
+      line-height: 0.9;
+      letter-spacing: 0;
+    }
+
+    .percent span {
+      padding-bottom: 10px;
+      color: #d8ecff;
+      font-weight: 900;
+    }
+
+    .bar {
+      position: relative;
+      z-index: 1;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #9df6ff, #facc15);
+      box-shadow: 0 0 28px rgba(157, 246, 255, 0.78);
+      transition: width 900ms ease;
+    }
+
+    .stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      padding: 14px;
+      border: 1px solid rgba(231, 246, 255, 0.18);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .stat strong {
+      display: block;
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      color: #d8ecff;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .road {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .card {
+      padding: 22px;
+      background: rgba(255, 255, 255, 0.94);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: var(--ink);
+      font-size: 21px;
+      line-height: 1.14;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.45;
+      margin-bottom: 0;
+    }
+
+    .stamp {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 14px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #0f3b5f;
+      background: #cffafe;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .timeline,
+    .checklist {
+      margin-top: 24px;
+      padding: 28px;
+      background: rgba(255, 255, 255, 0.94);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.05;
+    }
+
+    .section-head p {
+      max-width: 720px;
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .milestones {
+      display: grid;
+      gap: 12px;
+    }
+
+    .milestone {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 16px;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .milestone.done {
+      background: linear-gradient(90deg, rgba(34,197,94,0.08), #fff);
+    }
+
+    .milestone.now {
+      border-color: rgba(0, 91, 170, 0.34);
+      background: linear-gradient(90deg, rgba(157,246,255,0.18), #fff);
+      box-shadow: 0 18px 36px rgba(3, 16, 34, 0.08);
+    }
+
+    .date {
+      color: var(--blue);
+      font-weight: 950;
+    }
+
+    .milestone strong {
+      display: block;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .milestone span {
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .pill {
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #0d4f88;
+      background: #eef7ff;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .milestone.done .pill {
+      color: #166534;
+      background: #dcfce7;
+    }
+
+    .milestone.now .pill {
+      color: #07192f;
+      background: #9df6ff;
+    }
+
+    .todo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .todo {
+      padding: 18px;
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .todo strong {
+      display: block;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.18;
+    }
+
+    .todo ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 24px;
+      color: #d8ecff;
+      font-size: 13px;
+    }
+
+    .footer a {
+      color: #fff;
+      font-weight: 900;
+    }
+
+    @media (max-width: 880px) {
+      .hero,
+      .road,
+      .todo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .milestone {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar,
+      .section-head,
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav class="topbar" aria-label="Nagłówek">
+      <a class="brand" href="index.html">
+        <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny Politechniki Białostockiej">
+      </a>
+      <div class="top-meta">
+        <a class="semester-link" href="index.html">Semestr III</a>
+        <a class="semester-link" href="semestr-2.html">Semestr II</a>
+        <a class="semester-link" href="galeria.html">Galeria</a>
+        <span class="badge">Postęp MGR</span>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <article class="panel">
+        <p class="eyebrow">Magisterka · status projektu</p>
+        <h1>Postęp MGR</h1>
+        <p class="lead">Obrona najbliżej w lutym 2027. Tematy prac były wstępnie zatwierdzone około maja/czerwca, więc licznik traktuje ten moment jako start spokojnego, ale konkretnego marszu do finału.</p>
+      </article>
+
+      <aside class="progress-card">
+        <div class="progress-label">
+          <span>Droga do obrony</span>
+          <span id="todayLabel">dzisiaj</span>
+        </div>
+        <div class="percent">
+          <strong id="progressPercent">0%</strong>
+          <span>gotowości czasu</span>
+        </div>
+        <div class="bar" aria-label="Pasek postępu do obrony">
+          <span id="progressBar"></span>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong id="daysLeft">...</strong><span>dni do lutego</span></div>
+          <div class="stat"><strong id="nextStage">...</strong><span>najbliższy etap</span></div>
+          <div class="stat"><strong>Luty 2027</strong><span>planowana obrona</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="road" aria-label="Skrót etapów pracy">
+      <article class="card">
+        <span class="stamp">start</span>
+        <h3>Temat i promotor</h3>
+        <p>Temat jest wstępnie zatwierdzony, więc nie zaczynamy od zera. Teraz trzeba zamienić pomysł w plan pracy.</p>
+      </article>
+      <article class="card">
+        <span class="stamp">materiał</span>
+        <h3>Literatura i założenia</h3>
+        <p>Źródła, cel pracy, zakres, metoda badań i pierwszy spis treści. To jest fundament, który oszczędza nerwy później.</p>
+      </article>
+      <article class="card">
+        <span class="stamp">pisanie</span>
+        <h3>Rozdziały i wyniki</h3>
+        <p>Najpierw brudna wersja tekstu, potem poprawki. Perfekcja na końcu, nie na pierwszej stronie.</p>
+      </article>
+      <article class="card">
+        <span class="stamp">finał</span>
+        <h3>Promotor, dziekanat, obrona</h3>
+        <p>Ostateczna wersja, antyplagiat, prezentacja i spokojne przejście przez obronę.</p>
+      </article>
+    </section>
+
+    <section class="timeline">
+      <div class="section-head">
+        <div>
+          <h2>Harmonogram do lutego</h2>
+          <p>Daty są praktycznym planem orientacyjnym. Pasek i status etapów aktualizują się same na podstawie aktualnej daty.</p>
+        </div>
+      </div>
+      <div class="milestones" id="milestones"></div>
+    </section>
+
+    <section class="checklist">
+      <div class="section-head">
+        <div>
+          <h2>Co powinno być zrobione</h2>
+          <p>Krótka mapa rzeczy, które zwykle ratują magisterkę przed chaosem.</p>
+        </div>
+      </div>
+      <div class="todo-grid">
+        <article class="todo">
+          <strong>Do końca wakacji</strong>
+          <ul>
+            <li>Ustalić finalny tytuł i zakres pracy.</li>
+            <li>Zebrać literaturę oraz normy, artykuły, dokumentacje.</li>
+            <li>Napisać wstępny spis treści i cel pracy.</li>
+          </ul>
+        </article>
+        <article class="todo">
+          <strong>Jesień</strong>
+          <ul>
+            <li>Napisać teorię i opis metody.</li>
+            <li>Zrobić badania, projekt, symulację albo analizę.</li>
+            <li>Wysyłać promotorowi rozdziały partiami.</li>
+          </ul>
+        </article>
+        <article class="todo">
+          <strong>Przed obroną</strong>
+          <ul>
+            <li>Zamknąć poprawki i formatowanie.</li>
+            <li>Przygotować prezentację na 8-12 minut.</li>
+            <li>Przećwiczyć odpowiedzi na pytania z pracy.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Daty są planem roboczym do lutowej obrony.</span>
+      <a href="index.html">Wróć na stronę główną</a>
+    </footer>
+  </main>
+
+  <script>
+    const START_DATE = new Date('2026-05-15T00:00:00');
+    const DEFENSE_DATE = new Date('2027-02-15T00:00:00');
+
+    const milestones = [
+      ['2026-05-15', 'Temat wstępnie zatwierdzony', 'Start pracy: temat, promotor i kierunek są już mniej więcej ustawione.'],
+      ['2026-07-15', 'Plan pracy i bibliografia', 'Cel, zakres, spis treści, literatura i pierwsze notatki powinny już istnieć.'],
+      ['2026-09-15', 'Rozdział teoretyczny', 'Teoria, definicje, standardy, technologie i tło problemu w sensownej wersji roboczej.'],
+      ['2026-10-31', 'Badania albo projekt właściwy', 'Część praktyczna: pomiary, projekt, konfiguracje, symulacje, porównania albo wdrożenie.'],
+      ['2026-12-10', 'Pełny pierwszy draft', 'Całość pracy złożona w jeden dokument, nawet jeśli jeszcze wymaga poprawek.'],
+      ['2027-01-10', 'Poprawki po promotorze', 'Uzupełnienia, formatowanie, bibliografia, rysunki, podpisy i porządek w źródłach.'],
+      ['2027-01-25', 'Wersja do złożenia', 'Ostateczna wersja, antyplagiat, formalności, druk lub upload zgodnie z wymaganiami uczelni.'],
+      ['2027-02-15', 'Obrona', 'Prezentacja, pytania i finał. Po tym tylko oddech i święty spokój.']
+    ];
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function formatDate(date) {
+      return new Intl.DateTimeFormat('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(date);
+    }
+
+    function monthLabel(date) {
+      return new Intl.DateTimeFormat('pl-PL', { month: 'short', year: 'numeric' }).format(date);
+    }
+
+    function updateProgress() {
+      const now = new Date();
+      const total = DEFENSE_DATE - START_DATE;
+      const elapsed = now - START_DATE;
+      const progress = clamp(Math.round((elapsed / total) * 100), 0, 100);
+      const daysLeft = Math.max(0, Math.ceil((DEFENSE_DATE - now) / 86400000));
+      const next = milestones.find(([date]) => new Date(`${date}T00:00:00`) >= now) || milestones[milestones.length - 1];
+
+      document.getElementById('progressPercent').textContent = `${progress}%`;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+      document.getElementById('daysLeft').textContent = daysLeft;
+      document.getElementById('nextStage').textContent = monthLabel(new Date(`${next[0]}T00:00:00`));
+      document.getElementById('todayLabel').textContent = formatDate(now);
+
+      const list = document.getElementById('milestones');
+      list.innerHTML = milestones.map(([date, title, text]) => {
+        const itemDate = new Date(`${date}T00:00:00`);
+        const isDone = itemDate < now;
+        const isNext = date === next[0] && !isDone;
+        const state = isDone ? 'done' : isNext ? 'now' : '';
+        const label = isDone ? 'zrobione' : isNext ? 'teraz' : 'czeka';
+        return `
+          <article class="milestone ${state}">
+            <div class="date">${formatDate(itemDate)}</div>
+            <div>
+              <strong>${title}</strong>
+              <span>${text}</span>
+            </div>
+            <span class="pill">${label}</span>
+          </article>
+        `;
+      }).join('');
+    }
+
+    updateProgress();
+  </script>
+</body>
+</html>

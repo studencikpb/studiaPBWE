@@ -576,6 +576,7 @@
       margin-top: 24px;
     }
 
+    .feature-grid .mgr-teaser,
     .feature-grid .investment-teaser,
     .feature-grid .data-center-teaser,
     .feature-grid .smart-home-teaser,
@@ -594,6 +595,7 @@
       text-decoration: none;
     }
 
+    .mgr-card::before,
     .investment-card::before,
     .data-center-card::before,
     .smart-home-card::before,
@@ -637,6 +639,7 @@
       box-shadow: 0 12px 26px rgba(0,0,0,0.16);
     }
 
+    .mgr-teaser,
     .investment-teaser,
     .data-center-teaser,
     .smart-home-teaser,
@@ -645,6 +648,7 @@
       transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
     }
 
+    .mgr-teaser:hover,
     .investment-teaser:hover,
     .data-center-teaser:hover,
     .smart-home-teaser:hover,
@@ -654,6 +658,7 @@
       box-shadow: 0 34px 76px rgba(3,16,34,0.34);
     }
 
+    .mgr-logo,
     .investment-chart-logo,
     .data-center-logo,
     .smart-home-logo,
@@ -678,6 +683,16 @@
       color: #fff;
     }
 
+    .mgr-teaser {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      background:
+        linear-gradient(90deg, rgba(157,246,255,0.48) 0 8px, transparent 8px),
+        linear-gradient(135deg, #061827 0%, #0f3b5f 50%, #0e7490 100%);
+      color: #fff;
+    }
+
     .smart-home-teaser {
       position: relative;
       overflow: hidden;
@@ -698,6 +713,7 @@
       color: #fff;
     }
 
+    .mgr-card,
     .data-center-card,
     .smart-home-card,
     .betting-card {
@@ -711,6 +727,7 @@
       text-decoration: none;
     }
 
+    .mgr-card h2,
     .data-center-card h2,
     .smart-home-card h2,
     .betting-card h2 {
@@ -722,6 +739,7 @@
       letter-spacing: 0;
     }
 
+    .mgr-card p,
     .data-center-card p,
     .smart-home-card p,
     .betting-card p {
@@ -732,6 +750,7 @@
       line-height: 1.45;
     }
 
+    .mgr-card .open,
     .data-center-card .open,
     .smart-home-card .open,
     .betting-card .open {
@@ -748,6 +767,7 @@
     }
 
     .data-center-card .open { background: #dbeafe; }
+    .mgr-card .open { background: #cffafe; }
     .smart-home-card .open { background: #dcfce7; }
     .betting-card .open { background: #fef3c7; }
 
@@ -1525,6 +1545,7 @@
         <a class="date-badge semester-link" href="semestr-1.html">Semestr I</a>
         <a class="date-badge semester-link" href="semestr-2.html">Semestr II</a>
         <a class="semester-badge semester-link current" href="index.html">Semestr III</a>
+        <a class="date-badge semester-link" href="postep-mgr.html">Postęp MGR</a>
         <div class="badge">Portal materiałów PB WE</div>
       </div>
     </nav>
@@ -1535,13 +1556,13 @@
         <h1>Najpierw wakacje</h1>
         <p class="lead">Teraz odpoczynek, reset głowy i zero paniki. Nie zaglądaj za często, nie przejmuj się na zapas - materiały, galeria i nowe rzeczy będą tu wpadać, gdy semestr III zacznie się robić realny.</p>
         <div class="quick">
-          <a class="quick-card primary" href="#przedmioty">
-            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h7.5A2.5 2.5 0 0 1 14 9v10H6.5A2.5 2.5 0 0 1 4 16.5z"/><path d="M14 9a2.5 2.5 0 0 1 2.5-2.5H20v10A2.5 2.5 0 0 1 17.5 19H14z"/></svg></span>
-            <strong>Przedmioty</strong>
+          <a class="quick-card primary" href="postep-mgr.html">
+            <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16"/><path d="M7 16V9"/><path d="M12 16V5"/><path d="M17 16v-3"/><path d="m9 7 3-3 3 3"/></svg></span>
+            <strong>Postęp MGR</strong>
           </a>
-          <a class="quick-card" href="#przedmioty">
+          <a class="quick-card" href="semestr-2.html#przedmioty">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h5l2 2h9v8.5A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M8 13h8M8 16h5"/></svg></span>
-            <strong>Materiały</strong>
+            <strong>Archiwum II</strong>
           </a>
           <a class="quick-card" href="#zaliczenia">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v4M16 3v4M4 8h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2z"/><path d="m8 15 2 2 5-6"/></svg></span>
@@ -1549,7 +1570,7 @@
           </a>
           <a class="quick-card" href="#plan">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
-            <strong>Plan zajęć</strong>
+            <strong>Plan</strong>
             <span>Szybki podgląd zjazdu</span>
           </a>
           <a class="quick-card" href="galeria.html">
@@ -1569,7 +1590,7 @@
           <article class="hero-slide active">
             <h2>Wakacyjny przepływ wiedzy</h2>
             <p>Materiały, galeria i podstrony zostają pod ręką, ale semestr III jeszcze niech spokojnie czeka za rogiem.</p>
-            <a class="slide-link" href="#przedmioty">Przejdź do materiałów</a>
+            <a class="slide-link" href="postep-mgr.html">Otwórz postęp MGR</a>
             <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowany przepływ światłowodowy">
               <defs>
                 <style>
@@ -1715,38 +1736,6 @@
       </div>
     </section>
 
-    <section id="przedmioty" class="subjects reveal">
-      <div class="section-head">
-        <div>
-          <h2>Przedmioty i materiały</h2>
-        </div>
-      </div>
-      <div class="subject-tools">
-        <a href="#niezawodnosc">Niezawodność</a>
-        <a href="#technik-swiatlowodowa">Technika światłowodowa</a>
-        <a href="#kompatybilnosc">Kompatybilność</a>
-        <a href="#budownictwo">Budownictwo</a>
-        <a href="#sieci-telekom">Sieci światłowodowe</a>
-        <a href="#narzedzia">Narzędzia</a>
-        <a href="#bezpieczenstwo">Bezpieczeństwo</a>
-        <a href="#zarzadzanie">Zarządzanie</a>
-        <a href="#teleinformacyjne">Teleinformacyjne</a>
-        <a href="#uklady-cyfrowe">Układy cyfrowe</a>
-      </div>
-      <div class="subjects-grid">
-        <article id="niezawodnosc" class="subject"><h3>Niezawodność i diagnostyka</h3><div class="meta"><span>Prowadzący: M. Garbaruk</span><span>Forma: wykład zdalny, zaliczenie WE-306</span></div><div class="subject-actions"><a href="subject-niezawodnosc.html">Otwórz stronę przedmiotu</a></div></article>
-        <article id="technik-swiatlowodowa" class="subject"><h3>Technika światłowodowa i fotonika 2</h3><div class="meta"><span>Prowadzący: T. Ragiń</span><span>Forma: wykład zdalny oraz laboratorium, WE-216, CBD-13</span></div><div class="subject-actions"><a href="subject-technika-swiatlowodowa.html">Otwórz stronę przedmiotu</a></div></article>
-        <article id="kompatybilnosc" class="subject"><h3>Kompatybilność elektromagnetyczna</h3><div class="meta"><span>Prowadzący: R. Markowska</span><span>Forma: wykład zdalny oraz laboratorium, IET-1/30, WE-346</span></div><div class="subject-actions"><a href="subject-kompatybilnosc.html">Otwórz stronę przedmiotu</a></div></article>
-        <article id="budownictwo" class="subject"><h3>Budownictwo telekomunikacyjne</h3><div class="meta"><span>Prowadzący: R. Markowska</span><span>Forma: wykład zdalny oraz projekt, WE-101</span></div><div class="subject-actions"><a href="subject-budownictwo.html">Otwórz stronę przedmiotu</a></div></article>
-        <article id="sieci-telekom" class="subject"><h3>Projektowanie światłowodowych sieci telekomunikacyjnych</h3><div class="meta"><span>Prowadzący: U. Błaszczak</span><span>Forma: projekt, WE-217</span></div><div class="subject-actions"><a href="subject-sieci-swiatlowodowe.html">Otwórz stronę przedmiotu</a></div></article>
-        <article id="narzedzia" class="subject"><h3>Narzędzia komputerowego wspomagania projektowania sieci telekomunikacyjnych</h3><div class="meta"><span>Prowadzący: M. Sadowski</span><span>Forma: wykład + pracownia, WE-101</span></div><div class="subject-actions"><a href="subject-narzedzia.html">Otwórz stronę przedmiotu</a></div></article>
-        <article id="bezpieczenstwo" class="subject"><h3>Bezpieczeństwo systemów informacyjnych</h3><div class="meta"><span>Prowadzący: A. Zankiewicz</span><span>Forma: wykład, WE-306</span></div><div class="subject-actions"><a href="subject-bezpieczenstwo.html">Otwórz stronę przedmiotu</a></div></article>
-        <article id="zarzadzanie" class="subject"><h3>Zarządzanie sieciami i usługami w systemach komunikacji elektronicznej</h3><div class="meta"><span>Prowadzący: A. Zankiewicz</span><span>Forma: wykład, WE-306</span></div><div class="subject-actions"><a href="subject-zarzadzanie.html">Otwórz stronę przedmiotu</a></div></article>
-        <article id="teleinformacyjne" class="subject"><h3>Projektowanie sieci teleinformacyjnych</h3><div class="meta"><span>Prowadzący: G. Gilewska</span><span>Forma: projekt, WE-105</span></div><div class="subject-actions"><a href="subject-teleinformacyjne.html">Otwórz stronę przedmiotu</a></div></article>
-        <article id="uklady-cyfrowe" class="subject"><h3>Programowalne układy cyfrowe 2</h3><div class="meta"><span>Prowadzący: W. Wojtkowski</span><span>Forma: laboratorium, WE-244</span></div><div class="subject-actions"><a href="subject-uklady-cyfrowe.html">Otwórz stronę przedmiotu</a></div></article>
-      </div>
-    </section>
-
     <section id="galeria" class="gallery reveal">
       <div class="section-head">
         <div>
@@ -1768,6 +1757,31 @@
     </section>
 
     <div class="feature-grid">
+      <section id="postep-mgr" class="mgr-teaser reveal">
+        <a class="mgr-card" href="postep-mgr.html">
+          <div>
+            <p class="eyebrow">Dyplom · harmonogram · obrona</p>
+            <h2>Postęp MGR</h2>
+            <p>Automatyczny licznik drogi do obrony w lutym: od zatwierdzenia tematu, przez badania i pisanie, aż po gotową prezentację.</p>
+            <span class="open">Otwórz status pracy</span>
+          </div>
+          <svg class="mgr-logo" viewBox="0 0 260 210" role="img" aria-label="Ikona postępu pracy magisterskiej">
+            <rect x="18" y="18" width="224" height="174" rx="22" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+            <path d="M62 154h136" stroke="rgba(231,246,255,0.32)" stroke-width="12" stroke-linecap="round"/>
+            <path d="M62 154h52" stroke="#9df6ff" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="62" cy="154" r="10" fill="#9df6ff"/>
+            <circle cx="114" cy="154" r="10" fill="#9df6ff"/>
+            <circle cx="166" cy="154" r="10" fill="#e7f6ff" opacity="0.7"/>
+            <circle cx="198" cy="154" r="10" fill="#e7f6ff" opacity="0.45"/>
+            <path d="M84 58h74l24 24v56H84z" fill="#e7f6ff"/>
+            <path d="M158 58v26h24" fill="none" stroke="#07192f" stroke-width="6" stroke-linejoin="round" opacity="0.75"/>
+            <path d="M104 92h48M104 114h58" stroke="#07192f" stroke-width="7" stroke-linecap="round" opacity="0.78"/>
+            <text x="60" y="40" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="13" font-weight="900">MGR PROGRESS</text>
+            <text x="56" y="184" fill="#d8ecff" font-family="Arial, sans-serif" font-size="13" font-weight="900">TEMAT · BADANIA · TEKST · OBRONA</text>
+          </svg>
+        </a>
+      </section>
+
       <section id="inwestuj" class="investment-teaser reveal">
         <a class="investment-card" href="inwestuj-z-szymonem.html">
           <div>
