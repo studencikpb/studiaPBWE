@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#005baa">
+  <title>Logowanie - PB WE</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      color: #08172b;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(157, 246, 255, 0.38), transparent 28%),
+        radial-gradient(circle at 84% 10%, rgba(250, 204, 21, 0.2), transparent 30%),
+        linear-gradient(135deg, #07192f 0%, #0c2b4c 48%, #123f6c 100%);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.32) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.32) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: linear-gradient(180deg, #000 0%, transparent 88%);
+    }
+
+    .login-shell {
+      position: relative;
+      width: min(920px, calc(100% - 32px));
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .brand-panel,
+    .login-panel {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 22px;
+      box-shadow: 0 28px 70px rgba(3, 16, 34, 0.3);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .brand-panel {
+      min-height: 420px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #fff;
+      background:
+        radial-gradient(circle at 72% 24%, rgba(157, 246, 255, 0.26), transparent 34%),
+        linear-gradient(145deg, rgba(0, 91, 170, 0.95), rgba(5, 25, 51, 0.96));
+    }
+
+    .brand-panel img {
+      width: min(260px, 62vw);
+      height: auto;
+    }
+
+    .brand-panel h1 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(42px, 7vw, 74px);
+      line-height: 0.94;
+      letter-spacing: 0;
+    }
+
+    .brand-panel p {
+      max-width: 34ch;
+      margin: 16px 0 0;
+      color: #d8ecff;
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .login-panel {
+      padding: clamp(28px, 5vw, 48px);
+      background: rgba(255, 255, 255, 0.94);
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: #005baa;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      color: #08172b;
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .hint {
+      margin: 0 0 26px;
+      color: #42536a;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #0b1d34;
+      font-weight: 900;
+    }
+
+    .password-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      min-height: 54px;
+      padding: 12px 14px;
+      border: 1px solid #c8d6e6;
+      border-radius: 12px;
+      color: #08172b;
+      background: #fff;
+      font-size: 18px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #005baa;
+      box-shadow: 0 0 0 4px rgba(0, 91, 170, 0.14);
+    }
+
+    .icon-button {
+      min-width: 54px;
+      border: 0;
+      border-radius: 12px;
+      color: #005baa;
+      background: #e8f5ff;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0 20px;
+      color: #42536a;
+      font-weight: 800;
+    }
+
+    .remember input {
+      width: 18px;
+      height: 18px;
+      accent-color: #005baa;
+    }
+
+    .submit {
+      width: 100%;
+      min-height: 54px;
+      border: 0;
+      border-radius: 12px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(111, 243, 255, 0.28), transparent 34%),
+        linear-gradient(145deg, #005baa, #123b72);
+      font-size: 17px;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 0 16px 34px rgba(0, 91, 170, 0.24);
+    }
+
+    .error {
+      min-height: 22px;
+      margin: 14px 0 0;
+      color: #be123c;
+      font-weight: 900;
+    }
+
+    .small {
+      margin: 18px 0 0;
+      color: #6d7b8b;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 780px) {
+      .login-shell {
+        grid-template-columns: 1fr;
+        padding: 24px 0;
+      }
+
+      .brand-panel {
+        min-height: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-shell">
+    <section class="brand-panel" aria-label="Portal PB WE">
+      <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny Politechniki Białostockiej">
+      <div>
+        <h1>PBWE</h1>
+        <p>Jedno wejście do materiałów, galerii, semestrów i całej reszty studenckiego centrum dowodzenia.</p>
+      </div>
+    </section>
+
+    <section class="login-panel">
+      <p class="eyebrow">Dostęp do strony</p>
+      <h2>Podaj hasło</h2>
+      <p class="hint">Po zalogowaniu możesz zapamiętać dostęp na tym urządzeniu, żeby nie wpisywać hasła za każdym razem.</p>
+
+      <form id="loginForm">
+        <label for="password">Hasło</label>
+        <div class="password-row">
+          <input id="password" name="password" type="password" autocomplete="current-password" autofocus>
+          <button class="icon-button" type="button" id="togglePassword" aria-label="Pokaż lub ukryj hasło">Aa</button>
+        </div>
+
+        <label class="remember">
+          <input id="remember" type="checkbox" checked>
+          Zapamiętaj mnie na tym urządzeniu
+        </label>
+
+        <button class="submit" type="submit">Wejdź na stronę</button>
+        <p class="error" id="error" role="alert"></p>
+        <p class="small">Na innym telefonie, komputerze albo w innej przeglądarce trzeba zalogować się ponownie.</p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'pbwe_logged_in';
+    const PASSWORD_HASH = '7f63f60a6229553509f57c8c1ce3192d1bf708e72bf6e76bdc7509f47f9a4343';
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedNext = params.get('next') || 'index.html';
+    const nextUrl = requestedNext.startsWith('/') || !requestedNext.includes('://') ? requestedNext : 'index.html';
+    const form = document.getElementById('loginForm');
+    const input = document.getElementById('password');
+    const remember = document.getElementById('remember');
+    const error = document.getElementById('error');
+    const toggle = document.getElementById('togglePassword');
+
+    if (localStorage.getItem(STORAGE_KEY) === 'yes' || sessionStorage.getItem(STORAGE_KEY) === 'yes') {
+      window.location.replace(nextUrl);
+    }
+
+    async function sha256(value) {
+      const bytes = new TextEncoder().encode(value);
+      const digest = await crypto.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      error.textContent = '';
+
+      const hash = await sha256(input.value);
+      if (hash !== PASSWORD_HASH) {
+        error.textContent = 'Złe hasło. Spróbuj jeszcze raz.';
+        input.select();
+        return;
+      }
+
+      if (remember.checked) {
+        localStorage.setItem(STORAGE_KEY, 'yes');
+        sessionStorage.removeItem(STORAGE_KEY);
+      } else {
+        sessionStorage.setItem(STORAGE_KEY, 'yes');
+        localStorage.removeItem(STORAGE_KEY);
+      }
+
+      window.location.replace(nextUrl);
+    });
+
+    toggle.addEventListener('click', () => {
+      input.type = input.type === 'password' ? 'text' : 'password';
+      input.focus();
+    });
+  </script>
+</body>
+</html>
