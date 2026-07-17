@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <script src="auth-guard.js?v=20260715-logout"></script>
+  <script src="auth-guard.js?v=20260717-nav"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -77,6 +77,9 @@
     .world-cup { color:#fff; background:linear-gradient(145deg,#081b31,#0b4d5c 55%,#0f766e); }
     .world-cup .section-head h2 { color:#fff; }
     .world-cup .section-head p { color:#cceee8; }
+    .world-cup-actions { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:10px; }
+    .world-cup-live { display:inline-flex; align-items:center; gap:8px; padding:9px 11px; border:1px solid rgba(94,234,212,.34); border-radius:8px; color:#d8fff8; background:rgba(3,20,31,.34); font-size:11px; font-weight:900; }
+    .world-cup-live::before { content:""; width:8px; height:8px; border-radius:50%; background:#5eead4; box-shadow:0 0 12px #5eead4; }
     .bracket-scroll { overflow-x:auto; padding:8px 4px 18px; scrollbar-color:var(--amber) rgba(255,255,255,.12); }
     .bracket { display:grid; grid-template-columns:180px 180px 180px 180px 190px 150px; gap:26px; align-items:center; min-width:1210px; }
     .round { display:grid; align-content:center; gap:9px; }
@@ -85,6 +88,14 @@
     .bracket-match::after { content:""; position:absolute; left:100%; top:50%; width:27px; height:1px; background:rgba(94,234,212,.58); }
     .bracket-match strong { color:#fff; font-size:12px; }
     .bracket-match span { color:#bfe6df; font-size:10px; }
+    .bracket-match.live { border-color:#fb7185; background:rgba(190,24,93,.22); box-shadow:0 0 18px rgba(251,113,133,.16); }
+    .bracket-match.upcoming { border-color:rgba(251,191,36,.48); }
+    .bracket-meta { display:flex; justify-content:space-between; gap:8px; margin-bottom:4px; color:#9ddbd0; font-size:9px; font-weight:900; text-transform:uppercase; }
+    .bracket-match.live .bracket-meta { color:#fecdd3; }
+    .bracket-team { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:7px; min-height:20px; }
+    .bracket-team strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .bracket-team.winner strong { color:#fcd34d; }
+    .bracket-score { min-width:18px; color:#fff; font-size:13px; font-weight:950; text-align:right; }
     .round-16 { gap:29px; }
     .round-8 { gap:73px; }
     .round-4 { gap:161px; }
@@ -120,7 +131,7 @@
     @keyframes sweep { to { transform:rotate(360deg); } }
     @keyframes trophyGlow { 50% { transform:translateY(-8px) scale(1.04); filter:drop-shadow(0 0 34px rgba(251,191,36,.72)); } }
     @media(max-width:850px) { .matches,.tips-grid,.markets-grid{grid-template-columns:1fr 1fr}.radar-grid{grid-template-columns:1fr}.hero::after{background:linear-gradient(0deg,rgba(3,20,31,.97),rgba(3,20,31,.1) 78%)}.hero-copy{justify-content:flex-end;max-width:100%;margin-left:0;padding-top:190px}.section-head,.footer{align-items:flex-start;flex-direction:column} }
-    @media(max-width:560px) { .shell{width:min(100% - 18px,1180px)}.topbar{align-items:flex-start;flex-direction:column}.hero,.hero-copy{min-height:620px}.hero img{object-position:33% center}.hero-copy{padding:210px 22px 24px}.matches,.tips-grid,.markets-grid{grid-template-columns:1fr}.filter-row{align-items:flex-start;flex-direction:column}.filter-label{min-width:0}.section{padding:18px}.operator{padding:0}.operator-banner>img{aspect-ratio:1.45/1}.operator-brand{left:12px;bottom:12px;width:132px;padding:9px 12px}.notice{grid-template-columns:1fr}h1{font-size:clamp(34px,10.5vw,46px)} }
+    @media(max-width:560px) { .shell{width:min(100% - 18px,1180px)}.topbar{align-items:flex-start;flex-direction:column}.hero,.hero-copy{min-height:620px}.hero img{object-position:33% center}.hero-copy{padding:210px 22px 24px}.matches,.tips-grid,.markets-grid{grid-template-columns:1fr}.filter-row{align-items:center;flex-direction:row;gap:8px}.filter-label{flex:0 0 100%;width:100%;min-width:0}.filter,.view-filter{min-height:38px;padding:8px 10px;font-size:13px}.section{padding:18px}.operator{padding:0}.operator-banner>img{aspect-ratio:1.45/1}.operator-brand{left:12px;bottom:12px;width:132px;padding:9px 12px}.notice{grid-template-columns:1fr}.world-cup-actions{justify-content:flex-start}h1{font-size:clamp(34px,10.5vw,46px)} }
     @media(prefers-reduced-motion:reduce) { html{scroll-behavior:auto}.radar-line,.status::before{animation:none} }
   </style>
 </head>
@@ -183,7 +194,7 @@
     </section>
 
     <section class="section world-cup" id="world-cup">
-      <div class="section-head"><div><p class="eyebrow">Canada · Mexico · USA</p><h2>World Cup 2026 · droga po puchar</h2><p>Po fazie grupowej 32 drużyny rozpoczynają bezpośrednią walkę o finał. Przesuń drabinkę poziomo, aby przejść od pierwszej rundy aż do trofeum.</p></div><a class="button" href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/knockout-stage-match-schedule-bracket" target="_blank" rel="noopener">Oficjalna drabinka FIFA</a></div>
+      <div class="section-head"><div><p class="eyebrow">Canada · Mexico · USA</p><h2>World Cup 2026 · droga po puchar</h2><p>Aktualne pary, wyniki i kolejne mecze fazy pucharowej. Dane odświeżają się automatycznie co minutę.</p></div><div class="world-cup-actions"><span class="world-cup-live" id="worldCupStatus">Łączenie z mundialem</span><a class="button" href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/knockout-stage-match-schedule-bracket" target="_blank" rel="noopener">Oficjalna drabinka FIFA</a></div></div>
       <div class="bracket-scroll" aria-label="Drabinka fazy pucharowej World Cup 2026">
         <div class="bracket">
           <div class="round round-32"><h3>1/16 finału · 32</h3>
@@ -249,7 +260,9 @@
   </main>
   <script>
     const PBWE_API_URL='https://studiawepb-api.calabraaa.workers.dev';
+    const WORLD_CUP_API='https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=200';
     const matches=document.getElementById('matches'), status=document.getElementById('liveStatus');
+    const worldCupStatus=document.getElementById('worldCupStatus');
     const radarTitle=document.getElementById('radarTitle'), radarText=document.getElementById('radarText'), radarPick=document.getElementById('radarPick');
     const matchCount=document.getElementById('matchCount'), tipsGrid=document.getElementById('tipsGrid');
     const filters=[...document.querySelectorAll('.filter')], viewFilters=[...document.querySelectorAll('.view-filter')];
@@ -285,10 +298,51 @@
       matches.innerHTML='<div class="loading">Pan X rozkłada właśnie tabelę taktyczną...</div>';status.textContent='Pobieranie terminarza';
       try{const responses=await Promise.all([0,1,2,3].map(offset=>fetch(`https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${dateAt(offset)}&s=${encodeURIComponent(sport)}`,{cache:'no-store'})));if(responses.some(response=>!response.ok))throw new Error('API');const payloads=await Promise.all(responses.map(response=>response.json()));const seen=new Set();allEvents=payloads.flatMap(data=>data.events||[]).filter(event=>{const key=event.idEvent||eventKey(event);if(seen.has(key))return false;seen.add(key);return true;});render(eventsForView());status.textContent=`Odświeżono ${new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}`;}catch(error){matches.innerHTML='<div class="loading">Nie udało się pobrać terminarza. Spróbuj odświeżyć stronę za chwilę.</div>';status.textContent='Dane chwilowo niedostępne';}
     }
+
+    const worldCupRounds=[
+      {selector:'.round-32',slugs:['round-of-32'],title:'1/16 finału · 32'},
+      {selector:'.round-16',slugs:['round-of-16'],title:'1/8 finału · 16'},
+      {selector:'.round-8',slugs:['quarterfinals'],title:'Ćwierćfinały'},
+      {selector:'.round-4',slugs:['semifinals'],title:'Półfinały'},
+      {selector:'.round-final',slugs:['3rd-place-match','final'],title:'Medale i finał'}
+    ];
+    const cupDate=value=>new Intl.DateTimeFormat('pl-PL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'Europe/Warsaw'}).format(new Date(value));
+    const cupTeam=(competition,side)=>competition.competitors?.find(team=>team.homeAway===side)||{};
+    const cupCard=event=>{
+      const competition=event.competitions?.[0]||{}, type=competition.status?.type||event.status?.type||{};
+      const home=cupTeam(competition,'home'), away=cupTeam(competition,'away');
+      const live=type.state==='in', completed=type.state==='post', upcoming=type.state==='pre';
+      const showScore=live||completed;
+      const label=live?`● LIVE ${competition.status?.displayClock||type.shortDetail||''}`:completed?(type.shortDetail||'Koniec'):cupDate(event.date);
+      return `<div class="bracket-match ${live?'live':upcoming?'upcoming':'completed'}"><div class="bracket-meta"><span>${esc(event.competitions?.[0]?.altGameNote?.replace('FIFA World Cup, ','')||event.season?.slug||'Mundial')}</span><span>${esc(label)}</span></div><div class="bracket-team ${home.winner?'winner':''}"><strong>${esc(home.team?.displayName||'TBD')}</strong><b class="bracket-score">${showScore?esc(home.score||'0'):'–'}</b></div><div class="bracket-team ${away.winner?'winner':''}"><strong>${esc(away.team?.displayName||'TBD')}</strong><b class="bracket-score">${showScore?esc(away.score||'0'):'–'}</b></div></div>`;
+    };
+    function renderWorldCup(events){
+      worldCupRounds.forEach(round=>{
+        const node=document.querySelector(round.selector);if(!node)return;
+        const roundEvents=events.filter(event=>round.slugs.includes(event.season?.slug)).sort((a,b)=>new Date(a.date)-new Date(b.date));
+        node.innerHTML=`<h3>${round.title}</h3>${roundEvents.length?roundEvents.map(cupCard).join(''):'<div class="bracket-match upcoming"><strong>Oczekiwanie na pary</strong></div>'}`;
+      });
+      const finalEvent=events.find(event=>event.season?.slug==='final'), trophy=document.querySelector('.trophy-stage');
+      if(finalEvent&&trophy){
+        const competition=finalEvent.competitions?.[0]||{}, type=competition.status?.type||{}, teams=competition.competitors||[];
+        const winner=teams.find(team=>team.winner), names=teams.map(team=>team.team?.displayName).filter(Boolean);
+        const title=winner?esc(winner.team?.displayName||'Mistrz świata 2026'):esc(names.join(' – ')||'Mistrz świata 2026');
+        const detail=winner?'Mistrz świata 2026':`${cupDate(finalEvent.date)} · wielki finał`;
+        trophy.querySelector('strong').innerHTML=title;trophy.querySelector('span').textContent=detail;
+      }
+    }
+    async function loadWorldCup(){
+      try{
+        const response=await fetch(WORLD_CUP_API,{cache:'no-store'});if(!response.ok)throw new Error('world-cup');
+        const data=await response.json();if(!Array.isArray(data.events)||!data.events.length)throw new Error('world-cup-empty');
+        renderWorldCup(data.events);
+        worldCupStatus.textContent=`Mundial live · ${new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}`;
+      }catch(error){worldCupStatus.textContent='Mundial · ponawiam połączenie';}
+    }
     filters.forEach(button=>button.addEventListener('click',()=>{filters.forEach(item=>item.classList.remove('active'));button.classList.add('active');loadSport(button.dataset.sport);}));
     viewFilters.forEach(button=>button.addEventListener('click',()=>{viewFilters.forEach(item=>item.classList.remove('active'));button.classList.add('active');activeView=button.dataset.view;render(eventsForView());}));
     const updateProgress=()=>{const max=document.documentElement.scrollHeight-innerHeight;document.getElementById('progress').style.width=`${max>0?scrollY/max*100:0}%`;};
-    addEventListener('scroll',updateProgress,{passive:true});updateProgress();loadSport();setInterval(()=>loadSport(document.querySelector('.filter.active').dataset.sport),120000);
+    addEventListener('scroll',updateProgress,{passive:true});updateProgress();loadSport();loadWorldCup();setInterval(()=>loadSport(document.querySelector('.filter.active').dataset.sport),120000);setInterval(loadWorldCup,60000);
   </script>
 </body>
 </html>

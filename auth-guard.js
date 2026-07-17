@@ -3,6 +3,7 @@
   const scriptUrl = document.currentScript && document.currentScript.src;
   const siteRoot = scriptUrl ? new URL('.', scriptUrl) : new URL('.', window.location.href);
   const loginUrl = new URL('login.html', siteRoot);
+  const homeUrl = new URL('index.html', siteRoot);
   const path = window.location.pathname.split('/').pop() || 'index.html';
 
   if (path === 'login.html') {
@@ -18,17 +19,17 @@
     return;
   }
 
-  function addLogoutButton() {
+  function addNavigationButtons() {
     if (document.querySelector('.pbwe-logout')) {
       return;
     }
 
     const style = document.createElement('style');
     style.textContent = `
+      .pbwe-home,
       .pbwe-logout {
         position: fixed;
         top: max(14px, env(safe-area-inset-top));
-        right: max(14px, env(safe-area-inset-right));
         z-index: 99999;
         display: inline-flex;
         align-items: center;
@@ -45,13 +46,37 @@
         cursor: pointer;
         -webkit-backdrop-filter: blur(12px);
         backdrop-filter: blur(12px);
+        text-decoration: none;
       }
+      .pbwe-home { left: max(14px, env(safe-area-inset-left)); }
+      .pbwe-logout { right: max(14px, env(safe-area-inset-right)); }
+      .pbwe-home:hover,
       .pbwe-logout:hover { background: rgba(21, 75, 132, 0.96); }
+      .pbwe-home:focus-visible,
       .pbwe-logout:focus-visible { outline: 3px solid #7fe9f4; outline-offset: 3px; }
+      .pbwe-home svg,
       .pbwe-logout svg { width: 18px; height: 18px; flex: 0 0 auto; }
-      @media (max-width: 520px) {
-        .pbwe-logout { min-height: 40px; padding: 9px 11px; font-size: 13px; }
+      @media (max-width: 620px) {
+        .pbwe-home,
+        .pbwe-logout {
+          top: auto;
+          bottom: max(12px, env(safe-area-inset-bottom));
+          min-height: 40px;
+          padding: 9px 11px;
+          font-size: 13px;
+        }
       }
+    `;
+
+    const home = document.createElement('a');
+    home.className = 'pbwe-home';
+    home.href = homeUrl.href;
+    home.setAttribute('aria-label', 'Przejdź na stronę główną');
+    home.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 11.5 12 4l9 7.5"></path><path d="M5.5 10v10h13V10"></path><path d="M9.5 20v-6h5v6"></path>
+      </svg>
+      <span>Główna</span>
     `;
 
     const button = document.createElement('button');
@@ -71,12 +96,13 @@
     });
 
     document.head.appendChild(style);
+    document.body.appendChild(home);
     document.body.appendChild(button);
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', addLogoutButton, { once: true });
+    document.addEventListener('DOMContentLoaded', addNavigationButtons, { once: true });
   } else {
-    addLogoutButton();
+    addNavigationButtons();
   }
 })();

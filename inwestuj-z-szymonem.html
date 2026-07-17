@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <script src="auth-guard.js?v=20260715-logout"></script>
+  <script src="auth-guard.js?v=20260717-nav"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="assets/site-icon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
@@ -963,6 +963,20 @@
       .szymon-banner-caption {
         align-items: flex-start;
         flex-direction: column;
+      }
+    }
+
+    @media (max-width: 560px) and (orientation: portrait) {
+      .main-chart-frame,
+      .sector-chart-frame {
+        height: 390px;
+        min-height: 390px;
+      }
+
+      .main-chart-frame iframe,
+      .sector-chart-frame iframe {
+        height: 390px !important;
+        min-height: 390px !important;
       }
     }
   </style>
