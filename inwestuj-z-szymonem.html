@@ -337,6 +337,92 @@
     .ticker.up .change { color: #15803d; }
     .ticker.down .change { color: #b91c1c; }
 
+    .floating-quotes {
+      position: fixed;
+      top: max(12px, env(safe-area-inset-top));
+      left: 50%;
+      z-index: 99998;
+      display: flex;
+      gap: 7px;
+      max-width: calc(100vw - 250px);
+      transform: translateX(-50%);
+    }
+
+    .floating-quote {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 42px;
+      padding: 9px 12px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 8px;
+      color: #fff;
+      background: rgba(7,26,51,0.9);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+      font-size: 12px;
+      font-weight: 900;
+      text-decoration: none;
+      white-space: nowrap;
+      backdrop-filter: blur(12px);
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .floating-quote:hover { transform: translateY(-2px); }
+    .floating-quote.up { background: rgba(8,112,67,0.94); }
+    .floating-quote.down { background: rgba(174,35,48,0.94); }
+    .floating-quote .quote-price { font-variant-numeric: tabular-nums; }
+
+    .quick-market {
+      margin-top: 24px;
+      padding: 24px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(7,25,47,0.97), rgba(14,65,91,0.96));
+      box-shadow: var(--shadow);
+    }
+
+    .quick-market-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .quick-market-head h2 { margin: 0; font-size: clamp(24px,3vw,34px); letter-spacing: 0; }
+    .quick-market-head p { margin: 6px 0 0; color: #cfe5f5; line-height: 1.4; }
+    .quick-updated { color: #9fc3dc; font-size: 12px; font-weight: 800; white-space: nowrap; }
+
+    .quick-price-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 9px;
+    }
+
+    .quick-price {
+      position: relative;
+      min-width: 0;
+      padding: 12px 13px 11px 17px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.17);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .quick-price::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: #8ea8bb;
+    }
+
+    .quick-price.up::before { background: #31d681; }
+    .quick-price.down::before { background: #ff6573; }
+    .quick-price strong { display: block; overflow: hidden; color: #dbeeff; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+    .quick-price span { display: block; margin-top: 5px; color: #fff; font-size: 18px; font-weight: 900; font-variant-numeric: tabular-nums; }
+
     .market-terminal {
       overflow: hidden;
       border: 1px solid #d8e2ee;
@@ -964,9 +1050,28 @@
         align-items: flex-start;
         flex-direction: column;
       }
+
+      .quick-price-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
     }
 
     @media (max-width: 560px) and (orientation: portrait) {
+      .floating-quotes {
+        top: max(7px, env(safe-area-inset-top));
+        left: 8px;
+        right: 8px;
+        gap: 6px;
+        max-width: none;
+        overflow-x: auto;
+        transform: none;
+        scrollbar-width: none;
+      }
+
+      .floating-quotes::-webkit-scrollbar { display: none; }
+      .floating-quote { flex: 0 0 auto; min-height: 36px; padding: 7px 9px; font-size: 11px; }
+      .quick-market { padding: 18px; }
+      .quick-market-head { align-items: flex-start; flex-direction: column; }
+      .quick-price span { font-size: 16px; }
+
       .main-chart-frame,
       .sector-chart-frame {
         height: 390px;
@@ -983,6 +1088,12 @@
 </head>
 <body>
   <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <nav class="floating-quotes" aria-label="Najważniejsze ceny">
+    <a class="floating-quote" href="#wykresy" data-floating-symbol="BINANCE:BTCUSDT">BTC <span class="quote-price">--</span></a>
+    <a class="floating-quote" href="#wykresy" data-floating-symbol="OANDA:XAUUSD">GOLD <span class="quote-price">--</span></a>
+    <a class="floating-quote" href="#waluty" data-floating-symbol="FX_IDC:GBPPLN">GBP <span class="quote-price">--</span></a>
+    <a class="floating-quote" href="#spacex-ipo" data-floating-symbol="NASDAQ:SPCX">SPACEX <span class="quote-price">--</span></a>
+  </nav>
   <main class="shell">
     <nav class="topbar">
       <img src="assets/logo-we-pb.svg" alt="Wydział Elektryczny Politechniki Białostockiej">
@@ -1020,6 +1131,17 @@
           <text x="58" y="252" fill="#e7f6ff" font-family="Arial, sans-serif" font-size="18" font-weight="900">GOLD · BTC · SP500 · TSLA · NVDA</text>
         </svg>
       </aside>
+    </section>
+
+    <section class="quick-market reveal" aria-labelledby="quickMarketTitle">
+      <div class="quick-market-head">
+        <div>
+          <h2 id="quickMarketTitle">Szybki skrót rynku</h2>
+          <p>Wszystkie ceny ze strony w jednym miejscu, bez otwierania wykresów.</p>
+        </div>
+        <span class="quick-updated" id="quickUpdated">Pobieranie cen...</span>
+      </div>
+      <div class="quick-price-grid" id="quickPriceGrid" aria-live="polite"></div>
     </section>
 
     <section class="szymon-banner-card reveal" aria-label="Wykres nie kłamie">
@@ -1237,6 +1359,90 @@
 
   <script>
     const API_URL = 'https://studiawepb-api.calabraaa.workers.dev';
+    const QUICK_QUOTES = [
+      { symbol: 'OANDA:XAUUSD', label: 'Złoto / USD', currency: 'USD', digits: 2 },
+      { symbol: 'BINANCE:BTCUSDT', label: 'Bitcoin', currency: 'USD', digits: 2 },
+      { symbol: 'BINANCE:ETHUSDT', label: 'Ethereum', currency: 'USD', digits: 2 },
+      { symbol: 'COINBASE:USDTUSD', label: 'Tether', currency: 'USD', digits: 4 },
+      { symbol: 'AMEX:SPY', label: 'S&P 500 · SPY', currency: 'USD', digits: 2 },
+      { symbol: 'NASDAQ:TSLA', label: 'Tesla', currency: 'USD', digits: 2 },
+      { symbol: 'NASDAQ:NVDA', label: 'NVIDIA', currency: 'USD', digits: 2 },
+      { symbol: 'NASDAQ:AAPL', label: 'Apple', currency: 'USD', digits: 2 },
+      { symbol: 'NASDAQ:MSFT', label: 'Microsoft', currency: 'USD', digits: 2 },
+      { symbol: 'FX_IDC:USDPLN', label: 'USD / PLN', currency: 'PLN', digits: 4 },
+      { symbol: 'FX_IDC:GBPPLN', label: 'GBP / PLN', currency: 'PLN', digits: 4 },
+      { symbol: 'FX_IDC:EURPLN', label: 'EUR / PLN', currency: 'PLN', digits: 4 },
+      { symbol: 'NASDAQ:SPCX', label: 'SpaceX · SPCX', currency: 'USD', digits: 2 },
+      { symbol: 'NYSE:LMT', label: 'Lockheed Martin', currency: 'USD', digits: 2 },
+      { symbol: 'NYSE:BA', label: 'Boeing', currency: 'USD', digits: 2 },
+      { symbol: 'CBOE:ARKX', label: 'ARK Space ETF', currency: 'USD', digits: 2 },
+      { symbol: 'NASDAQ:IRDM', label: 'Iridium', currency: 'USD', digits: 2 }
+    ];
+
+    function formatQuickPrice(value, item) {
+      return new Intl.NumberFormat('pl-PL', {
+        style: 'currency',
+        currency: item.currency,
+        minimumFractionDigits: item.digits,
+        maximumFractionDigits: item.digits
+      }).format(value);
+    }
+
+    function createQuickPriceCards() {
+      const grid = document.getElementById('quickPriceGrid');
+      QUICK_QUOTES.forEach((item) => {
+        const card = document.createElement('article');
+        card.className = 'quick-price';
+        card.dataset.quoteSymbol = item.symbol;
+        const label = document.createElement('strong');
+        label.textContent = item.label;
+        const price = document.createElement('span');
+        price.textContent = '--';
+        card.append(label, price);
+        grid.appendChild(card);
+      });
+    }
+
+    function applyQuoteState(element, change) {
+      element.classList.toggle('up', change >= 0);
+      element.classList.toggle('down', change < 0);
+    }
+
+    async function loadQuickQuotes() {
+      const updated = document.getElementById('quickUpdated');
+      try {
+        const response = await fetch('https://scanner.tradingview.com/global/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body: JSON.stringify({
+            symbols: { tickers: QUICK_QUOTES.map((item) => item.symbol), query: { types: [] } },
+            columns: ['close', 'change']
+          }),
+          cache: 'no-store'
+        });
+        if (!response.ok) throw new Error('TradingView scanner error');
+        const payload = await response.json();
+        const quotes = new Map((payload.data || []).map((row) => [row.s, { price: row.d[0], change: row.d[1] }]));
+
+        QUICK_QUOTES.forEach((item) => {
+          const quote = quotes.get(item.symbol);
+          if (!quote || !Number.isFinite(quote.price)) return;
+          const card = document.querySelector(`[data-quote-symbol="${item.symbol}"]`);
+          if (card) {
+            card.querySelector('span').textContent = formatQuickPrice(quote.price, item);
+            applyQuoteState(card, quote.change || 0);
+          }
+          document.querySelectorAll(`[data-floating-symbol="${item.symbol}"]`).forEach((button) => {
+            button.querySelector('.quote-price').textContent = formatQuickPrice(quote.price, item);
+            applyQuoteState(button, quote.change || 0);
+          });
+        });
+
+        updated.textContent = `Live · ${new Intl.DateTimeFormat('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(new Date())}`;
+      } catch (error) {
+        updated.textContent = 'Ceny chwilowo niedostępne';
+      }
+    }
     const progressBar = document.getElementById('progressBar');
     const updateProgress = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -1423,8 +1629,11 @@
     setupChartTabs();
     setupSectorTabs();
     updateNewsTimestamp();
+    createQuickPriceCards();
+    loadQuickQuotes();
     loadCoinGecko();
     loadCurrencyRates();
+    setInterval(loadQuickQuotes, 30000);
     setInterval(loadCurrencyRates, 60000);
   </script>
 </body>
