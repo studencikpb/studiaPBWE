@@ -1,4 +1,84 @@
 const SUBJECTS = {
+
+  "odpowiedzialnosc": {
+    "title": "Odpowiedzialność zawodowa",
+    "teacher": "M. Sulkowski",
+    "form": "wykład zdalny; zaliczenie WE-144",
+    "time": "Czwartek, 19.20-20.55; zjazdy 1-5",
+    "accent": "#b45309",
+    "accent2": "#fcd34d",
+    "bgA": "#3a2108",
+    "bgB": "#92400e",
+    "summary": "Materiały, notatki i opracowania do przedmiotu odpowiedzialność zawodowa w semestrze III.",
+    "materials": [],
+    "plan": "assets/tz2_3.pdf"
+  },
+  "diagnostyka_swiatlowodowa": {
+    "title": "Diagnostyka systemów światłowodowych",
+    "teacher": "M. Kochanowicz (wykład), J. Markiewicz (laboratorium)",
+    "form": "wykład zdalny; zaliczenie WE-144; laboratorium CBD-13",
+    "time": "Piątek, 17.40-19.15 (zjazdy 1-5); sobota: L1 16.50-18.25, L2 15.10-16.45",
+    "accent": "#008b8b",
+    "accent2": "#6ee7f9",
+    "bgA": "#052f3a",
+    "bgB": "#0f766e",
+    "summary": "Materiały, notatki i opracowania do przedmiotu diagnostyka systemów światłowodowych w semestrze III.",
+    "materials": [],
+    "plan": "assets/tz2_3.pdf"
+  },
+  "interfejsy": {
+    "title": "Interfejsy komunikacyjne w systemach wbudowanych",
+    "teacher": "M. Prorok",
+    "form": "wykład zdalny; zaliczenie WE-144; laboratorium CBD-32",
+    "time": "Piątek, 19.20-20.55 (zjazdy 1-5); sobota, 9.50-11.25: L1 zjazdy nieparzyste, L2 parzyste",
+    "accent": "#2563eb",
+    "accent2": "#93c5fd",
+    "bgA": "#07192f",
+    "bgB": "#1e40af",
+    "summary": "Materiały, notatki i opracowania do przedmiotu interfejsy komunikacyjne w systemach wbudowanych w semestrze III.",
+    "materials": [],
+    "plan": "assets/tz2_3.pdf"
+  },
+  "sztuczna_inteligencja": {
+    "title": "Metody sztucznej inteligencji",
+    "teacher": "K. Borawski",
+    "form": "wykład i pracownia specjalistyczna, WE-101",
+    "time": "Sobota, 8.00-9.35",
+    "accent": "#7c3aed",
+    "accent2": "#c4b5fd",
+    "bgA": "#24123f",
+    "bgB": "#5b21b6",
+    "summary": "Materiały, notatki i opracowania do przedmiotu metody sztucznej inteligencji w semestrze III.",
+    "materials": [],
+    "plan": "assets/tz2_3.pdf"
+  },
+  "seminarium": {
+    "title": "Seminarium dyplomowe",
+    "teacher": "M. Kochanowicz",
+    "form": "seminarium, WE-306",
+    "time": "Sobota, 11.40-13.15",
+    "accent": "#be185d",
+    "accent2": "#f9a8d4",
+    "bgA": "#3f102a",
+    "bgB": "#9d174d",
+    "summary": "Materiały, notatki i opracowania do przedmiotu seminarium dyplomowe w semestrze III.",
+    "materials": [],
+    "plan": "assets/tz2_3.pdf"
+  },
+  "innowacje": {
+    "title": "Innowacje w przemyśle elektronicznym",
+    "teacher": "M. Sadowski",
+    "form": "seminarium, WE-306",
+    "time": "Sobota, 13.30-15.05",
+    "accent": "#15803d",
+    "accent2": "#86efac",
+    "bgA": "#052e16",
+    "bgB": "#166534",
+    "summary": "Materiały, notatki i opracowania do przedmiotu innowacje w przemyśle elektronicznym w semestrze III.",
+    "materials": [],
+    "plan": "assets/tz2_3.pdf"
+  }
+,
   niezawodnosc: {
     title: 'Niezawodność i diagnostyka',
     teacher: 'M. Garbaruk',
@@ -277,7 +357,7 @@ function pageTemplate(subject, subjectKey) {
           <p class="lead">${subject.summary}</p>
           <div class="actions">
             <a class="button" href="#materialy">Materiały</a>
-            <a class="button secondary" href="assets/tz2_2.pdf">Plan PDF</a>
+            <a class="button secondary" href="${subject.plan || 'assets/tz2_2.pdf'}">Plan PDF</a>
             <a class="button secondary" href="admin-upload.html?subject=${encodeURIComponent(subjectKey)}">Dodaj plik</a>
           </div>
         </div>

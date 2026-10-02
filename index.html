@@ -1532,6 +1532,8 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
+    .schedule-note { color: var(--muted); line-height: 1.5; margin-top: 18px; }
+    .exam-item.current-visit { border: 2px solid var(--blue); }
   </style>
 </head>
 <body>
@@ -1554,16 +1556,16 @@
     <section class="hero">
       <div class="hero-main float-in">
         <p class="eyebrow">Wydział Elektryczny PB · semestr III</p>
-        <h1>Najpierw wakacje</h1>
-        <p class="lead">Teraz odpoczynek, reset głowy i zero paniki. Nie zaglądaj za często, nie przejmuj się na zapas - materiały, galeria i nowe rzeczy będą tu wpadać, gdy semestr III zacznie się robić realny.</p>
+        <h1>Startujemy z semestrem III</h1>
+        <p class="lead">Pierwsze zajęcia już w czwartek 8 października o 19:20. Tutaj znajdziesz plan, terminy wszystkich zjazdów i materiały do przedmiotów.</p>
         <div class="quick">
           <a class="quick-card primary" href="postep-mgr.html">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16"/><path d="M7 16V9"/><path d="M12 16V5"/><path d="M17 16v-3"/><path d="m9 7 3-3 3 3"/></svg></span>
             <strong>Praca MGR</strong>
           </a>
-          <a class="quick-card" href="semestr-2.html#przedmioty">
+          <a class="quick-card" href="#przedmioty">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h5l2 2h9v8.5A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M8 13h8M8 16h5"/></svg></span>
-            <strong>Archiwum II</strong>
+            <strong>Materiały</strong>
           </a>
           <a class="quick-card" href="#zaliczenia">
             <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v4M16 3v4M4 8h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2z"/><path d="m8 15 2 2 5-6"/></svg></span>
@@ -1589,8 +1591,8 @@
       <aside class="panel float-in" aria-label="Polecane sekcje">
         <div class="hero-slider" id="heroSlider">
           <article class="hero-slide active">
-            <h2>Wakacyjny przepływ wiedzy</h2>
-            <p>Materiały, galeria i podstrony zostają pod ręką, ale semestr III jeszcze niech spokojnie czeka za rogiem.</p>
+            <h2>Semestr III pod ręką</h2>
+            <p>Plan od czwartku do soboty, podział laboratoriów L1/L2 i materiały w jednym miejscu.</p>
             <a class="slide-link" href="postep-mgr.html">Otwórz pracę MGR</a>
             <svg class="circuit" viewBox="0 0 620 360" role="img" aria-label="Animowany przepływ światłowodowy">
               <defs>
@@ -1696,7 +1698,7 @@
           </article>
 
           <div class="slider-dots" aria-label="Wybór slajdu">
-            <button class="slider-dot active" type="button" aria-label="Wakacyjny przepływ wiedzy"></button>
+            <button class="slider-dot active" type="button" aria-label="Semestr III pod ręką"></button>
             <button class="slider-dot" type="button" aria-label="Inwestuj z Szymonem"></button>
             <button class="slider-dot" type="button" aria-label="Dwa Huberty o Data center"></button>
             <button class="slider-dot" type="button" aria-label="Inteligentny dom z Marcinem"></button>
@@ -1706,38 +1708,60 @@
       </aside>
     </section>
 
-    <section id="zaliczenia" class="exams reveal">
-      <div class="section-head">
-        <div>
-          <h2>Semestr III</h2>
-          <p>Najpierw wakacje. Nie zaglądaj, nie przejmuj się i nie rób sobie stresu na zapas.</p>
-        </div>
-        <a class="download" href="semestr-2.html#zaliczenia">Archiwum semestru II</a>
-      </div>
+<section id="zaliczenia" class="exams reveal"><div class="section-head"><div><h2>Zaliczenia</h2><p>Daty zaliczeń nie zostały jeszcze podane w planie. Uzupełnimy je po ogłoszeniu przez prowadzących.</p></div><a class="download" href="semestr-2.html#zaliczenia">Archiwum semestru II</a></div>
       <div class="exam-grid">
-        <article class="exam-item important"><strong>Tryb wakacyjny</strong><div class="exam-meta"><span>zero terminów</span><span>pełny chill</span></div></article>
-        <article class="exam-item session"><strong>Semestr III</strong><div class="exam-meta"><span>materiały pojawią się później</span><span>bez podglądania</span></div></article>
-      </div>
-    </section>
-
-    <section id="plan" class="schedule reveal">
-      <div class="section-head">
-        <div>
-          <h2>Plan zajęć</h2>
-          <p>Semestr III będzie tu ogarnięty, kiedy skończy się wakacyjny święty spokój. Stary plan zostaje w archiwum semestru II.</p>
-        </div>
-        <a class="download" href="semestr-2.html#plan">Otwórz semestr II</a>
-      </div>
-      <div class="schedule-grid">
-        <article class="day">
-          <h3>Wakacje</h3>
-          <div class="lesson"><div class="time">teraz</div><div><strong>Nie ma rozkładu semestru III</strong><span>Jak będzie plan, wrzucimy go tutaj. Na razie nie bądź wścibski i korzystaj z wolnego.</span></div></div>
-          <div class="lesson"><div class="time">archiwum</div><div><strong>Stary plan semestru II</strong><span>Do poprzedniego planu i terminów wejdziesz przez przycisk powyżej.</span></div></div>
-        </article>
-      </div>
-    </section>
-
-    <section id="galeria" class="gallery reveal">
+<article class="exam-item"><strong>Odpowiedzialność zawodowa · wykład</strong><div class="exam-meta"><span>Sala: WE-144</span><span>Termin do potwierdzenia</span></div></article>
+<article class="exam-item"><strong>Diagnostyka systemów światłowodowych · wykład</strong><div class="exam-meta"><span>Sala: WE-144</span><span>Termin do potwierdzenia</span></div></article>
+<article class="exam-item"><strong>Interfejsy komunikacyjne w systemach wbudowanych · wykład</strong><div class="exam-meta"><span>Sala: WE-144</span><span>Termin do potwierdzenia</span></div></article>
+<article class="exam-item"><strong>Metody sztucznej inteligencji · wykład</strong><div class="exam-meta"><span>Sala: WE-101</span><span>Termin do potwierdzenia</span></div></article>
+<article class="exam-item"><strong>Seminarium dyplomowe · seminarium</strong><div class="exam-meta"><span>Sala: WE-306</span><span>Termin do potwierdzenia</span></div></article>
+<article class="exam-item"><strong>Innowacje w przemyśle elektronicznym · seminarium</strong><div class="exam-meta"><span>Sala: WE-306</span><span>Termin do potwierdzenia</span></div></article>
+</div></section>
+      <section id="zjazdy" class="exams reveal"><div class="section-head"><div><h2>Terminy zjazdów</h2><p id="nextVisit">Pierwszy zjazd: 08-11.10.2026 · start w czwartek o 19:20.</p></div></div>
+      <div class="exam-grid"><article class="exam-item" data-visit-start="2026-10-08" data-visit-end="2026-10-11"><strong>Zjazd 1</strong><div class="exam-meta"><span>08.10.2026 - 11.10.2026</span><span>Wykłady zdalne + sobota</span></div></article>
+      <article class="exam-item" data-visit-start="2026-10-15" data-visit-end="2026-10-18"><strong>Zjazd 2</strong><div class="exam-meta"><span>15.10.2026 - 18.10.2026</span><span>Wykłady zdalne + sobota</span></div></article>
+      <article class="exam-item" data-visit-start="2026-10-22" data-visit-end="2026-10-25"><strong>Zjazd 3</strong><div class="exam-meta"><span>22.10.2026 - 25.10.2026</span><span>Wykłady zdalne + sobota</span></div></article>
+      <article class="exam-item" data-visit-start="2026-11-12" data-visit-end="2026-11-15"><strong>Zjazd 4</strong><div class="exam-meta"><span>12.11.2026 - 15.11.2026</span><span>Wykłady zdalne + sobota</span></div></article>
+      <article class="exam-item" data-visit-start="2026-11-19" data-visit-end="2026-11-22"><strong>Zjazd 5</strong><div class="exam-meta"><span>19.11.2026 - 22.11.2026</span><span>Wykłady zdalne + sobota</span></div></article>
+      <article class="exam-item" data-visit-start="2026-11-26" data-visit-end="2026-11-29"><strong>Zjazd 6</strong><div class="exam-meta"><span>26.11.2026 - 29.11.2026</span><span>Zajęcia sobotnie</span></div></article>
+      <article class="exam-item" data-visit-start="2026-12-10" data-visit-end="2026-12-13"><strong>Zjazd 7</strong><div class="exam-meta"><span>10.12.2026 - 13.12.2026</span><span>Zajęcia sobotnie</span></div></article>
+      <article class="exam-item" data-visit-start="2026-12-17" data-visit-end="2026-12-20"><strong>Zjazd 8</strong><div class="exam-meta"><span>17.12.2026 - 20.12.2026</span><span>Zajęcia sobotnie</span></div></article>
+      <article class="exam-item" data-visit-start="2027-01-14" data-visit-end="2027-01-17"><strong>Zjazd 9</strong><div class="exam-meta"><span>14.01.2027 - 17.01.2027</span><span>Zajęcia sobotnie</span></div></article>
+      <article class="exam-item" data-visit-start="2027-01-21" data-visit-end="2027-01-24"><strong>Zjazd 10</strong><div class="exam-meta"><span>21.01.2027 - 24.01.2027</span><span>Zajęcia sobotnie</span></div></article></div></section>
+      <section id="plan" class="schedule reveal"><div class="section-head"><div><h2>Plan zajęć</h2><p>Elektronika i telekomunikacja II stopnia · rok II · semestr III - zimowy · studia niestacjonarne · 2026/2027. Plan z 1 października 2026.</p></div><a class="download" href="assets/tz2_3.pdf">Pobierz PDF planu</a></div>
+      <div class="schedule-grid"><article class="day"><h3>Czwartek</h3><div class="lesson"><div class="time">19.20-20.55</div>
+      <div><strong>Odpowiedzialność zawodowa</strong><span>M. Sulkowski · wykład zdalny · zjazdy 1-5 · zaliczenie WE-144</span></div></div></article>
+      <article class="day"><h3>Piątek</h3><div class="lesson"><div class="time">17.40-19.15</div>
+      <div><strong>Diagnostyka systemów światłowodowych</strong><span>M. Kochanowicz · wykład zdalny · zjazdy 1-5 · zaliczenie WE-144</span></div></div>
+      <div class="lesson"><div class="time">19.20-20.55</div>
+      <div><strong>Interfejsy komunikacyjne w systemach wbudowanych</strong><span>M. Prorok · wykład zdalny · zjazdy 1-5 · zaliczenie WE-144</span></div></div></article>
+      <article class="day"><h3>Sobota</h3><div class="lesson"><div class="time">8.00-9.35</div>
+      <div><strong>Metody sztucznej inteligencji</strong><span>K. Borawski · wykład + pracownia · WE-101</span></div></div>
+      <div class="lesson"><div class="time">9.50-11.25</div>
+      <div><strong>Interfejsy komunikacyjne w systemach wbudowanych</strong><span>M. Prorok · laboratorium · CBD-32 · L1: zjazdy nieparzyste, L2: parzyste</span></div></div>
+      <div class="lesson"><div class="time">11.40-13.15</div>
+      <div><strong>Seminarium dyplomowe</strong><span>M. Kochanowicz · seminarium · WE-306</span></div></div>
+      <div class="lesson"><div class="time">13.30-15.05</div>
+      <div><strong>Innowacje w przemyśle elektronicznym</strong><span>M. Sadowski · seminarium · WE-306</span></div></div>
+      <div class="lesson"><div class="time">15.10-16.45</div>
+      <div><strong>Diagnostyka systemów światłowodowych</strong><span>J. Markiewicz · laboratorium · CBD-13 · grupa L2</span></div></div>
+      <div class="lesson"><div class="time">16.50-18.25</div>
+      <div><strong>Diagnostyka systemów światłowodowych</strong><span>J. Markiewicz · laboratorium · CBD-13 · grupa L1</span></div></div></article>
+      <article class="day"><h3>Niedziela</h3><div class="lesson"><div class="time">—</div>
+      <div><strong>Brak zajęć w planie</strong><span>Opublikowany plan nie przewiduje zajęć w niedzielę.</span></div></div></article></div><p class="schedule-note">WE: Wydział Elektryczny · CBD: Centrum Badawczo-Dydaktyczne, ul. Zwierzyniecka 10. Laboratoria i pracownie specjalistyczne odbywają się bez przerw.</p></section>
+      <section id="przedmioty" class="subjects reveal"><div class="section-head"><div><h2>Przedmioty i materiały</h2><p>Semestr III · notatki, laboratoria i pliki do każdego przedmiotu.</p></div></div>
+      <div class="subjects-grid"><article class="subject"><h3>Odpowiedzialność zawodowa</h3><div class="meta"><span>Prowadzący: M. Sulkowski</span><br><span>Forma: wykład zdalny; zaliczenie WE-144</span></div>
+      <div class="subject-actions"><a href="subject-odpowiedzialnosc.html">Otwórz stronę przedmiotu</a></div></article>
+      <article class="subject"><h3>Diagnostyka systemów światłowodowych</h3><div class="meta"><span>Prowadzący: M. Kochanowicz (wykład), J. Markiewicz (laboratorium)</span><br><span>Forma: wykład zdalny; zaliczenie WE-144; laboratorium CBD-13</span></div>
+      <div class="subject-actions"><a href="subject-diagnostyka-swiatlowodowa.html">Otwórz stronę przedmiotu</a></div></article>
+      <article class="subject"><h3>Interfejsy komunikacyjne w systemach wbudowanych</h3><div class="meta"><span>Prowadzący: M. Prorok</span><br><span>Forma: wykład zdalny; zaliczenie WE-144; laboratorium CBD-32</span></div>
+      <div class="subject-actions"><a href="subject-interfejsy.html">Otwórz stronę przedmiotu</a></div></article>
+      <article class="subject"><h3>Metody sztucznej inteligencji</h3><div class="meta"><span>Prowadzący: K. Borawski</span><br><span>Forma: wykład i pracownia specjalistyczna, WE-101</span></div>
+      <div class="subject-actions"><a href="subject-sztuczna-inteligencja.html">Otwórz stronę przedmiotu</a></div></article>
+      <article class="subject"><h3>Seminarium dyplomowe</h3><div class="meta"><span>Prowadzący: M. Kochanowicz</span><br><span>Forma: seminarium, WE-306</span></div>
+      <div class="subject-actions"><a href="subject-seminarium.html">Otwórz stronę przedmiotu</a></div></article>
+      <article class="subject"><h3>Innowacje w przemyśle elektronicznym</h3><div class="meta"><span>Prowadzący: M. Sadowski</span><br><span>Forma: seminarium, WE-306</span></div>
+      <div class="subject-actions"><a href="subject-innowacje.html">Otwórz stronę przedmiotu</a></div></article></div></section>    <section id="galeria" class="gallery reveal">
       <div class="section-head">
         <div>
           <h2>Galeria</h2>
@@ -1936,6 +1960,23 @@
     </footer>
   </main>
   <script>
+
+    const setupVisits = () => {
+      const now = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Warsaw' }).format(new Date());
+      const cards = Array.from(document.querySelectorAll('[data-visit-start]'));
+      cards.forEach(card => {
+        card.classList.toggle('past', card.dataset.visitEnd < now);
+        card.classList.remove('current-visit');
+      });
+      const next = cards.find(card => card.dataset.visitEnd >= now);
+      const label = document.getElementById('nextVisit');
+      if (!next) { label.textContent = 'Wszystkie zaplanowane zjazdy semestru III już się zakończyły.'; return; }
+      next.classList.add('current-visit');
+      label.textContent = `${next.dataset.visitStart <= now ? 'Trwa' : 'Najbliższy'} ${next.querySelector('strong').textContent.toLowerCase()}: ${next.querySelector('.exam-meta span').textContent}${next === cards[0] ? ' · Start w czwartek o 19:20.' : ''}`;
+    };
+    setupVisits();
+    setInterval(setupVisits, 60000);
+
     const PBWE_API_URL = 'https://studiawepb-api.calabraaa.workers.dev';
     const GITHUB_CONTENTS_API = 'https://api.github.com/repos/studencikpb/studiaPBWE/contents';
     const GALLERY_BRANCHES = ['gh-pages', 'main'];

@@ -152,7 +152,7 @@
     </section>
 
     <section class="section" id="mecze">
-      <div class="section-head"><div><h2>Centrum meczowe <span class="count" id="matchCount">0</span></h2><p>Terminarz i dostępne wyniki z kilku kolejnych dni. Przełącz dyscyplinę oraz zakres czasu bez przeładowywania strony.</p></div><span class="status" id="liveStatus">Aktualizacja danych</span></div>
+      <div class="section-head"><div><h2>Centrum meczowe <span class="count" id="matchCount">0</span></h2><p>Terminarz i dostępne wyniki z kilku kolejnych dni. Godziny w strefie Europe/Warsaw. Dane odświeżają się co 2 minuty; źródło może przekazywać wyniki z opóźnieniem. Przełącz dyscyplinę oraz zakres czasu bez przeładowywania strony.</p></div><div><span class="status" id="liveStatus" role="status">Aktualizacja danych</span> <button class="filter" id="refreshMatches" type="button">Odśwież mecze</button></div></div>
       <div class="filter-groups">
         <div class="filter-row filters" aria-label="Wybór dyscypliny">
           <span class="filter-label">Dyscyplina</span>
@@ -194,7 +194,7 @@
     </section>
 
     <section class="section world-cup" id="world-cup">
-      <div class="section-head"><div><p class="eyebrow">Canada · Mexico · USA</p><h2>World Cup 2026 · droga po puchar</h2><p>Aktualne pary, wyniki i kolejne mecze fazy pucharowej. Dane odświeżają się automatycznie co minutę.</p></div><div class="world-cup-actions"><span class="world-cup-live" id="worldCupStatus">Łączenie z mundialem</span><a class="button" href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/knockout-stage-match-schedule-bracket" target="_blank" rel="noopener">Oficjalna drabinka FIFA</a></div></div>
+      <div class="section-head"><div><p class="eyebrow">Canada · Mexico · USA</p><h2>World Cup 2026 · archiwum</h2><p>Archiwum fazy pucharowej turnieju z czerwca i lipca 2026. Wyniki pobieramy z ESPN.</p></div><div class="world-cup-actions"><span class="world-cup-live" id="worldCupStatus">Pobieranie archiwum</span><a class="button" href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/knockout-stage-match-schedule-bracket" target="_blank" rel="noopener">Oficjalna drabinka FIFA</a></div></div>
       <div class="bracket-scroll" aria-label="Drabinka fazy pucharowej World Cup 2026">
         <div class="bracket">
           <div class="round round-32"><h3>1/16 finału · 32</h3>
@@ -223,7 +223,7 @@
           <div class="round round-final"><h3>Wielki finał</h3><div class="bracket-match"><strong>Mecz 104</strong><span>19 lipca · New York New Jersey</span></div></div>
           <div class="trophy-stage">
             <svg class="trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M5 6H3v1a4 4 0 0 0 4 4M19 6h2v1a4 4 0 0 1-4 4"/></svg>
-            <strong>Mistrz świata 2026</strong><span>Trofeum czeka na zwycięzcę</span>
+            <strong>Mistrz świata 2026</strong><span>Pobieranie wyniku finału</span>
           </div>
         </div>
       </div>
@@ -265,19 +265,28 @@
     const worldCupStatus=document.getElementById('worldCupStatus');
     const radarTitle=document.getElementById('radarTitle'), radarText=document.getElementById('radarText'), radarPick=document.getElementById('radarPick');
     const matchCount=document.getElementById('matchCount'), tipsGrid=document.getElementById('tipsGrid');
-    const filters=[...document.querySelectorAll('.filter')], viewFilters=[...document.querySelectorAll('.view-filter')];
-    let allEvents=[], activeView='today';
+    const filters=[...document.querySelectorAll('.filter[data-sport]')], viewFilters=[...document.querySelectorAll('.view-filter')];
+    let allEvents=[], activeView='today', activeSport='Soccer', requestVersion=0;
     const esc=(value='')=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
-    const dateAt=(offset=0)=>{const date=new Date();date.setHours(12,0,0,0);date.setDate(date.getDate()+offset);return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Warsaw'}).format(date);};
-    const eventTime=event=>event.strTime?event.strTime.slice(0,5):'godzina TBD';
+    const warsawDate = date => new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Warsaw'}).format(date);
+    const dateAt=(offset=0)=>{const parts=warsawDate(new Date()).split('-').map(Number);return warsawDate(new Date(Date.UTC(parts[0],parts[1]-1,parts[2]+offset,12)));};
+    const eventInstant=event=>{
+      const raw=event.strTimestamp || (event.dateEvent && event.strTime ? `${event.dateEvent}T${event.strTime}` : '');
+      if(!raw)return null;
+      const date=new Date(/(?:Z|[+-]\d{2}:?\d{2})$/.test(raw)?raw:`${raw}Z`);
+      return Number.isNaN(date.getTime())?null:date;
+    };
+    const eventDate=event=>eventInstant(event)?warsawDate(eventInstant(event)):event.dateEvent;
+    const eventTime=event=>eventInstant(event)?new Intl.DateTimeFormat('pl-PL',{timeZone:'Europe/Warsaw',hour:'2-digit',minute:'2-digit'}).format(eventInstant(event)):'godzina do potwierdzenia';
+    const eventStatus=event=>({NS:'Zaplanowany',FT:'Zakończony',HT:'Przerwa',AET:'Po dogrywce',PEN:'Po rzutach karnych',PST:'Przełożony',CANC:'Odwołany'}[event.strStatus]||event.strStatus||'Zaplanowany');
     const isLive=event=>['1H','2H','HT','Live','LIVE'].includes(event.strStatus);
     const eventKey=event=>`event-${event.idEvent||`${event.strHomeTeam}-${event.strAwayTeam}`}`.replace(/[^a-zA-Z0-9-]/g,'');
-    const eventsForView=()=>allEvents.filter(event=>activeView==='live'?isLive(event):activeView==='today'?event.dateEvent===dateAt(0):activeView==='tomorrow'?event.dateEvent===dateAt(1):true);
+    const eventsForView=()=>allEvents.filter(event=>activeView==='live'?isLive(event):activeView==='today'?eventDate(event)===dateAt(0):activeView==='tomorrow'?eventDate(event)===dateAt(1):true);
     const renderTips=events=>{
       const selected=events.filter(event=>event.strHomeTeam&&event.strAwayTeam).slice(0,3);
       if(!selected.length){tipsGrid.innerHTML='<article class="tip-card"><span class="tip-index">–</span><h3>Brak wydarzeń</h3><p>Zmień dyscyplinę albo termin.</p><span class="tip-market">radar czeka</span></article>';return;}
       const labels=['Mecz do obserwacji','Potencjalnie otwarte spotkanie','Wybór transmisji Pana X'];
-      tipsGrid.innerHTML=selected.map((event,index)=>`<article class="tip-card"><span class="tip-index">${index+1}</span><h3>${esc(event.strHomeTeam)} – ${esc(event.strAwayTeam)}</h3><p>${esc(event.strLeague||'Rozgrywki sportowe')} · ${esc(event.dateEvent)} · ${esc(eventTime(event))}</p><span class="tip-market">${labels[index]}</span></article>`).join('');
+      tipsGrid.innerHTML=selected.map((event,index)=>`<article class="tip-card"><span class="tip-index">${index+1}</span><h3>${esc(event.strHomeTeam)} – ${esc(event.strAwayTeam)}</h3><p>${esc(event.strLeague||'Rozgrywki sportowe')} · ${esc(eventDate(event))} · ${esc(eventTime(event))}</p><span class="tip-market">${labels[index]}</span></article>`).join('');
     };
     const oddsFallback=events=>events.forEach(event=>{const node=document.getElementById(`odds-${eventKey(event)}`);if(node)node.innerHTML='<span class="odds-pending">Kursy chwilowo niedostępne · sprawdź LV BET</span>';});
     async function loadOdds(events){
@@ -290,14 +299,33 @@
     }
     const render=events=>{
       const visible=events.slice().sort((a,b)=>String(a.strTimestamp||'').localeCompare(String(b.strTimestamp||''))).slice(0,18);matchCount.textContent=visible.length;renderTips(visible);
-      if(!visible.length){matches.innerHTML='<div class="loading">Brak wydarzeń w tej zakładce. Pan X zarządził zmianę ustawienia.</div>';return;}
-      matches.innerHTML=visible.map(event=>{const live=isLive(event),hasScore=event.intHomeScore!==null&&event.intHomeScore!==undefined;return `<article class="match ${live?'live':''}"><div class="match-top"><span>${esc(event.dateEvent||dateAt(0))} · ${esc(eventTime(event))}</span><span class="${live?'live-pill':''}">${live?'● LIVE':esc(event.strStatus||'zaplanowany')}</span></div><div class="teams"><span class="team">${esc(event.strHomeTeam||'Gospodarze')}</span><span class="score">${hasScore?`${esc(event.intHomeScore)}:${esc(event.intAwayScore)}`:'–'}</span><span class="team">${esc(event.strAwayTeam||'Goście')}</span></div><div class="league">${esc(event.strLeague||event.strSport||'Wydarzenie sportowe')}</div><div class="odds" id="odds-${eventKey(event)}"><span class="odds-pending">Pobieranie kursów LV BET...</span></div></article>`;}).join('');
+      if(!visible.length){radarTitle.textContent='Radar czeka na wydarzenia';radarText.textContent='W wybranej zakładce nie ma spotkań. Zmień termin lub dyscyplinę.';radarPick.textContent='Brak meczu do obserwacji';matches.innerHTML='<div class="loading">Brak wydarzeń w tej zakładce. Pan X zarządził zmianę ustawienia.</div>';return;}
+      matches.innerHTML=visible.map(event=>{const live=isLive(event),hasScore=event.intHomeScore!==null&&event.intHomeScore!==undefined;return `<article class="match ${live?'live':''}"><div class="match-top"><span>${esc(eventDate(event)||dateAt(0))} · ${esc(eventTime(event))}</span><span class="${live?'live-pill':''}">${live?'● LIVE':esc(eventStatus(event))}</span></div><div class="teams"><span class="team">${esc(event.strHomeTeam||'Gospodarze')}</span><span class="score">${hasScore?`${esc(event.intHomeScore)}:${esc(event.intAwayScore)}`:'–'}</span><span class="team">${esc(event.strAwayTeam||'Goście')}</span></div><div class="league">${esc(event.strLeague||event.strSport||'Wydarzenie sportowe')}</div><div class="odds" id="odds-${eventKey(event)}"><span class="odds-pending">Pobieranie kursów LV BET...</span></div></article>`;}).join('');
       const pick=visible.find(isLive)||visible[0];radarTitle.textContent=`${pick.strHomeTeam||'Gospodarze'} – ${pick.strAwayTeam||'Goście'}`;radarText.textContent=`${pick.strLeague||'Rozgrywki'}, ${eventTime(pick)}. Radar wskazuje ten mecz do obserwacji. To wybór transmisji, nie obietnica wyniku.`;radarPick.textContent=isLive(pick)?'Na żywo: najpierw oglądamy przebieg':'Typ zabawowy: emocje powyżej 2,5';loadOdds(visible);
     };
-    async function loadSport(sport='Soccer'){
-      matches.innerHTML='<div class="loading">Pan X rozkłada właśnie tabelę taktyczną...</div>';status.textContent='Pobieranie terminarza';
-      try{const responses=await Promise.all([0,1,2,3].map(offset=>fetch(`https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${dateAt(offset)}&s=${encodeURIComponent(sport)}`,{cache:'no-store'})));if(responses.some(response=>!response.ok))throw new Error('API');const payloads=await Promise.all(responses.map(response=>response.json()));const seen=new Set();allEvents=payloads.flatMap(data=>data.events||[]).filter(event=>{const key=event.idEvent||eventKey(event);if(seen.has(key))return false;seen.add(key);return true;});render(eventsForView());status.textContent=`Odświeżono ${new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}`;}catch(error){matches.innerHTML='<div class="loading">Nie udało się pobrać terminarza. Spróbuj odświeżyć stronę za chwilę.</div>';status.textContent='Dane chwilowo niedostępne';}
+    async function fetchJson(url){
+      const controller=new AbortController(), timeout=setTimeout(()=>controller.abort(),15000);
+      try{const response=await fetch(url,{cache:'no-store',signal:controller.signal});if(!response.ok)throw new Error('HTTP');return await response.json();}finally{clearTimeout(timeout);}
     }
+    async function loadSport(sport=activeSport){
+      const version=++requestVersion;
+      if(sport!==activeSport){allEvents=[];render([]);}
+      activeSport=sport;status.textContent='Pobieranie terminarza';
+      const days=[-1,0,1,2,3];
+      const results=await Promise.allSettled(days.map(offset=>fetchJson(`https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${dateAt(offset)}&s=${encodeURIComponent(sport)}`)));
+      if(version!==requestVersion)return;
+      const successful=results.filter(result=>result.status==='fulfilled');
+      if(!successful.length){
+        if(!allEvents.length)render([]);
+        status.textContent=allEvents.length?'Odświeżenie nieudane · pokazano poprzednie dane':'Dane chwilowo niedostępne · użyj Odśwież mecze';return;
+      }
+      const seen=new Set();
+      allEvents=successful.flatMap(result=>result.value.events||[]).filter(event=>{const key=event.idEvent||eventKey(event);if(seen.has(key))return false;seen.add(key);return eventDate(event)>=dateAt(0)&&eventDate(event)<=dateAt(3);});
+      render(eventsForView());
+      status.textContent=`${successful.length<days.length?'Częściowe dane · ':''}Odświeżono ${new Date().toLocaleTimeString('pl-PL',{timeZone:'Europe/Warsaw',hour:'2-digit',minute:'2-digit'})}`;
+    }
+    document.getElementById('refreshMatches').addEventListener('click',()=>loadSport());
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadSport();});
 
     const worldCupRounds=[
       {selector:'.round-32',slugs:['round-of-32'],title:'1/16 finału · 32'},
@@ -320,7 +348,7 @@
       worldCupRounds.forEach(round=>{
         const node=document.querySelector(round.selector);if(!node)return;
         const roundEvents=events.filter(event=>round.slugs.includes(event.season?.slug)).sort((a,b)=>new Date(a.date)-new Date(b.date));
-        node.innerHTML=`<h3>${round.title}</h3>${roundEvents.length?roundEvents.map(cupCard).join(''):'<div class="bracket-match upcoming"><strong>Oczekiwanie na pary</strong></div>'}`;
+        node.innerHTML=`<h3>${round.title}</h3>${roundEvents.length?roundEvents.map(cupCard).join(''):'<div class="bracket-match"><strong>Brak wyników tej rundy w źródle</strong></div>'}`;
       });
       const finalEvent=events.find(event=>event.season?.slug==='final'), trophy=document.querySelector('.trophy-stage');
       if(finalEvent&&trophy){
@@ -333,16 +361,15 @@
     }
     async function loadWorldCup(){
       try{
-        const response=await fetch(WORLD_CUP_API,{cache:'no-store'});if(!response.ok)throw new Error('world-cup');
-        const data=await response.json();if(!Array.isArray(data.events)||!data.events.length)throw new Error('world-cup-empty');
+        const data=await fetchJson(WORLD_CUP_API);if(!Array.isArray(data.events)||!data.events.length)throw new Error('world-cup-empty');
         renderWorldCup(data.events);
-        worldCupStatus.textContent=`Mundial live · ${new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}`;
-      }catch(error){worldCupStatus.textContent='Mundial · ponawiam połączenie';}
+        worldCupStatus.textContent=`Archiwum mundialu · ${new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}`;
+      }catch(error){worldCupStatus.textContent='Archiwum chwilowo niedostępne';document.querySelectorAll('.round').forEach(node=>{const heading=node.querySelector('h3')?.textContent||'Faza pucharowa';node.innerHTML=`<h3>${esc(heading)}</h3><div class="bracket-match"><strong>Wyniki niedostępne</strong><span>Sprawdź oficjalną drabinkę FIFA.</span></div>`;});const trophy=document.querySelector('.trophy-stage span');if(trophy)trophy.textContent='Wynik finału chwilowo niedostępny';}
     }
     filters.forEach(button=>button.addEventListener('click',()=>{filters.forEach(item=>item.classList.remove('active'));button.classList.add('active');loadSport(button.dataset.sport);}));
     viewFilters.forEach(button=>button.addEventListener('click',()=>{viewFilters.forEach(item=>item.classList.remove('active'));button.classList.add('active');activeView=button.dataset.view;render(eventsForView());}));
     const updateProgress=()=>{const max=document.documentElement.scrollHeight-innerHeight;document.getElementById('progress').style.width=`${max>0?scrollY/max*100:0}%`;};
-    addEventListener('scroll',updateProgress,{passive:true});updateProgress();loadSport();loadWorldCup();setInterval(()=>loadSport(document.querySelector('.filter.active').dataset.sport),120000);setInterval(loadWorldCup,60000);
+    addEventListener('scroll',updateProgress,{passive:true});updateProgress();loadSport();loadWorldCup();setInterval(()=>loadSport(document.querySelector('.filter.active').dataset.sport),120000);
   </script>
 </body>
 </html>
